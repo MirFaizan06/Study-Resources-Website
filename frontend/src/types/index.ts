@@ -120,3 +120,120 @@ export interface CreateRequestPayload {
   requestedMaterial: string
   contactEmail?: string
 }
+
+// ─── Concerns Board ───────────────────────────────────────────────────────────
+
+export type PostStatus = 'ACTIVE' | 'REMOVED'
+export type PostCategory =
+  | 'ACADEMICS'
+  | 'INFRASTRUCTURE'
+  | 'ADMINISTRATION'
+  | 'TRANSPORT'
+  | 'HOSTEL'
+  | 'SPORTS_CULTURE'
+  | 'OTHER'
+
+export type PostSort = 'hot' | 'new' | 'top'
+
+export interface PostAuthor {
+  id: string
+  name: string
+  profilePicUrl: string | null
+  university: string | null
+  college: string | null
+}
+
+export interface ConcernPost {
+  id: string
+  title: string
+  description: string | null
+  imageUrl: string
+  category: PostCategory
+  status: PostStatus
+  upvotesCount: number
+  authorId: string
+  author: PostAuthor
+  createdAt: string
+  hasVoted?: boolean
+  _count: { comments: number }
+}
+
+export interface ConcernComment {
+  id: string
+  content: string
+  postId: string
+  authorId: string
+  author: PostAuthor
+  status: PostStatus
+  upvotesCount: number
+  hasVoted?: boolean
+  createdAt: string
+}
+
+export interface ConcernPostDetail extends ConcernPost {
+  comments: ConcernComment[]
+}
+
+export interface BoardPage {
+  items: ConcernPost[]
+  nextCursor: string | null
+}
+
+export interface StudentUser {
+  id: string
+  email: string
+  name: string
+  university: string | null
+  college: string | null
+  semester: number | null
+  profilePicUrl: string | null
+  role: string
+}
+
+export interface AuthResponse {
+  token: string
+  user: StudentUser
+}
+
+export interface RegisterPayload {
+  email: string
+  password: string
+  name: string
+  university: string
+  college: string
+  semester: number
+}
+
+export interface CreatePostPayload {
+  title: string
+  description?: string
+  imageUrl: string
+  category: PostCategory
+}
+
+export interface BoardModerationPost {
+  id: string
+  title: string
+  category: PostCategory
+  status: PostStatus
+  upvotesCount: number
+  createdAt: string
+  author: { id: string; name: string; email: string; university: string | null }
+  _count: { comments: number; votes: number }
+}
+
+export interface BoardModerationComment {
+  id: string
+  content: string
+  status: PostStatus
+  upvotesCount: number
+  createdAt: string
+  author: { id: string; name: string; email: string }
+  post: { id: string; title: string }
+}
+
+export interface BoardStats {
+  totalPosts: number
+  totalComments: number
+  removedPosts: number
+}

@@ -1,0 +1,245 @@
+.page {
+  min-height: 80vh;
+  background: var(--bg-primary);
+  padding-block: $space-6;
+}
+
+.inner {
+  @include container;
+  max-width: 640px;
+  @include flex-column;
+  gap: $space-4;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  padding: 0;
+  transition: color $transition-fast;
+
+  &:hover { color: var(--primary); }
+}
+
+.card {
+  @include card-base;
+  padding: $space-6;
+  @include flex-column;
+  gap: $space-5;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+  margin-top: -$space-3;
+}
+
+.errorMsg {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+  padding: $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  margin: 0;
+}
+
+.form {
+  @include flex-column;
+  gap: $space-5;
+}
+
+.field {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+}
+
+.input {
+  padding: $space-3;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: $font-size-sm;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+  &::placeholder { color: var(--text-muted); }
+}
+
+.textarea {
+  @extend .input;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: $line-height-relaxed;
+}
+
+.charCount {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  align-self: flex-end;
+}
+
+// ─── Drop zone ────────────────────────────────────────────────────────────────
+.dropZone {
+  border: 2px dashed var(--border-color);
+  border-radius: $radius-xl;
+  cursor: pointer;
+  transition: border-color $transition-fast, background $transition-fast;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover, &:focus {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    outline: none;
+  }
+
+  &.hasImage {
+    border-style: solid;
+    border-color: var(--border-color);
+    min-height: unset;
+  }
+}
+
+.dropHint {
+  @include flex-column;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-8;
+  text-align: center;
+}
+
+.dropIcon {
+  color: var(--text-muted);
+}
+
+.dropText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.dropSub {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.preview {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.changeImageBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: $font-size-xs;
+  color: var(--primary);
+  padding: 0;
+  text-decoration: underline;
+  align-self: flex-start;
+
+  &:hover { color: var(--primary-dark); }
+}
+
+// ─── Category grid ────────────────────────────────────────────────────────────
+.catGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.catChip {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-full;
+  padding: $space-2 $space-4;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast, background $transition-fast;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.catChipActive {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+  font-weight: $font-weight-semibold;
+}
+
+// ─── Submit ───────────────────────────────────────────────────────────────────
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-3 $space-6;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background $transition-fast, transform $transition-fast;
+  margin-top: $space-2;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

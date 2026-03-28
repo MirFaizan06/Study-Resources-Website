@@ -89,6 +89,65 @@ export async function rejectContribution(id: string): Promise<void> {
   await prisma.resource.delete({ where: { id } });
 }
 
+// ─── Board Moderation ─────────────────────────────────────────────────────────
+
+export async function getModerationPosts(status?: string) {
+  const where = status === 'REMOVED'
+    ? { status: 'REMOVED' as const }
+    : status === 'ACTIVE'
+    ? { status: 'ACTIVE' as const }
+    : {};
+
+  return prisma.concernPost.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    take: 200,
+    include: {
+      author: { select: { id: true, name: true, email: true, university: true } },
+      _count: { select: { comments: true, votes: true } },
+    },
+  });
+}
+
+export async function setPostStatus(id: string, status: 'ACTIVE' | 'REMOVED') {
+  const post = await prisma.concernPost.findUnique({ where: { id } });
+  if (!post) throw new AppError(`Post '${id}' not found.`, 404, 'NOT_FOUND');
+  return prisma.concernPost.update({ where: { id }, data: { status } });
+}
+
+export async function getModerationComments(status?: string) {
+  const where = status === 'REMOVED'
+    ? { status: 'REMOVED' as const }
+    : status === 'ACTIVE'
+    ? { status: 'ACTIVE' as const }
+    : {};
+
+  return prisma.concernComment.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    take: 200,
+    include: {
+      author: { select: { id: true, name: true, email: true } },
+      post: { select: { id: true, title: true } },
+    },
+  });
+}
+
+export async function setCommentStatus(id: string, status: 'ACTIVE' | 'REMOVED') {
+  const comment = await prisma.concernComment.findUnique({ where: { id } });
+  if (!comment) throw new AppError(`Comment '${id}' not found.`, 404, 'NOT_FOUND');
+  return prisma.concernComment.update({ where: { id }, data: { status } });
+}
+
+export async function getBoardStats() {
+  const [totalPosts, totalComments, removedPosts] = await Promise.all([
+    prisma.concernPost.count({ where: { status: 'ACTIVE' } }),
+    prisma.concernComment.count({ where: { status: 'ACTIVE' } }),
+    prisma.concernPost.count({ where: { status: 'REMOVED' } }),
+  ]);
+  return { totalPosts, totalComments, removedPosts };
+}
+
 export async function adminUploadResource(
   data: CreateResource,
   uploaderId: string,

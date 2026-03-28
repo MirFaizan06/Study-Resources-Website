@@ -1,0 +1,310 @@
+import { PostCategory, Prisma } from '@prisma/client';
+import { prisma } from '../../db/prisma';
+import { AppError } from '../../middleware/errorHandler';
+import type { CreatePost, ListPosts, CreateComment } from './board.schema';
+
+// ─── Safe author shape ────────────────────────────────────────────────────────
+const authorSelect = {
+  id: true,
+  name: true,
+  profilePicUrl: true,
+  university: true,
+  college: true,
+} as const;
+
+// ─── Hot score (Reddit-style, no SQL needed) ─────────────────────────────────
+function hotScore(upvotes: number, createdAt: Date): number {
+  const ageHours = (Date.now() - createdAt.getTime()) / (1000 * 60 * 60);
+  return upvotes / Math.pow(ageHours + 2, 1.5);
+}
+
+// ─── List posts ───────────────────────────────────────────────────────────────
+export async function listPosts(
+  params: ListPosts,
+  viewerId?: string
+) {
+  const { sort, category, cursor, limit } = params;
+
+  const where: Prisma.ConcernPostWhereInput = {
+    status: 'ACTIVE',
+    ...(category !== 'ALL' && { category: category as PostCategory }),
+  };
+
+  // For 'hot': fetch recent 200 posts, sort in JS, then paginate
+  // For 'new'/'top': use DB ordering + cursor pagination
+  if (sort === 'hot') {
+    const posts = await prisma.concernPost.findMany({
+      where: { ...where, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } },
+      take: 200,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        author: { select: authorSelect },
+        _count: { select: { comments: { where: { status: 'ACTIVE' } } } },
+      },
+    });
+
+    const scored = posts
+      .map((p) => ({ ...p, _score: hotScore(p.upvotesCount, p.createdAt) }))
+      .sort((a, b) => b._score - a._score);
+
+    // Manual cursor pagination on sorted array
+    const cursorIdx = cursor ? scored.findIndex((p) => p.id === cursor) : -1;
+    const start = cursorIdx >= 0 ? cursorIdx + 1 : 0;
+    const page = scored.slice(start, start + limit);
+    const nextCursor = page.length === limit ? page[page.length - 1]?.id : null;
+
+    return {
+      items: enrichWithVote(page, viewerId),
+      nextCursor,
+    };
+  }
+
+  // new / top — cursor-based DB pagination
+  const orderBy: Prisma.ConcernPostOrderByWithRelationInput =
+    sort === 'top' ? { upvotesCount: 'desc' } : { createdAt: 'desc' };
+
+  const cursorObj = cursor ? { id: cursor } : undefined;
+
+  const posts = await prisma.concernPost.findMany({
+    where,
+    take: limit + 1,
+    cursor: cursorObj,
+    skip: cursor ? 1 : 0,
+    orderBy,
+    include: {
+      author: { select: authorSelect },
+      _count: { select: { comments: { where: { status: 'ACTIVE' } } } },
+    },
+  });
+
+  const hasMore = posts.length > limit;
+  const page = hasMore ? posts.slice(0, limit) : posts;
+  const nextCursor = hasMore ? page[page.length - 1]?.id ?? null : null;
+
+  return {
+    items: enrichWithVote(page, viewerId),
+    nextCursor,
+  };
+}
+
+// ─── Get single post ──────────────────────────────────────────────────────────
+export async function getPost(id: string, viewerId?: string) {
+  const post = await prisma.concernPost.findUnique({
+    where: { id },
+    include: {
+      author: { select: authorSelect },
+      _count: { select: { comments: { where: { status: 'ACTIVE' } } } },
+      comments: {
+        where: { status: 'ACTIVE' },
+        orderBy: { upvotesCount: 'desc' },
+        include: {
+          author: { select: authorSelect },
+        },
+      },
+    },
+  });
+
+  if (!post || post.status === 'REMOVED') {
+    throw new AppError('Post not found.', 404, 'NOT_FOUND');
+  }
+
+  let hasVoted = false;
+  if (viewerId) {
+    const vote = await prisma.concernVote.findUnique({
+      where: { postId_userId: { postId: id, userId: viewerId } },
+    });
+    hasVoted = !!vote;
+  }
+
+  // Enrich comments with vote info
+  let commentVotedIds: Set<string> = new Set();
+  if (viewerId && post.comments.length > 0) {
+    const cvotes = await prisma.commentVote.findMany({
+      where: {
+        userId: viewerId,
+        commentId: { in: post.comments.map((c) => c.id) },
+      },
+      select: { commentId: true },
+    });
+    commentVotedIds = new Set(cvotes.map((v) => v.commentId));
+  }
+
+  return {
+    ...post,
+    hasVoted,
+    comments: post.comments.map((c) => ({
+      ...c,
+      hasVoted: commentVotedIds.has(c.id),
+    })),
+  };
+}
+
+// ─── Create post ──────────────────────────────────────────────────────────────
+export async function createPost(data: CreatePost, authorId: string) {
+  return prisma.concernPost.create({
+    data: {
+      title: data.title,
+      description: data.description ?? null,
+      imageUrl: data.imageUrl,
+      category: data.category as PostCategory,
+      authorId,
+    },
+    include: {
+      author: { select: authorSelect },
+      _count: { select: { comments: true } },
+    },
+  });
+}
+
+// ─── Toggle vote ──────────────────────────────────────────────────────────────
+export async function toggleVote(
+  postId: string,
+  userId: string
+): Promise<{ voted: boolean; upvotesCount: number }> {
+  const post = await prisma.concernPost.findUnique({
+    where: { id: postId },
+    select: { id: true, status: true },
+  });
+  if (!post || post.status === 'REMOVED') {
+    throw new AppError('Post not found.', 404, 'NOT_FOUND');
+  }
+
+  const existing = await prisma.concernVote.findUnique({
+    where: { postId_userId: { postId, userId } },
+  });
+
+  if (existing) {
+    // Un-vote
+    await prisma.$transaction([
+      prisma.concernVote.delete({ where: { id: existing.id } }),
+      prisma.concernPost.update({
+        where: { id: postId },
+        data: { upvotesCount: { decrement: 1 } },
+      }),
+    ]);
+    const updated = await prisma.concernPost.findUnique({
+      where: { id: postId },
+      select: { upvotesCount: true },
+    });
+    return { voted: false, upvotesCount: updated?.upvotesCount ?? 0 };
+  } else {
+    // Vote
+    await prisma.$transaction([
+      prisma.concernVote.create({ data: { postId, userId } }),
+      prisma.concernPost.update({
+        where: { id: postId },
+        data: { upvotesCount: { increment: 1 } },
+      }),
+    ]);
+    const updated = await prisma.concernPost.findUnique({
+      where: { id: postId },
+      select: { upvotesCount: true },
+    });
+    return { voted: true, upvotesCount: updated?.upvotesCount ?? 0 };
+  }
+}
+
+// ─── Delete post ──────────────────────────────────────────────────────────────
+export async function deletePost(postId: string, userId: string, isAdmin: boolean) {
+  const post = await prisma.concernPost.findUnique({ where: { id: postId } });
+  if (!post) throw new AppError('Post not found.', 404, 'NOT_FOUND');
+  if (!isAdmin && post.authorId !== userId) {
+    throw new AppError('You can only delete your own posts.', 403, 'FORBIDDEN');
+  }
+  await prisma.concernPost.update({
+    where: { id: postId },
+    data: { status: 'REMOVED' },
+  });
+}
+
+// ─── Add comment ──────────────────────────────────────────────────────────────
+export async function addComment(
+  postId: string,
+  authorId: string,
+  data: CreateComment
+) {
+  const post = await prisma.concernPost.findUnique({
+    where: { id: postId },
+    select: { id: true, status: true },
+  });
+  if (!post || post.status === 'REMOVED') {
+    throw new AppError('Post not found.', 404, 'NOT_FOUND');
+  }
+
+  return prisma.concernComment.create({
+    data: { content: data.content, postId, authorId },
+    include: { author: { select: authorSelect } },
+  });
+}
+
+// ─── Delete comment ───────────────────────────────────────────────────────────
+export async function deleteComment(
+  commentId: string,
+  userId: string,
+  isAdmin: boolean
+) {
+  const comment = await prisma.concernComment.findUnique({ where: { id: commentId } });
+  if (!comment) throw new AppError('Comment not found.', 404, 'NOT_FOUND');
+  if (!isAdmin && comment.authorId !== userId) {
+    throw new AppError('You can only delete your own comments.', 403, 'FORBIDDEN');
+  }
+  await prisma.concernComment.update({
+    where: { id: commentId },
+    data: { status: 'REMOVED' },
+  });
+}
+
+// ─── Toggle comment vote ──────────────────────────────────────────────────────
+export async function toggleCommentVote(
+  commentId: string,
+  userId: string
+): Promise<{ voted: boolean; upvotesCount: number }> {
+  const comment = await prisma.concernComment.findUnique({
+    where: { id: commentId },
+    select: { id: true, status: true },
+  });
+  if (!comment || comment.status === 'REMOVED') {
+    throw new AppError('Comment not found.', 404, 'NOT_FOUND');
+  }
+
+  const existing = await prisma.commentVote.findUnique({
+    where: { commentId_userId: { commentId, userId } },
+  });
+
+  if (existing) {
+    await prisma.$transaction([
+      prisma.commentVote.delete({ where: { id: existing.id } }),
+      prisma.concernComment.update({
+        where: { id: commentId },
+        data: { upvotesCount: { decrement: 1 } },
+      }),
+    ]);
+    const updated = await prisma.concernComment.findUnique({
+      where: { id: commentId },
+      select: { upvotesCount: true },
+    });
+    return { voted: false, upvotesCount: updated?.upvotesCount ?? 0 };
+  } else {
+    await prisma.$transaction([
+      prisma.commentVote.create({ data: { commentId, userId } }),
+      prisma.concernComment.update({
+        where: { id: commentId },
+        data: { upvotesCount: { increment: 1 } },
+      }),
+    ]);
+    const updated = await prisma.concernComment.findUnique({
+      where: { id: commentId },
+      select: { upvotesCount: true },
+    });
+    return { voted: true, upvotesCount: updated?.upvotesCount ?? 0 };
+  }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function enrichWithVote<T extends { id: string }>(
+  posts: T[],
+  _viewerId?: string
+): T[] {
+  // hasVoted will be resolved client-side via separate call or ignored for list view
+  return posts;
+}

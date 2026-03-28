@@ -467,6 +467,45 @@
   padding-block: $space-2;
 }
 
+// ══════════════════════════════════════════════════════════ BOARD PROMO ══════
+.boardPromo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-6;
+  flex-wrap: wrap;
+}
+
+.boardPromoText {
+  @include flex-column;
+  gap: $space-2;
+  flex: 1;
+}
+
+.boardPromoBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: var(--primary);
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-3 $space-5;
+  border-radius: $radius-xl;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background $transition-fast, transform $transition-fast;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 35%, transparent);
+
+  &:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: #fff;
+  }
+}
+
 // ══════════════════════════════════════════════════════════ CTA BANNER ═══════
 .ctaBanner {
   background: linear-gradient(130deg, var(--primary) 0%, var(--secondary) 100%);

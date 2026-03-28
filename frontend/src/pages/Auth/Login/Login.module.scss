@@ -1,0 +1,184 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6;
+  background: var(--bg-primary);
+}
+
+.card {
+  @include card-base;
+  width: 100%;
+  max-width: 420px;
+  padding: $space-8;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.logoMark {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-lg;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.logoText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.errorMsg {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+  padding: $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+}
+
+.input {
+  width: 100%;
+  padding: $space-3 $space-3;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: $font-size-sm;
+  transition: border-color $transition-fast;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.passwordWrap {
+  position: relative;
+}
+
+.passwordWrap .input {
+  padding-right: 2.5rem;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: $space-3;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: 0;
+
+  &:hover { color: var(--text-primary); }
+}
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background-color $transition-fast, transform $transition-fast;
+  margin-top: $space-2;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.switchText {
+  text-align: center;
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.switchLink {
+  color: var(--primary);
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}

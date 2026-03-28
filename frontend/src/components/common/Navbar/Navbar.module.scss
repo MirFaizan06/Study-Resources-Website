@@ -554,3 +554,114 @@
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12);
   flex-shrink: 0;
 }
+
+// ─── User menu ────────────────────────────────────────────────────────────────
+.userBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color $transition-fast;
+  padding: 0;
+
+  &:hover, &.userBtnActive {
+    border-color: var(--primary);
+  }
+}
+
+.userAvatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.userAvatarFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.userDropdown {
+  right: 0;
+  left: auto;
+  min-width: 200px;
+}
+
+.userMenuName {
+  padding: $space-3 $space-4 2px;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.userMenuEmail {
+  padding: 0 $space-4 $space-2;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+}
+
+.userMenuDivider {
+  height: 1px;
+  background: var(--border-color);
+  margin: $space-1 0;
+}
+
+.userMenuItem {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: $space-2 $space-4;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.userMenuLogout {
+  color: #dc2626;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+  }
+}
+
+.signInBtn {
+  display: none;
+  align-items: center;
+  background: var(--primary);
+  color: #fff;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background $transition-fast;
+
+  @include respond-to(md) { display: inline-flex; }
+
+  &:hover {
+    background: var(--primary-dark);
+    text-decoration: none;
+    color: #fff;
+  }
+}

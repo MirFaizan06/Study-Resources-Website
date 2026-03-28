@@ -40,15 +40,38 @@ enum SubjectCategory {
   SEC
 }
 
+enum PostStatus {
+  ACTIVE
+  REMOVED
+}
+
+enum PostCategory {
+  ACADEMICS
+  INFRASTRUCTURE
+  ADMINISTRATION
+  TRANSPORT
+  HOSTEL
+  SPORTS_CULTURE
+  OTHER
+}
+
 model User {
-  id           String     @id @default(cuid())
-  email        String     @unique
-  name         String
-  role         Role       @default(STUDENT)
-  passwordHash String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  resources    Resource[]
+  id              String           @id @default(cuid())
+  email           String           @unique
+  name            String
+  role            Role             @default(STUDENT)
+  passwordHash    String
+  university      String?
+  college         String?
+  semester        Int?
+  profilePicUrl   String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  resources       Resource[]
+  concernPosts    ConcernPost[]
+  concernVotes    ConcernVote[]
+  concernComments ConcernComment[]
+  commentVotes    CommentVote[]
 }
 
 model Institution {
@@ -119,4 +142,72 @@ model Request {
   createdAt         DateTime      @default(now())
 
   @@index([status])
+}
+
+// ─── Concerns Board ───────────────────────────────────────────────────────────
+
+model ConcernPost {
+  id           String           @id @default(cuid())
+  title        String           @db.VarChar(255)
+  description  String?          @db.Text
+  imageUrl     String
+  category     PostCategory     @default(OTHER)
+  status       PostStatus       @default(ACTIVE)
+  upvotesCount Int              @default(0)
+  authorId     String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  author       User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  votes        ConcernVote[]
+  comments     ConcernComment[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([upvotesCount])
+  @@index([authorId])
+  @@index([category])
+}
+
+model ConcernVote {
+  id        String      @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime    @default(now())
+  post      ConcernPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model ConcernComment {
+  id           String      @id @default(cuid())
+  content      String      @db.Text
+  postId       String
+  authorId     String
+  status       PostStatus  @default(ACTIVE)
+  upvotesCount Int         @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  post         ConcernPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author       User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  votes        CommentVote[]
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([status])
+}
+
+model CommentVote {
+  id        String         @id @default(cuid())
+  commentId String
+  userId    String
+  createdAt DateTime       @default(now())
+  comment   ConcernComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
 }

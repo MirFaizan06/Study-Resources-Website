@@ -9,6 +9,8 @@ import requestsRouter from './modules/requests/requests.router';
 import contributeRouter from './modules/contribute/contribute.router';
 import adminRouter from './modules/admin/admin.router';
 import statsRouter from './modules/stats/stats.router';
+import authRouter from './modules/auth/auth.router';
+import boardRouter from './modules/board/board.router';
 
 const app = express();
 
@@ -47,6 +49,8 @@ app.use('/api/requests', requestsRouter);
 app.use('/api/contribute', contributeRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/stats', statsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/board', boardRouter);
 
 // ─── 404 Handler ──────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {

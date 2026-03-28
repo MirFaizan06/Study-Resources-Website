@@ -1,0 +1,384 @@
+.page {
+  min-height: 80vh;
+  background: var(--bg-primary);
+}
+
+.inner {
+  @include container;
+  max-width: 760px;
+  padding-block: $space-6;
+  @include flex-column;
+  gap: $space-5;
+}
+
+.loaderWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.errorWrap {
+  @include container;
+  @include flex-column;
+  align-items: center;
+  gap: $space-4;
+  padding-block: $space-20;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+// ─── Post Card ────────────────────────────────────────────────────────────────
+.postCard {
+  @include card-base;
+  padding: $space-6;
+  @include flex-column;
+  gap: $space-4;
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: $space-1;
+  border-radius: $radius-md;
+  transition: color $transition-fast, background $transition-fast;
+
+  &:hover {
+    color: #dc2626;
+    background: rgba(239, 68, 68, 0.1);
+  }
+}
+
+.postTitle {
+  font-size: clamp($font-size-xl, 3vw, $font-size-2xl);
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: $line-height-snug;
+}
+
+.postMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-2;
+  font-size: $font-size-sm;
+}
+
+.metaText {
+  color: var(--text-muted);
+  font-size: $font-size-sm;
+
+  &::after {
+    content: '·';
+    margin-left: $space-2;
+  }
+  &:last-child::after { content: ''; }
+}
+
+.metaTime {
+  color: var(--text-muted);
+  font-size: $font-size-sm;
+}
+
+.postImage {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: $radius-xl;
+  background: var(--bg-secondary);
+}
+
+.postDesc {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+.postActions {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding-top: $space-2;
+  border-top: 1px solid var(--border-color);
+}
+
+.voteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-full;
+  padding: $space-2 $space-4;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast, background $transition-fast;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+  }
+}
+
+.voted {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: var(--primary-light) !important;
+}
+
+.commentCount {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+}
+
+// ─── Comment Section ──────────────────────────────────────────────────────────
+.commentSection {
+  @include flex-column;
+  gap: $space-5;
+}
+
+.commentsTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.commentForm {
+  @include card-base;
+  padding: $space-4;
+  @include flex-column;
+  gap: $space-3;
+}
+
+.commentInput {
+  width: 100%;
+  padding: $space-3;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: $font-size-sm;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+  transition: border-color $transition-fast;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  &::placeholder { color: var(--text-muted); }
+}
+
+.commentErr {
+  color: #dc2626;
+  font-size: $font-size-sm;
+  margin: 0;
+}
+
+.commentFormFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.charCount {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+}
+
+.submitCommentBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-2 $space-4;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover:not(:disabled) { background: var(--primary-dark); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.loginPrompt {
+  @include card-base;
+  padding: $space-4;
+  text-align: center;
+}
+
+.loginLink {
+  color: var(--primary);
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+// ─── Comments List ────────────────────────────────────────────────────────────
+.commentsList {
+  @include flex-column;
+  gap: $space-3;
+}
+
+.comment {
+  display: flex;
+  gap: $space-3;
+  padding: $space-4;
+  border-radius: $radius-xl;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.commentVote {
+  @include flex-column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.smallVoteBtn {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.smallVoteCount {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: var(--text-muted);
+}
+
+.commentContent {
+  @include flex-column;
+  gap: $space-2;
+  flex: 1;
+  min-width: 0;
+}
+
+.commentMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.commentAuthor {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.commentUniv {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+.commentTime {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.deleteCommentBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: $radius-sm;
+  transition: color $transition-fast;
+
+  &:hover { color: #dc2626; }
+}
+
+.commentText {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

@@ -10,9 +10,13 @@ import {
   Palette,
   Check,
   ChevronDown,
+  User,
+  LogOut,
+  MessageCircleWarning,
 } from 'lucide-react'
 import { useThemeContext } from '@/contexts/ThemeContext'
 import { useLocale } from '@/hooks/useLocale'
+import { useAuth } from '@/contexts/AuthContext'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SUPPORTED_LOCALES, type LocaleCode } from '@/i18n'
 import { THEMES, type Theme } from '@/hooks/useTheme'
@@ -45,8 +49,11 @@ const THEME_META: Record<Theme, { label: string; swatch: string }> = {
 export function Navbar(): React.ReactElement {
   const { theme, setTheme } = useThemeContext()
   const { t, locale, setLocale } = useLocale()
+  const { user, logout } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef<HTMLDivElement>(null)
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -76,6 +83,7 @@ export function Navbar(): React.ReactElement {
     const handleClickOutside = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) setLangOpen(false)
       if (themeRef.current && !themeRef.current.contains(e.target as Node)) setThemeOpen(false)
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setUserMenuOpen(false)
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
@@ -90,6 +98,7 @@ export function Navbar(): React.ReactElement {
   const navLinks = [
     { href: `/${locale}/`, label: t.nav.home },
     { href: `/${locale}/browse`, label: t.nav.browse },
+    { href: `/${locale}/board`, label: t.nav.board },
     { href: `/${locale}/ai`, label: t.nav.ai },
     { href: `/${locale}/contribute`, label: t.nav.contribute },
     { href: `/${locale}/request`, label: t.nav.request },
@@ -239,6 +248,63 @@ export function Navbar(): React.ReactElement {
                 )}
               </AnimatePresence>
             </div>
+
+            {/* User menu */}
+            {user ? (
+              <div className={styles.dropdownWrap} ref={userMenuRef}>
+                <button
+                  className={[styles.userBtn, userMenuOpen ? styles.userBtnActive : ''].join(' ')}
+                  onClick={() => { setUserMenuOpen((p) => !p); setLangOpen(false); setThemeOpen(false) }}
+                  aria-label="Account menu"
+                >
+                  {user.profilePicUrl ? (
+                    <img src={user.profilePicUrl} alt={user.name} className={styles.userAvatar} />
+                  ) : (
+                    <div className={styles.userAvatarFallback}><User size={14} /></div>
+                  )}
+                </button>
+                <AnimatePresence>
+                  {userMenuOpen && (
+                    <motion.div
+                      className={[styles.dropdown, styles.userDropdown].join(' ')}
+                      variants={panelVariants}
+                      initial="hidden" animate="show" exit="hidden"
+                      transition={{ duration: 0.14 }}
+                    >
+                      <div className={styles.userMenuName}>{user.name}</div>
+                      <div className={styles.userMenuEmail}>{user.email}</div>
+                      <div className={styles.userMenuDivider} />
+                      <button
+                        className={styles.userMenuItem}
+                        onClick={() => { navigate(`/${locale}/board`); setUserMenuOpen(false) }}
+                      >
+                        <MessageCircleWarning size={14} />
+                        {t.nav.board}
+                      </button>
+                      <button
+                        className={styles.userMenuItem}
+                        onClick={() => { navigate(`/${locale}/profile`); setUserMenuOpen(false) }}
+                      >
+                        <User size={14} />
+                        {t.board.profile.title}
+                      </button>
+                      <div className={styles.userMenuDivider} />
+                      <button
+                        className={[styles.userMenuItem, styles.userMenuLogout].join(' ')}
+                        onClick={() => { logout(); setUserMenuOpen(false) }}
+                      >
+                        <LogOut size={14} />
+                        {t.board.profile.logout}
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <Link to={`/${locale}/login`} className={styles.signInBtn}>
+                {t.board.auth.signIn}
+              </Link>
+            )}
 
             {/* Hamburger */}
             <button

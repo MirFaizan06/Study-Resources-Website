@@ -1,0 +1,516 @@
+.page {
+  @include flex-column;
+  min-height: 80vh;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  padding-block: $space-10 $space-8;
+}
+
+.heroInner {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+.heroText {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.heroTitle {
+  font-size: clamp($font-size-2xl, 4vw, 2.4rem);
+  font-weight: $font-weight-extrabold;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.heroSubtitle {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 500px;
+}
+
+.createBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: #fff;
+  color: var(--primary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-3 $space-5;
+  border-radius: $radius-xl;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background $transition-fast, transform $transition-fast;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: var(--primary-dark);
+  }
+}
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+.layout {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+  padding-block: $space-6;
+
+  @include respond-to(lg) {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+.sidebar {
+  display: none;
+  flex-direction: column;
+  gap: $space-4;
+
+  @include respond-to(lg) {
+    display: flex;
+  }
+}
+
+.sideCard {
+  @include card-base;
+  padding: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.sideTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.sideDesc {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.catList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.catItem {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  transition: background $transition-fast, color $transition-fast;
+  width: 100%;
+
+  &:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.catItemActive {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: $font-weight-semibold;
+}
+
+.joinBtn {
+  display: block;
+  text-align: center;
+  background: var(--primary);
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-4;
+  border-radius: $radius-md;
+  text-decoration: none;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: var(--primary-dark);
+    text-decoration: none;
+    color: #fff;
+  }
+}
+
+.joinBtnGhost {
+  display: block;
+  text-align: center;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  padding: $space-2 $space-4;
+  border-radius: $radius-md;
+  border: 1.5px solid var(--border-color);
+  text-decoration: none;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+// ─── Feed ─────────────────────────────────────────────────────────────────────
+.feed {
+  @include flex-column;
+  gap: $space-3;
+  min-width: 0;
+}
+
+.feedControls {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  justify-content: space-between;
+}
+
+.sortTabs {
+  display: flex;
+  gap: $space-1;
+  background: var(--bg-secondary);
+  border-radius: $radius-lg;
+  padding: 3px;
+}
+
+.sortTab {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-muted);
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  transition: background $transition-fast, color $transition-fast;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary, var(--bg-primary));
+  }
+}
+
+.sortTabActive {
+  background: var(--bg-primary);
+  color: var(--primary);
+  font-weight: $font-weight-semibold;
+  box-shadow: var(--shadow-sm);
+}
+
+.mobileFilterBtn {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  padding: $space-2;
+  cursor: pointer;
+  color: var(--text-secondary);
+
+  @include respond-to(lg) { display: none; }
+}
+
+.mobileCats {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+
+  @include respond-to(lg) { display: none; }
+}
+
+.mobileCatPill {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-full;
+  padding: 4px $space-3;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.mobileCatActive {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+// ─── Post Card ────────────────────────────────────────────────────────────────
+.postCard {
+  display: flex;
+  gap: $space-3;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-xl;
+  padding: $space-3;
+  transition: box-shadow $transition-base, border-color $transition-base;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-strong);
+  }
+}
+
+.voteCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.voteBtn {
+  background: none;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: border-color $transition-fast, color $transition-fast, background $transition-fast;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+  }
+}
+
+.voted {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: var(--primary-light) !important;
+}
+
+.voteCount {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+}
+
+.imgWrap {
+  width: 100px;
+  height: 75px;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  @include respond-to(sm) {
+    width: 120px;
+    height: 90px;
+  }
+}
+
+.postImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform $transition-base;
+
+  &:hover { transform: scale(1.04); }
+}
+
+.postBody {
+  @include flex-column;
+  gap: $space-2;
+  flex: 1;
+  min-width: 0;
+}
+
+.postMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+}
+
+.catBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+  font-size: 10px;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--primary-light);
+  color: var(--primary);
+
+  &.cat_academics    { background: rgba(59,130,246,0.12); color: #2563eb; }
+  &.cat_infrastructure { background: rgba(168,85,247,0.12); color: #7c3aed; }
+  &.cat_administration { background: rgba(245,158,11,0.12); color: #d97706; }
+  &.cat_transport    { background: rgba(20,184,166,0.12); color: #0f766e; }
+  &.cat_hostel       { background: rgba(239,68,68,0.12); color: #dc2626; }
+  &.cat_sports_culture { background: rgba(34,197,94,0.12); color: #15803d; }
+  &.cat_other        { background: var(--primary-light); color: var(--primary); }
+}
+
+.metaDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.metaText {
+  color: var(--text-muted);
+  font-size: $font-size-xs;
+}
+
+.postTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  text-decoration: none;
+  @include line-clamp(2);
+
+  &:hover {
+    color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+.postFooter {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-top: auto;
+}
+
+.commentLink {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 3px 8px;
+  border-radius: $radius-md;
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+}
+
+// ─── States ───────────────────────────────────────────────────────────────────
+.skeletonList {
+  @include flex-column;
+  gap: $space-3;
+}
+
+.skeletonCard {
+  @include skeleton;
+  height: 100px;
+  border-radius: $radius-xl;
+}
+
+.emptyState {
+  @include flex-column;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-16;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: $font-size-base;
+}
+
+.retryBtn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-2 $space-5;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: var(--primary-dark);
+    text-decoration: none;
+    color: #fff;
+  }
+}
+
+.loadMoreBtn {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-xl;
+  padding: $space-3;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+// ─── Ad placements ────────────────────────────────────────────────────────────
+.sideAd {
+  margin-top: $space-4;
+  width: 100%;
+}
+
+.feedAd {
+  margin-block: $space-2;
+}

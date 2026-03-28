@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   BookOpen,
+  ShieldAlert,
 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import styles from './AdminLayout.module.scss'
@@ -52,6 +53,11 @@ export function AdminLayout(): React.ReactElement {
       href: `/${locale}/admin/upload`,
       label: t.admin.sidebar.upload,
       icon: <Upload size={18} />,
+    },
+    {
+      href: `/${locale}/admin/moderation`,
+      label: t.admin.sidebar.moderation,
+      icon: <ShieldAlert size={18} />,
     },
   ]
 

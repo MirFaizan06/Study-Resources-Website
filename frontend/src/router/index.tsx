@@ -23,6 +23,14 @@ const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
 const AdminContributions = lazy(() => import('@/pages/admin/Contributions'))
 const AdminRequests = lazy(() => import('@/pages/admin/Requests'))
 const AdminUpload = lazy(() => import('@/pages/admin/Upload'))
+const AdminModeration = lazy(() => import('@/pages/admin/Moderation'))
+
+const BoardPage = lazy(() => import('@/pages/Board'))
+const PostDetailPage = lazy(() => import('@/pages/Board/PostDetail'))
+const CreatePostPage = lazy(() => import('@/pages/Board/CreatePost'))
+const LoginPage = lazy(() => import('@/pages/Auth/Login'))
+const RegisterPage = lazy(() => import('@/pages/Auth/Register'))
+const ProfilePage = lazy(() => import('@/pages/Profile'))
 
 // ─── Not Found page ───────────────────────────────────────────────────────────
 function NotFound(): React.ReactElement {
@@ -164,6 +172,14 @@ export const router = createBrowserRouter([
               </Suspense>
             ),
           },
+          {
+            path: 'moderation',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminModeration />
+              </Suspense>
+            ),
+          },
         ],
       },
 
@@ -240,6 +256,54 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<PageLoader />}>
                 <AIPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'board',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <BoardPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'board/create',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <CreatePostPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'board/:postId',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <PostDetailPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'login',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <LoginPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'register',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <RegisterPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'profile',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <ProfilePage />
               </Suspense>
             ),
           },

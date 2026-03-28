@@ -11,6 +11,19 @@ import type {
   CreateResourcePayload,
   ContributePayload,
   CreateRequestPayload,
+  AuthResponse,
+  RegisterPayload,
+  StudentUser,
+  BoardPage,
+  ConcernPostDetail,
+  ConcernPost,
+  ConcernComment,
+  CreatePostPayload,
+  PostCategory,
+  PostSort,
+  BoardModerationPost,
+  BoardModerationComment,
+  BoardStats,
 } from '@/types'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:4000'
@@ -29,6 +42,10 @@ function getAdminToken(): string | null {
   return localStorage.getItem('admin_token')
 }
 
+function getStudentToken(): string | null {
+  return localStorage.getItem('student_token')
+}
+
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const url = `${BASE_URL}${path}`
 
@@ -37,7 +54,9 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
     ...(options.headers as Record<string, string>),
   }
 
-  const token = getAdminToken()
+  const adminToken = getAdminToken()
+  const studentToken = getStudentToken()
+  const token = adminToken ?? studentToken
   if (token) {
     headers['Authorization'] = `Bearer ${token}`
   }
@@ -157,6 +176,112 @@ export const api = {
     },
   },
 
+  auth: {
+    register(data: RegisterPayload): Promise<AuthResponse> {
+      return apiFetch<AuthResponse>('/api/auth/register', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
+    },
+
+    login(email: string, password: string): Promise<AuthResponse> {
+      return apiFetch<AuthResponse>('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      })
+    },
+
+    me(): Promise<StudentUser> {
+      return apiFetch<StudentUser>('/api/auth/me')
+    },
+
+    updateProfile(data: Partial<Omit<StudentUser, 'id' | 'email' | 'role'>>): Promise<StudentUser> {
+      return apiFetch<StudentUser>('/api/auth/profile', {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      })
+    },
+
+    requestProfilePicUrl(
+      fileName: string,
+      contentType: string
+    ): Promise<{ uploadUrl: string; fileUrl: string }> {
+      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/auth/profile-pic-url', {
+        method: 'POST',
+        body: JSON.stringify({ fileName, contentType }),
+      })
+    },
+  },
+
+  board: {
+    getPosts(params: {
+      sort?: PostSort
+      category?: PostCategory | 'ALL'
+      cursor?: string
+      limit?: number
+    }): Promise<BoardPage> {
+      const query = buildQueryString(
+        params as Record<string, string | number | boolean | undefined>
+      )
+      return apiFetch<BoardPage>(`/api/board/posts${query}`)
+    },
+
+    getPost(id: string): Promise<ConcernPostDetail> {
+      return apiFetch<ConcernPostDetail>(`/api/board/posts/${id}`)
+    },
+
+    requestImageUrl(
+      fileName: string,
+      contentType: string
+    ): Promise<{ uploadUrl: string; fileUrl: string }> {
+      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/board/posts/image-url', {
+        method: 'POST',
+        body: JSON.stringify({ fileName, contentType }),
+      })
+    },
+
+    createPost(data: CreatePostPayload): Promise<ConcernPost> {
+      return apiFetch<ConcernPost>('/api/board/posts', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
+    },
+
+    vote(postId: string): Promise<{ voted: boolean; upvotesCount: number }> {
+      return apiFetch<{ voted: boolean; upvotesCount: number }>(
+        `/api/board/posts/${postId}/vote`,
+        { method: 'POST' }
+      )
+    },
+
+    deletePost(postId: string): Promise<void> {
+      return apiFetch<void>(`/api/board/posts/${postId}`, { method: 'DELETE' })
+    },
+
+    addComment(postId: string, content: string): Promise<ConcernComment> {
+      return apiFetch<ConcernComment>(`/api/board/posts/${postId}/comments`, {
+        method: 'POST',
+        body: JSON.stringify({ content }),
+      })
+    },
+
+    deleteComment(postId: string, commentId: string): Promise<void> {
+      return apiFetch<void>(`/api/board/posts/${postId}/comments/${commentId}`, {
+        method: 'DELETE',
+      })
+    },
+
+    voteComment(
+      postId: string,
+      commentId: string
+    ): Promise<{ voted: boolean; upvotesCount: number }> {
+      return apiFetch<{ voted: boolean; upvotesCount: number }>(
+        `/api/board/posts/${postId}/comments/${commentId}/vote`,
+        { method: 'POST' }
+      )
+    },
+  },
+
   admin: {
     login(email: string, password: string): Promise<{ token: string }> {
       return apiFetch<{ token: string }>('/api/admin/login', {
@@ -213,6 +338,34 @@ export const api = {
         method: 'POST',
         body: JSON.stringify(data),
       })
+    },
+
+    getModerationPosts(status?: string): Promise<BoardModerationPost[]> {
+      const q = status ? `?status=${status}` : ''
+      return apiFetch<BoardModerationPost[]>(`/api/admin/moderation/posts${q}`)
+    },
+
+    setPostStatus(id: string, status: 'ACTIVE' | 'REMOVED'): Promise<void> {
+      return apiFetch<void>(`/api/admin/moderation/posts/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      })
+    },
+
+    getModerationComments(status?: string): Promise<BoardModerationComment[]> {
+      const q = status ? `?status=${status}` : ''
+      return apiFetch<BoardModerationComment[]>(`/api/admin/moderation/comments${q}`)
+    },
+
+    setCommentStatus(id: string, status: 'ACTIVE' | 'REMOVED'): Promise<void> {
+      return apiFetch<void>(`/api/admin/moderation/comments/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      })
+    },
+
+    getBoardStats(): Promise<BoardStats> {
+      return apiFetch<BoardStats>('/api/admin/moderation/board-stats')
     },
   },
 }

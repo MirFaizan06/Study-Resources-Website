@@ -11,6 +11,11 @@ import {
   approveContribution,
   rejectContribution,
   adminUploadResource,
+  getModerationPosts,
+  setPostStatus,
+  getModerationComments,
+  setCommentStatus,
+  getBoardStats,
 } from './admin.service';
 import { CreateResourceSchema, RequestUploadUrlSchema } from '../resources/resources.schema';
 import crypto from 'crypto';
@@ -141,6 +146,86 @@ export async function adminRequestUploadUrl(
       success: true,
       data: { uploadUrl, fileUrl, key: uniqueKey },
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ─── Board Moderation ─────────────────────────────────────────────────────────
+export async function getModerationPostsHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const status = typeof req.query['status'] === 'string' ? req.query['status'] : undefined;
+    const posts = await getModerationPosts(status);
+    res.status(200).json({ success: true, data: posts });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function setPostStatusHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    const { status } = req.body as { status?: string };
+    if (!id) throw new AppError('Post id required.', 400, 'VALIDATION_ERROR');
+    if (status !== 'ACTIVE' && status !== 'REMOVED') {
+      throw new AppError('status must be ACTIVE or REMOVED.', 400, 'VALIDATION_ERROR');
+    }
+    const post = await setPostStatus(id, status);
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getModerationCommentsHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const status = typeof req.query['status'] === 'string' ? req.query['status'] : undefined;
+    const comments = await getModerationComments(status);
+    res.status(200).json({ success: true, data: comments });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function setCommentStatusHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    const { status } = req.body as { status?: string };
+    if (!id) throw new AppError('Comment id required.', 400, 'VALIDATION_ERROR');
+    if (status !== 'ACTIVE' && status !== 'REMOVED') {
+      throw new AppError('status must be ACTIVE or REMOVED.', 400, 'VALIDATION_ERROR');
+    }
+    const comment = await setCommentStatus(id, status);
+    res.status(200).json({ success: true, data: comment });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getBoardStatsHandler(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const stats = await getBoardStats();
+    res.status(200).json({ success: true, data: stats });
   } catch (err) {
     next(err);
   }

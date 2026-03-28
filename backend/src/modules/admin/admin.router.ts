@@ -7,6 +7,11 @@ import {
   rejectContributionHandler,
   adminRequestUploadUrl,
   adminCreateResource,
+  getModerationPostsHandler,
+  setPostStatusHandler,
+  getModerationCommentsHandler,
+  setCommentStatusHandler,
+  getBoardStatsHandler,
 } from './admin.controller';
 import { requireAuth, requireAdmin } from '../../middleware/auth';
 import { authLimiter, uploadLimiter } from '../../middleware/rateLimit';
@@ -36,5 +41,12 @@ router.post('/resources/upload-url', uploadLimiter, adminRequestUploadUrl);
 
 // POST /api/admin/resources
 router.post('/resources', adminCreateResource);
+
+// ─── Board Moderation ─────────────────────────────────────────────────────────
+router.get('/moderation/posts', getModerationPostsHandler);
+router.patch('/moderation/posts/:id/status', setPostStatusHandler);
+router.get('/moderation/comments', getModerationCommentsHandler);
+router.patch('/moderation/comments/:id/status', setCommentStatusHandler);
+router.get('/moderation/board-stats', getBoardStatsHandler);
 
 export default router;

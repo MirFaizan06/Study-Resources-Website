@@ -24,6 +24,30 @@ export const uploadLimiter = rateLimit({
   },
 });
 
+export const boardPostLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many posts. Please try again later.',
+    code: 'RATE_LIMIT_EXCEEDED',
+  },
+});
+
+export const voteLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many votes. Please slow down.',
+    code: 'RATE_LIMIT_EXCEEDED',
+  },
+});
+
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,

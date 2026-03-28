@@ -435,6 +435,26 @@ export default function Home(): React.ReactElement {
         <AdBanner slot="0987654321" format="auto" />
       </div>
 
+      {/* ══════════════════════════════════════════════════════ BOARD PROMO ═ */}
+      <section className={[styles.section, styles.sectionAlt].join(' ')}>
+        <div className={styles.sectionInner}>
+          <div className={styles.boardPromo}>
+            <div className={styles.boardPromoText}>
+              <span className={styles.sectionEyebrow}>
+                <TrendingUp size={12} aria-hidden="true" />
+                {t.home.sections.boardEyebrow}
+              </span>
+              <h2 className={styles.sectionTitle}>{t.home.sections.boardTitle}</h2>
+              <p className={styles.sectionSubtitle}>{t.home.sections.boardSubtitle}</p>
+            </div>
+            <Link to={`/${locale}/board`} className={styles.boardPromoBtn}>
+              {t.home.sections.boardCta}
+              <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ══════════════════════════════════════════════════════ CTA BANNER ══ */}
       <section className={styles.ctaBanner} aria-label="Request materials">
         <div className={styles.ctaBannerInner}>
