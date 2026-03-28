@@ -1,14 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
 
-export type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark' | 'orange' | 'orange-dark'
+export const THEMES: Theme[] = ['orange', 'orange-dark', 'light', 'dark']
 
-export function useTheme(): { theme: Theme; toggleTheme: () => void } {
-  const [theme, setTheme] = useState<Theme>(() => {
+export function useTheme(): { theme: Theme; setTheme: (t: Theme) => void } {
+  const [theme, setThemeState] = useState<Theme>(() => {
     const stored = localStorage.getItem('theme') as Theme | null
-    if (stored === 'light' || stored === 'dark') return stored
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
+    if (stored === 'light' || stored === 'dark' || stored === 'orange' || stored === 'orange-dark') return stored
+    return 'orange' // default
   })
 
   useEffect(() => {
@@ -16,9 +15,9 @@ export function useTheme(): { theme: Theme; toggleTheme: () => void } {
     localStorage.setItem('theme', theme)
   }, [theme])
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+  const setTheme = useCallback((t: Theme) => {
+    setThemeState(t)
   }, [])
 
-  return { theme, toggleTheme }
+  return { theme, setTheme }
 }

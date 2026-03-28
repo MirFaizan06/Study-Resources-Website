@@ -83,11 +83,7 @@
       ;(function () {
         try {
           var stored = localStorage.getItem('theme')
-          var preferred = stored
-            ? stored
-            : window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark'
-            : 'light'
+          var preferred = stored ? stored : 'orange'
           document.documentElement.setAttribute('data-theme', preferred)
         } catch (e) {}
       })()

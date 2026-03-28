@@ -16,6 +16,7 @@ const Resources = lazy(() => import('@/pages/Resources'))
 const Contribute = lazy(() => import('@/pages/Contribute'))
 const Request = lazy(() => import('@/pages/Request'))
 const About = lazy(() => import('@/pages/About'))
+const AIPage = lazy(() => import('@/pages/AI'))
 
 const AdminLogin = lazy(() => import('@/pages/admin/Login'))
 const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
@@ -231,6 +232,14 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<PageLoader />}>
                 <About />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'ai',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AIPage />
               </Suspense>
             ),
           },

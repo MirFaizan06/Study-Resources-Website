@@ -4,6 +4,7 @@ const pa: Locale = {
   nav: {
     home: 'ਹੋਮ',
     browse: 'ਖੋਜੋ',
+    ai: 'AI',
     contribute: 'ਯੋਗਦਾਨ ਪਾਓ',
     request: 'ਬੇਨਤੀ',
     about: 'ਸਾਡੇ ਬਾਰੇ',
@@ -360,6 +361,10 @@ const pa: Locale = {
     about: {
       title: 'NotesHub Kashmir ਬਾਰੇ',
       description: 'ਕਸ਼ਮੀਰ ਦੇ ਵਿਦਿਆਰਥੀਆਂ ਨੂੰ ਮੁਫ਼ਤ, ਮਿਆਰੀ ਅਕਾਦਮਿਕ ਸਰੋਤਾਂ ਨਾਲ ਸਮਰੱਥ ਬਣਾਉਣ ਦੇ ਸਾਡੇ ਮਿਸ਼ਨ ਬਾਰੇ ਜਾਣੋ।',
+    },
+    ai: {
+      title: 'AI ਟੂਲਜ਼ — ਜਲਦੀ ਆ ਰਹੇ ਹਨ | NotesHub Kashmir',
+      description: 'ਕਸ਼ਮੀਰ ਯੂਨੀਵਰਸਿਟੀ ਦੇ ਵਿਦਿਆਰਥੀਆਂ ਲਈ AI ਨਾਲ ਗੈੱਸ ਪੇਪਰ ਅਤੇ ਮੌਕ ਐਗਜ਼ਾਮਿਨਰ।',
     },
     admin: {
       title: 'ਐਡਮਿਨ ਡੈਸ਼ਬੋਰਡ - NotesHub Kashmir',

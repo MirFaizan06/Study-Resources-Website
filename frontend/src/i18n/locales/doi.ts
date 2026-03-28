@@ -4,6 +4,7 @@ const doi: Locale = {
   nav: {
     home: 'होम',
     browse: 'खोजो',
+    ai: 'AI',
     contribute: 'योगदान देओ',
     request: 'अनुरोध',
     about: 'साढ़े बारे च',
@@ -360,6 +361,10 @@ const doi: Locale = {
     about: {
       title: 'NotesHub Kashmir बारे च',
       description: 'साढ़े मकसद बारे च जानो।',
+    },
+    ai: {
+      title: 'AI टूल्स — जल्दी आनेआले | NotesHub Kashmir',
+      description: 'कश्मीर यूनिवर्सिटी दे विद्यार्थियां वास्ते AI गेस पेपर ते मॉक एग्जामिनर।',
     },
     admin: {
       title: 'एडमिन डैशबोर्ड - NotesHub Kashmir',

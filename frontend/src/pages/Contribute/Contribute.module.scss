@@ -462,3 +462,104 @@
   margin: 0;
   font-weight: $font-weight-medium;
 }
+
+// ─── Google Drive Guide ───────────────────────────────────────────────────────
+.driveGuide {
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
+  border: 1px solid var(--primary-light);
+  border-radius: $radius-xl;
+  padding: $space-4;
+  margin-bottom: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.driveGuideHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.driveGuideIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.driveGuideTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.driveGuideIntro {
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.driveSteps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin: 0;
+  padding: 0;
+}
+
+.driveStep {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+
+  strong {
+    color: var(--text-primary);
+    font-weight: $font-weight-semibold;
+  }
+
+  em {
+    font-style: italic;
+    color: var(--text-muted);
+  }
+}
+
+.driveStepNum {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-full;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.driveLink {
+  color: var(--primary);
+  font-weight: $font-weight-medium;
+  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+
+  &:hover {
+    color: var(--primary-dark);
+  }
+}
+
+.driveGuideNote {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+  padding-top: $space-2;
+  border-top: 1px solid var(--border-color);
+}

@@ -3,18 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   BookOpen,
-  Sun,
-  Moon,
   Menu,
   X,
-  Globe,
-  ChevronDown,
   Search,
+  SlidersHorizontal,
+  Check,
 } from 'lucide-react'
-import { useTheme } from '@/hooks/useTheme'
+import { useThemeContext } from '@/contexts/ThemeContext'
 import { useLocale } from '@/hooks/useLocale'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SUPPORTED_LOCALES, type LocaleCode } from '@/i18n'
+import { THEMES, type Theme } from '@/hooks/useTheme'
 import styles from './Navbar.module.scss'
 
 const LOCALE_LABELS: Record<LocaleCode, { native: string; english: string }> = {
@@ -26,47 +25,50 @@ const LOCALE_LABELS: Record<LocaleCode, { native: string; english: string }> = {
   doi: { native: 'डोगरी',    english: 'Dogri'    },
 }
 
+const THEME_META: Record<Theme, { label: string; swatch: string }> = {
+  orange:      { label: 'Warm',      swatch: '#ea580c' },
+  'orange-dark': { label: 'Warm Dark', swatch: '#7a2e08' },
+  light:       { label: 'Light',     swatch: '#2563eb' },
+  dark:        { label: 'Dark',      swatch: '#0f172a' },
+}
+
 export function Navbar(): React.ReactElement {
-  const { theme, toggleTheme } = useTheme()
+  const { theme, setTheme } = useThemeContext()
   const { t, locale, setLocale } = useLocale()
   const location = useLocation()
   const navigate = useNavigate()
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [langOpen, setLangOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   const debouncedSearch = useDebounce(searchQuery, 400)
-  const langRef = useRef<HTMLDivElement>(null)
+  const settingsRef = useRef<HTMLDivElement>(null)
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false)
     setSearchOpen(false)
-    setLangOpen(false)
+    setSettingsOpen(false)
   }, [location.pathname])
 
-  // Scroll detection
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close lang dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
-        setLangOpen(false)
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+        setSettingsOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Navigate on debounced search
   useEffect(() => {
     if (debouncedSearch.trim().length > 1) {
       navigate(`/${locale}/browse?q=${encodeURIComponent(debouncedSearch.trim())}`)
@@ -76,6 +78,7 @@ export function Navbar(): React.ReactElement {
   const navLinks = [
     { href: `/${locale}/`, label: t.nav.home },
     { href: `/${locale}/browse`, label: t.nav.browse },
+    { href: `/${locale}/ai`, label: 'AI' },
     { href: `/${locale}/contribute`, label: t.nav.contribute },
     { href: `/${locale}/request`, label: t.nav.request },
     { href: `/${locale}/about`, label: t.nav.about },
@@ -128,68 +131,79 @@ export function Navbar(): React.ReactElement {
               <Search size={18} />
             </button>
 
-            {/* Language Switcher */}
-            <div className={styles.langSwitcher} ref={langRef}>
+            {/* Settings Panel */}
+            <div className={styles.settingsWrap} ref={settingsRef}>
               <button
-                className={[styles.iconBtn, styles.langBtn].join(' ')}
-                onClick={() => setLangOpen((p) => !p)}
-                aria-label="Change language"
-                aria-expanded={langOpen}
-                aria-haspopup="listbox"
+                className={[styles.iconBtn, styles.settingsBtn].join(' ')}
+                onClick={() => setSettingsOpen((p) => !p)}
+                aria-label="Preferences"
+                aria-expanded={settingsOpen}
+                aria-haspopup="true"
               >
-                <Globe size={16} />
-                <span className={styles.langBtnLabel}>{LOCALE_LABELS[locale].native}</span>
-                <ChevronDown
-                  size={13}
-                  className={[styles.chevron, langOpen ? styles.chevronOpen : ''].join(' ')}
-                />
+                <SlidersHorizontal size={17} />
+                <span className={styles.settingsBtnLabel}>{LOCALE_LABELS[locale].native}</span>
               </button>
 
               <AnimatePresence>
-                {langOpen && (
-                  <motion.ul
-                    role="listbox"
-                    aria-label="Select language"
-                    className={styles.langDropdown}
+                {settingsOpen && (
+                  <motion.div
+                    className={styles.settingsPanel}
                     initial={{ opacity: 0, scale: 0.97, y: -6 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.97, y: -6 }}
                     transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
+                    role="dialog"
+                    aria-label="Preferences"
                   >
-                    <li className={styles.langDropdownHeader}>Language</li>
-                    {SUPPORTED_LOCALES.map((code) => (
-                      <li key={code} role="option" aria-selected={code === locale}>
+                    {/* Language section */}
+                    <p className={styles.panelSectionLabel}>Language</p>
+                    <ul className={styles.langList} role="listbox" aria-label="Select language">
+                      {SUPPORTED_LOCALES.map((code) => (
+                        <li key={code} role="option" aria-selected={code === locale}>
+                          <button
+                            className={[
+                              styles.langOption,
+                              code === locale ? styles.langOptionActive : '',
+                            ].join(' ')}
+                            onClick={() => setLocale(code)}
+                          >
+                            <span className={styles.langNative}>{LOCALE_LABELS[code].native}</span>
+                            <span className={styles.langEnglish}>{LOCALE_LABELS[code].english}</span>
+                            {code === locale && <Check size={13} className={styles.optionCheck} aria-hidden="true" />}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className={styles.panelDivider} />
+
+                    {/* Theme section */}
+                    <p className={styles.panelSectionLabel}>Theme</p>
+                    <div className={styles.themeRow}>
+                      {THEMES.map((t) => (
                         <button
+                          key={t}
                           className={[
-                            styles.langOption,
-                            code === locale ? styles.langOptionActive : '',
+                            styles.themeBtn,
+                            t === theme ? styles.themeBtnActive : '',
                           ].join(' ')}
-                          onClick={() => {
-                            setLocale(code)
-                            setLangOpen(false)
-                          }}
+                          onClick={() => setTheme(t)}
+                          aria-pressed={t === theme}
+                          title={THEME_META[t].label}
                         >
-                          <span className={styles.langNative}>{LOCALE_LABELS[code].native}</span>
-                          <span className={styles.langEnglish}>{LOCALE_LABELS[code].english}</span>
-                          {code === locale && (
-                            <span className={styles.langCheck} aria-hidden="true">✓</span>
-                          )}
+                          <span
+                            className={styles.themeSwatch}
+                            style={{ background: THEME_META[t].swatch }}
+                          />
+                          <span className={styles.themeLabel}>{THEME_META[t].label}</span>
+                          {t === theme && <Check size={11} className={styles.optionCheck} aria-hidden="true" />}
                         </button>
-                      </li>
-                    ))}
-                  </motion.ul>
+                      ))}
+                    </div>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
-
-            {/* Theme Toggle */}
-            <button
-              className={styles.iconBtn}
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            >
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
 
             {/* Mobile hamburger */}
             <button
@@ -284,8 +298,9 @@ export function Navbar(): React.ReactElement {
               />
             </div>
 
-            {/* Mobile lang + theme */}
-            <div className={styles.mobileExtras}>
+            {/* Mobile preferences */}
+            <div className={styles.mobilePrefs}>
+              <p className={styles.mobilePrefLabel}>Language</p>
               <div className={styles.mobileLang}>
                 {SUPPORTED_LOCALES.map((code) => (
                   <button
@@ -301,10 +316,26 @@ export function Navbar(): React.ReactElement {
                   </button>
                 ))}
               </div>
-              <button className={styles.mobileThemeBtn} onClick={toggleTheme}>
-                {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-                {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-              </button>
+
+              <p className={styles.mobilePrefLabel} style={{ marginTop: '12px' }}>Theme</p>
+              <div className={styles.mobileThemeRow}>
+                {THEMES.map((th) => (
+                  <button
+                    key={th}
+                    className={[
+                      styles.mobileThemeBtn,
+                      th === theme ? styles.mobileThemeActive : '',
+                    ].join(' ')}
+                    onClick={() => setTheme(th)}
+                  >
+                    <span
+                      className={styles.mobileThemeSwatch}
+                      style={{ background: THEME_META[th].swatch }}
+                    />
+                    {THEME_META[th].label}
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}

@@ -80,6 +80,17 @@ export function Footer(): React.ReactElement {
               </li>
               <li>
                 <a
+                  href="/sitemap.xml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  <ExternalLink size={13} aria-hidden="true" />
+                  Sitemap
+                </a>
+              </li>
+              <li>
+                <a
                   href="mailto:hello@noteshubkashmir.in"
                   className={styles.link}
                 >

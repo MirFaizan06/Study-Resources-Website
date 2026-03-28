@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import {
@@ -17,6 +17,49 @@ import { Badge } from '@/components/ui/Badge'
 import { AdBanner } from '@/components/common/AdBanner'
 import type { Institution, Resource, InstitutionType } from '@/types'
 import styles from './Home.module.scss'
+
+// ─── Hero Background Carousel ────────────────────────────────────────────────
+const HERO_BG_SLOTS = [1, 2, 3, 4, 5]
+const CAROUSEL_INTERVAL = 4500
+
+function HeroCarousel(): React.ReactElement {
+  const [active, setActive] = useState(0)
+  const [available, setAvailable] = useState<Set<number>>(new Set())
+  const failed = useRef<Set<number>>(new Set())
+
+  const advance = useCallback(() => {
+    setActive((prev) => {
+      for (let i = 1; i <= HERO_BG_SLOTS.length; i++) {
+        const next = (prev + i) % HERO_BG_SLOTS.length
+        if (!failed.current.has(next)) return next
+      }
+      return prev
+    })
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(advance, CAROUSEL_INTERVAL)
+    return () => clearInterval(id)
+  }, [advance])
+
+  return (
+    <div className={styles.heroBgCarousel} aria-hidden="true">
+      {HERO_BG_SLOTS.map((n, i) => (
+        <img
+          key={n}
+          src={`/images/hero/${n}.png`}
+          alt=""
+          className={[
+            styles.heroBgImg,
+            i === active && available.has(i) ? styles.heroBgImgActive : '',
+          ].join(' ')}
+          onLoad={() => setAvailable((s) => new Set([...s, i]))}
+          onError={() => { failed.current.add(i) }}
+        />
+      ))}
+    </div>
+  )
+}
 
 const INSTITUTION_TYPE_VARIANT: Record<InstitutionType, 'blue' | 'purple' | 'green'> = {
   UNIVERSITY: 'blue',
@@ -94,6 +137,7 @@ export default function Home(): React.ReactElement {
     <div className={styles.page}>
       {/* ─── Hero ─────────────────────────────────────────────────────────────── */}
       <section className={styles.hero} aria-label="Hero">
+        <HeroCarousel />
         <div className={styles.heroPattern} aria-hidden="true" />
         <div className={styles.heroContent}>
           <motion.div

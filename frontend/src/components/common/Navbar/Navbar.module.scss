@@ -31,10 +31,6 @@
   gap: $space-2;
   text-decoration: none;
   flex-shrink: 0;
-
-  &:hover {
-    text-decoration: none;
-  }
 }
 
 .logoIcon {
@@ -84,7 +80,6 @@
   &:hover {
     color: var(--text-primary);
     background-color: var(--bg-secondary);
-    text-decoration: none;
   }
 }
 
@@ -128,8 +123,8 @@
   }
 }
 
-// ─── Language switcher ────────────────────────────────────────────────────────
-.langSwitcher {
+// ─── Settings button ──────────────────────────────────────────────────────────
+.settingsWrap {
   position: relative;
   display: none;
 
@@ -138,29 +133,22 @@
   }
 }
 
-.langBtn {
-  gap: $space-1;
-  padding: 0 $space-2;
+.settingsBtn {
+  gap: $space-2;
+  padding: 0 $space-3;
 }
 
-.langBtnLabel {
+.settingsBtnLabel {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  max-width: 64px;
+  max-width: 68px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.chevron {
-  transition: transform $transition-fast;
-}
-
-.chevronOpen {
-  transform: rotate(180deg);
-}
-
-.langDropdown {
+// ─── Settings panel ───────────────────────────────────────────────────────────
+.settingsPanel {
   position: absolute;
   top: calc(100% + $space-2);
   right: 0;
@@ -168,22 +156,37 @@
   border: 1px solid var(--border-color);
   border-radius: $radius-xl;
   box-shadow: var(--shadow-lg);
-  min-width: 180px;
-  list-style: none;
-  overflow: hidden;
+  min-width: 220px;
   z-index: $z-dropdown;
-  padding: $space-1;
+  padding: $space-3;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
 }
 
-.langDropdownHeader {
-  padding: $space-2 $space-3 $space-1;
+.panelSectionLabel {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   color: var(--text-muted);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  padding: $space-1 $space-2 $space-1;
   pointer-events: none;
   user-select: none;
+}
+
+.panelDivider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: $space-2 0;
+}
+
+// ─── Language list in panel ───────────────────────────────────────────────────
+.langList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .langOption {
@@ -191,7 +194,7 @@
   align-items: center;
   gap: $space-2;
   width: 100%;
-  padding: $space-2 $space-3;
+  padding: $space-2 $space-2;
   border-radius: $radius-lg;
   font-size: $font-size-sm;
   color: var(--text-secondary);
@@ -229,11 +232,55 @@
   flex-shrink: 0;
 }
 
-.langCheck {
-  font-size: $font-size-xs;
+.optionCheck {
   color: var(--primary);
   flex-shrink: 0;
-  margin-left: $space-1;
+}
+
+// ─── Theme row in panel ───────────────────────────────────────────────────────
+.themeRow {
+  display: flex;
+  gap: $space-2;
+}
+
+.themeBtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-2 $space-1;
+  border-radius: $radius-lg;
+  border: 1.5px solid var(--border-color);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color $transition-fast, background-color $transition-fast;
+  color: var(--text-secondary);
+  font-size: $font-size-xs;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+  }
+}
+
+.themeBtnActive {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.themeSwatch {
+  width: 20px;
+  height: 20px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.themeLabel {
+  font-weight: $font-weight-medium;
 }
 
 // ─── Hamburger ────────────────────────────────────────────────────────────────
@@ -356,13 +403,20 @@
   }
 }
 
-.mobileExtras {
-  @include flex-between;
+// ─── Mobile preferences ───────────────────────────────────────────────────────
+.mobilePrefs {
   margin-top: $space-4;
   padding-top: $space-4;
   border-top: 1px solid var(--border-color);
-  gap: $space-3;
-  flex-wrap: wrap;
+}
+
+.mobilePrefLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: $space-2;
 }
 
 .mobileLang {
@@ -395,21 +449,42 @@
   border-color: var(--primary-light);
 }
 
+.mobileThemeRow {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
 .mobileThemeBtn {
-  @include flex-center;
+  display: flex;
+  align-items: center;
   gap: $space-2;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   color: var(--text-secondary);
-  background: transparent;
-  border: none;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
   cursor: pointer;
   padding: $space-2 $space-3;
   border-radius: $radius-lg;
-  transition: background-color $transition-fast, color $transition-fast;
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
 
   &:hover {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-tertiary);
     color: var(--text-primary);
   }
+}
+
+.mobileThemeActive {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.mobileThemeSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.15);
 }

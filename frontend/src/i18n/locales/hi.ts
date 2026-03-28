@@ -4,6 +4,7 @@ const hi: Locale = {
   nav: {
     home: 'होम',
     browse: 'खोजें',
+    ai: 'AI',
     contribute: 'योगदान दें',
     request: 'अनुरोध',
     about: 'हमारे बारे में',
@@ -360,6 +361,10 @@ const hi: Locale = {
     about: {
       title: 'NotesHub Kashmir के बारे में',
       description: 'कश्मीर के छात्रों को मुफ्त, गुणवत्तापूर्ण शैक्षणिक संसाधनों के साथ सशक्त बनाने के हमारे मिशन के बारे में जानें।',
+    },
+    ai: {
+      title: 'AI टूल्स — जल्द आ रहे हैं | NotesHub Kashmir',
+      description: 'कश्मीर यूनिवर्सिटी के छात्रों के लिए AI से गेस पेपर जनरेटर और मॉक एग्जामिनर।',
     },
     admin: {
       title: 'एडमिन डैशबोर्ड - NotesHub Kashmir',

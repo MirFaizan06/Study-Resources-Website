@@ -4,6 +4,7 @@ const ur: Locale = {
   nav: {
     home: 'ہوم',
     browse: 'تلاش کریں',
+    ai: 'AI',
     contribute: 'تعاون کریں',
     request: 'درخواست',
     about: 'ہمارے بارے میں',
@@ -360,6 +361,10 @@ const ur: Locale = {
     about: {
       title: 'NotesHub Kashmir کے بارے میں',
       description: 'کشمیر کے طلبا کو مفت اور معیاری تعلیمی وسائل فراہم کرنے کے ہمارے مشن کے بارے میں جانیں۔',
+    },
+    ai: {
+      title: 'AI ٹولز — جلد آ رہے ہیں | NotesHub Kashmir',
+      description: 'کشمیر یونیورسٹی کے طلبا کے لیے AI سے چلنے والا گیس پیپر جنریٹر اور موک ایگزامینر۔',
     },
     admin: {
       title: 'ایڈمن ڈیش بورڈ - NotesHub Kashmir',

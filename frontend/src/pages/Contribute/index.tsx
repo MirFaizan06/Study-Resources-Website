@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, ChevronRight, Upload, AlertCircle } from 'lucide-react'
+import { CheckCircle, ChevronRight, Upload, AlertCircle, HardDrive, ExternalLink } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
@@ -402,19 +402,19 @@ export default function Contribute(): React.ReactElement {
 
                 <div className={styles.fieldGroup}>
                   <label className={styles.label} htmlFor="fileUrl">
-                    {t.contribute.form.fileUrl} <span className={styles.required}>*</span>
+                    Google Drive Link <span className={styles.required}>*</span>
                   </label>
                   <input
                     id="fileUrl"
                     type="url"
                     className={[styles.input, errors.fileUrl ? styles.inputError : ''].join(' ')}
-                    placeholder={t.contribute.form.fileUrlPlaceholder}
+                    placeholder="https://drive.google.com/file/d/..."
                     value={form.fileUrl}
                     onChange={(e) => update('fileUrl', e.target.value)}
                   />
                   <p className={styles.fieldHelp}>
                     <AlertCircle size={13} aria-hidden="true" />
-                    {t.contribute.form.fileUrlHelp}
+                    Paste your Google Drive share link (must be set to "Anyone with the link")
                   </p>
                   {errors.fileUrl && (
                     <span className={styles.fieldError}>{errors.fileUrl}</span>
@@ -532,6 +532,64 @@ export default function Contribute(): React.ReactElement {
 
         {/* Guidelines sidebar */}
         <aside className={styles.guidelines}>
+          {/* Google Drive guide */}
+          <div className={styles.driveGuide}>
+            <div className={styles.driveGuideHeader}>
+              <HardDrive size={16} className={styles.driveGuideIcon} aria-hidden="true" />
+              <h3 className={styles.driveGuideTitle}>How to share your PDF</h3>
+            </div>
+            <p className={styles.driveGuideIntro}>
+              We only accept Google Drive links. Follow these steps:
+            </p>
+            <ol className={styles.driveSteps}>
+              <li className={styles.driveStep}>
+                <span className={styles.driveStepNum}>1</span>
+                <div>
+                  <strong>Go to</strong>{' '}
+                  <a
+                    href="https://drive.google.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.driveLink}
+                  >
+                    drive.google.com <ExternalLink size={11} aria-hidden="true" />
+                  </a>{' '}
+                  and sign in with your Google account.
+                </div>
+              </li>
+              <li className={styles.driveStep}>
+                <span className={styles.driveStepNum}>2</span>
+                <div>
+                  Click <strong>New → File Upload</strong> and select your PDF file.
+                </div>
+              </li>
+              <li className={styles.driveStep}>
+                <span className={styles.driveStepNum}>3</span>
+                <div>
+                  Once uploaded, <strong>right-click the file</strong> and select{' '}
+                  <strong>"Share"</strong>.
+                </div>
+              </li>
+              <li className={styles.driveStep}>
+                <span className={styles.driveStepNum}>4</span>
+                <div>
+                  Under <strong>"General access"</strong>, change it from{' '}
+                  <em>"Restricted"</em> to{' '}
+                  <strong>"Anyone with the link"</strong>.
+                </div>
+              </li>
+              <li className={styles.driveStep}>
+                <span className={styles.driveStepNum}>5</span>
+                <div>
+                  Click <strong>"Copy link"</strong> and paste it in the form.
+                </div>
+              </li>
+            </ol>
+            <p className={styles.driveGuideNote}>
+              Our team will verify the link, fix the listing details if needed, and publish it in the catalog.
+            </p>
+          </div>
+
           <h3 className={styles.guidelinesTitle}>{t.contribute.guidelines.title}</h3>
           <ul className={styles.guidelinesList}>
             {t.contribute.guidelines.items.map((item, i) => (

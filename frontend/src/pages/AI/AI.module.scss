@@ -1,0 +1,284 @@
+.page {
+  @include flex-column;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: $space-16 $space-20;
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--secondary-light) 40%,
+    var(--primary-lighter) 100%
+  );
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 30%, var(--primary-light) 0%, transparent 50%),
+    radial-gradient(circle at 90% 70%, var(--secondary-light) 0%, transparent 45%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.heroInner {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-10;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.heroContent {
+  @include flex-column;
+  gap: $space-6;
+  max-width: 600px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background-color: var(--secondary-light);
+  color: var(--secondary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  border: 1px solid var(--secondary);
+  width: fit-content;
+}
+
+.heroTitle {
+  font-size: clamp($font-size-3xl, 5vw, $font-size-5xl);
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  line-height: $line-height-tight;
+  letter-spacing: -0.03em;
+}
+
+.heroAccent {
+  color: var(--primary);
+}
+
+.heroSubtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  max-width: 520px;
+}
+
+.heroCta {
+  @include flex-column;
+  gap: $space-2;
+  max-width: 320px;
+}
+
+.progressBar {
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: $radius-full;
+  animation: pulse-fill 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-fill {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+.progressLabel {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  font-weight: $font-weight-medium;
+}
+
+// ─── Hero icon ────────────────────────────────────────────────────────────────
+.heroIcon {
+  position: relative;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 220px;
+
+  @include respond-to(lg) {
+    display: flex;
+  }
+}
+
+.brainIcon {
+  color: var(--primary);
+  opacity: 0.85;
+  position: relative;
+  z-index: 1;
+}
+
+.orbit,
+.orbit2 {
+  position: absolute;
+  border-radius: $radius-full;
+  border: 1.5px dashed var(--primary-light);
+  pointer-events: none;
+}
+
+.orbit {
+  width: 170px;
+  height: 170px;
+  animation: spin-slow 14s linear infinite;
+}
+
+.orbit2 {
+  width: 210px;
+  height: 210px;
+  opacity: 0.5;
+  animation: spin-slow 22s linear infinite reverse;
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+// ─── Features ─────────────────────────────────────────────────────────────────
+.features {
+  padding-block: $space-16;
+  background-color: var(--bg-secondary);
+}
+
+.featuresInner {
+  @include container;
+}
+
+.featuresTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: $space-2;
+}
+
+.featuresSubtitle {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  margin-bottom: $space-10;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.featureCard {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-4;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  transition: box-shadow $transition-base, transform $transition-base;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+.featureIconWrap {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: $radius-xl;
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.featureTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: $space-2;
+}
+
+.featureDesc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
+
+// ─── Notice ───────────────────────────────────────────────────────────────────
+.notice {
+  padding-block: $space-12;
+}
+
+.noticeInner {
+  @include container;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-card));
+  border: 1px solid var(--primary-light);
+  border-radius: $radius-2xl;
+  padding: $space-6 $space-8;
+}
+
+.noticeIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.noticeText {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  min-width: 200px;
+
+  strong {
+    color: var(--text-primary);
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.noticeBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-3 $space-5;
+  border-radius: $radius-lg;
+  text-decoration: none;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: var(--primary-dark);
+  }
+}

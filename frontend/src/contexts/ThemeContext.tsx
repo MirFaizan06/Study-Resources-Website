@@ -3,19 +3,19 @@ import { useTheme, type Theme } from '@/hooks/useTheme'
 
 interface ThemeContextValue {
   theme: Theme
-  toggleTheme: () => void
+  setTheme: (t: Theme) => void
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'light',
-  toggleTheme: () => {},
+  theme: 'orange' as Theme,
+  setTheme: () => {},
 })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }): React.ReactElement {
-  const { theme, toggleTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )

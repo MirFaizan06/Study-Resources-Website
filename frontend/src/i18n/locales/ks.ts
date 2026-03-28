@@ -4,6 +4,7 @@ const ks: Locale = {
   nav: {
     home: 'ہوم',
     browse: 'تلاش کٔرِو',
+    ai: 'AI',
     contribute: 'تَعاوُن کٔرِو',
     request: 'دَرخواست',
     about: 'مُتعلِق',
@@ -360,6 +361,10 @@ const ks: Locale = {
     about: {
       title: 'NotesHub Kashmir مُتعلِق',
       description: 'سانہِ مَقصد تہٕ کامہِ مُتعلِق مولوٗمات حٲصِل کٔرِو۔',
+    },
+    ai: {
+      title: 'AI ٹولز — آمٔدَنی پیٹھ | NotesHub Kashmir',
+      description: 'کشمیر یونیورسٹیٕ طالب علمانَس خٲطرٕ AI گیس پیپر تہٕ موک امتحان۔',
     },
     admin: {
       title: 'ایڈمِن ڈیش بورڈ - NotesHub Kashmir',

@@ -2,6 +2,7 @@ const en = {
   nav: {
     home: 'Home',
     browse: 'Browse',
+    ai: 'AI',
     contribute: 'Contribute',
     request: 'Request',
     about: 'About',
@@ -403,6 +404,11 @@ const en = {
       title: 'About NotesHub Kashmir',
       description:
         'Learn about our mission to empower Kashmir students with free, quality academic resources.',
+    },
+    ai: {
+      title: 'AI Tools — Coming Soon | NotesHub Kashmir',
+      description:
+        'AI-powered guess paper generator and mock examiner for Kashmir University students. Coming soon.',
     },
     admin: {
       title: 'Admin Dashboard - NotesHub Kashmir',
