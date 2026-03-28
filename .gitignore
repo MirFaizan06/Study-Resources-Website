@@ -6,3 +6,8 @@ dist/
 *.log
 .prisma/
 coverage/
+
+# Ignore all markdown and text files except README.md
+*.md
+!README.md
+*.txt

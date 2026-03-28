@@ -141,6 +141,22 @@ export async function getPost(id: string, viewerId?: string) {
 
 // ─── Create post ──────────────────────────────────────────────────────────────
 export async function createPost(data: CreatePost, authorId: string) {
+  // Enforce 1 post per week
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const recentPost = await prisma.concernPost.findFirst({
+    where: { authorId, createdAt: { gte: weekAgo } },
+    select: { id: true, createdAt: true },
+  });
+  if (recentPost) {
+    const nextAllowed = new Date(recentPost.createdAt.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const hoursLeft = Math.ceil((nextAllowed.getTime() - Date.now()) / (1000 * 60 * 60));
+    throw new AppError(
+      `You can only post once per week. You can post again in ${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}.`,
+      429,
+      'RATE_LIMIT'
+    );
+  }
+
   return prisma.concernPost.create({
     data: {
       title: data.title,

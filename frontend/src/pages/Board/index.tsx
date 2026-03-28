@@ -16,6 +16,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { api } from '@/services/api'
 import type { ConcernPost, PostSort, PostCategory } from '@/types'
 import { AdBanner } from '@/components/common/AdBanner'
+import BoardTutorial from './BoardTutorial'
 import styles from './Board.module.scss'
 
 const CATEGORIES: Array<{ value: PostCategory | 'ALL'; label: string }> = [
@@ -198,6 +199,8 @@ export default function BoardPage(): React.ReactElement {
 
   return (
     <main className={styles.page}>
+      <BoardTutorial locale={locale} />
+
       {/* ─── Hero banner ─────────────────────────────────────────────────────── */}
       <section className={styles.hero}>
         <div className={styles.heroInner}>
