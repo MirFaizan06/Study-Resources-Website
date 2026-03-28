@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+  CONTRIBUTOR
+}
+
+enum InstitutionType {
+  UNIVERSITY
+  COLLEGE
+  SCHOOL
+}
+
+enum ResourceType {
+  NOTE
+  PYQ
+  SYLLABUS
+  GUESS_PAPER
+}
+
+enum RequestStatus {
+  PENDING
+  FULFILLED
+}
+
+enum SubjectCategory {
+  MAJOR
+  MINOR
+  MD
+  AEC
+  VAC
+  SEC
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  role         Role       @default(STUDENT)
+  passwordHash String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  resources    Resource[]
+}
+
+model Institution {
+  id        String          @id @default(cuid())
+  name      String
+  slug      String          @unique @db.VarChar(255)
+  type      InstitutionType
+  logoUrl   String?
+  createdAt DateTime        @default(now())
+  programs  Program[]
+
+  @@index([slug])
+}
+
+model Program {
+  id            String      @id @default(cuid())
+  name          String
+  institutionId String
+  createdAt     DateTime    @default(now())
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  subjects      Subject[]
+
+  @@index([institutionId])
+}
+
+model Subject {
+  id        String           @id @default(cuid())
+  name      String
+  programId String
+  semester  Int
+  category  SubjectCategory?
+  createdAt DateTime         @default(now())
+  program   Program          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  resources Resource[]
+
+  @@index([programId])
+  @@index([category])
+}
+
+model Resource {
+  id             String       @id @default(cuid())
+  title          String
+  type           ResourceType
+  fileUrl        String
+  subjectId      String
+  uploaderId     String?
+  downloadsCount Int          @default(0)
+  isApproved     Boolean      @default(false)
+  isAiGenerated  Boolean      @default(false)
+  year           Int?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  subject        Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  uploader       User?        @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
+
+  @@index([subjectId])
+  @@index([type])
+  @@index([isApproved])
+  @@index([createdAt])
+}
+
+model Request {
+  id                String        @id @default(cuid())
+  studentName       String
+  requestedMaterial String        @db.Text
+  contactEmail      String?
+  status            RequestStatus @default(PENDING)
+  createdAt         DateTime      @default(now())
+
+  @@index([status])
+}

@@ -1,0 +1,247 @@
+import React, { lazy, Suspense } from 'react'
+import {
+  createBrowserRouter,
+  Navigate,
+  useParams,
+  Outlet,
+} from 'react-router-dom'
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE, type LocaleCode } from '@/i18n'
+import { RootLayout } from '@/layouts/RootLayout'
+import { AdminLayout } from '@/layouts/AdminLayout'
+
+// ─── Lazy page imports ────────────────────────────────────────────────────────
+const Home = lazy(() => import('@/pages/Home'))
+const Institution = lazy(() => import('@/pages/Institution'))
+const Resources = lazy(() => import('@/pages/Resources'))
+const Contribute = lazy(() => import('@/pages/Contribute'))
+const Request = lazy(() => import('@/pages/Request'))
+const About = lazy(() => import('@/pages/About'))
+
+const AdminLogin = lazy(() => import('@/pages/admin/Login'))
+const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
+const AdminContributions = lazy(() => import('@/pages/admin/Contributions'))
+const AdminRequests = lazy(() => import('@/pages/admin/Requests'))
+const AdminUpload = lazy(() => import('@/pages/admin/Upload'))
+
+// ─── Not Found page ───────────────────────────────────────────────────────────
+function NotFound(): React.ReactElement {
+  return (
+    <div
+      style={{
+        minHeight: '60vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '1rem',
+        padding: '2rem',
+        textAlign: 'center',
+      }}
+    >
+      <h1 style={{ fontSize: '4rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+        404
+      </h1>
+      <h2 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', margin: 0 }}>
+        Page Not Found
+      </h2>
+      <p style={{ color: 'var(--text-secondary)', maxWidth: '400px' }}>
+        The page you are looking for does not exist or has been moved.
+      </p>
+      <a
+        href="/en/"
+        style={{
+          background: 'var(--primary)',
+          color: '#fff',
+          padding: '0.75rem 1.5rem',
+          borderRadius: '0.5rem',
+          textDecoration: 'none',
+          fontWeight: 600,
+        }}
+      >
+        Go to Home
+      </a>
+    </div>
+  )
+}
+
+// ─── Loading fallback ─────────────────────────────────────────────────────────
+function PageLoader(): React.ReactElement {
+  return (
+    <div
+      style={{
+        minHeight: '60vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: '40px',
+          height: '40px',
+          border: '3px solid var(--border-color)',
+          borderTopColor: 'var(--primary)',
+          borderRadius: '50%',
+          animation: 'spin 0.7s linear infinite',
+        }}
+      />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  )
+}
+
+// ─── Locale Guard ─────────────────────────────────────────────────────────────
+function LocaleGuard(): React.ReactElement {
+  const { locale } = useParams<{ locale: string }>()
+
+  if (!locale || !SUPPORTED_LOCALES.includes(locale as LocaleCode)) {
+    // Reconstruct path without the bad locale prefix
+    const path = window.location.pathname.replace(`/${locale}`, '') || '/'
+    return <Navigate to={`/${DEFAULT_LOCALE}${path}`} replace />
+  }
+
+  return <Outlet />
+}
+
+// ─── Router definition ────────────────────────────────────────────────────────
+export const router = createBrowserRouter([
+  // Root redirect
+  {
+    path: '/',
+    element: <Navigate to={`/${DEFAULT_LOCALE}/`} replace />,
+  },
+
+  // Locale-prefixed routes
+  {
+    path: '/:locale',
+    element: <LocaleGuard />,
+    children: [
+      // Admin login (no layout)
+      {
+        path: 'admin/login',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <AdminLogin />
+          </Suspense>
+        ),
+      },
+
+      // Admin protected routes
+      {
+        path: 'admin',
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminDashboard />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'contributions',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminContributions />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'requests',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminRequests />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'upload',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminUpload />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+
+      // Public routes with RootLayout
+      {
+        element: <RootLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Home />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'browse',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Resources />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'browse/:institutionSlug',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Institution />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'browse/:institutionSlug/:programId',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Resources />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'browse/:institutionSlug/:programId/:subjectId',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Resources />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'contribute',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Contribute />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'request',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <Request />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'about',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <About />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+    ],
+  },
+
+  // Catch all 404
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+])

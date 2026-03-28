@@ -1,0 +1,213 @@
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+}
+
+// ─── Overlay (mobile) ─────────────────────────────────────────────────────────
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-overlay);
+  z-index: $z-overlay;
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+.sidebar {
+  width: $sidebar-width;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  @include flex-column;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: $z-modal;
+  transform: translateX(-100%);
+  transition: transform $transition-base;
+  @include custom-scrollbar;
+  overflow-y: auto;
+
+  @include respond-to(lg) {
+    position: sticky;
+    transform: none;
+    z-index: $z-base;
+  }
+}
+
+.sidebarOpen {
+  transform: translateX(0);
+}
+
+.sidebarHeader {
+  @include flex-between;
+  padding: $space-5 $space-5;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  text-decoration: none;
+
+  svg {
+    color: var(--primary);
+  }
+}
+
+.sidebarClose {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-lg;
+  color: var(--text-muted);
+  background: transparent;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.sidebarNav {
+  flex: 1;
+  padding: $space-4;
+
+  ul {
+    @include flex-column;
+    gap: $space-1;
+    list-style: none;
+  }
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+}
+
+.navItemActive {
+  background-color: var(--primary-light);
+  color: var(--primary);
+
+  &:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+  }
+}
+
+.navIcon {
+  @include flex-center;
+  flex-shrink: 0;
+}
+
+.sidebarFooter {
+  padding: $space-4;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  width: 100%;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--danger);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: var(--danger-light);
+  }
+}
+
+// ─── Main Content ─────────────────────────────────────────────────────────────
+.main {
+  flex: 1;
+  @include flex-column;
+  min-width: 0;
+
+  @include respond-to(lg) {
+    margin-left: 0;
+  }
+}
+
+.topBar {
+  @include flex-between;
+  height: $navbar-height;
+  padding: 0 $space-6;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  gap: $space-4;
+  position: sticky;
+  top: 0;
+  z-index: $z-raised;
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.menuBtn {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-lg;
+  color: var(--text-secondary);
+  background: transparent;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.topBarTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.content {
+  flex: 1;
+  padding: $space-6;
+  max-width: 1200px;
+  width: 100%;
+
+  @include respond-to(md) {
+    padding: $space-8;
+  }
+}

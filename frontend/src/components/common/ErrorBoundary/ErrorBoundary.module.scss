@@ -1,0 +1,97 @@
+.container {
+  min-height: 60vh;
+  @include flex-center;
+  padding: $space-6;
+}
+
+.card {
+  @include card-base;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  @include flex-column-center;
+  gap: $space-4;
+}
+
+.iconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: $radius-full;
+  background-color: var(--danger-light);
+  @include flex-center;
+}
+
+.icon {
+  color: var(--danger);
+}
+
+.title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.message {
+  color: var(--text-secondary);
+  font-size: $font-size-base;
+  line-height: $line-height-relaxed;
+}
+
+.details {
+  width: 100%;
+  text-align: left;
+
+  summary {
+    cursor: pointer;
+    font-size: $font-size-sm;
+    color: var(--text-muted);
+    margin-bottom: $space-2;
+  }
+}
+
+.errorText {
+  font-size: $font-size-xs;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  padding: $space-3;
+  overflow-x: auto;
+  color: var(--danger);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.actions {
+  display: flex;
+  gap: $space-3;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.retryBtn {
+  @include button-base;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: $font-size-sm;
+  padding: $space-3 $space-5;
+  border-radius: $radius-lg;
+
+  &:hover {
+    background-color: var(--primary-dark);
+  }
+}
+
+.homeBtn {
+  @include button-base;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  font-size: $font-size-sm;
+  padding: $space-3 $space-5;
+  border-radius: $radius-lg;
+
+  &:hover {
+    background-color: var(--bg-tertiary);
+  }
+}

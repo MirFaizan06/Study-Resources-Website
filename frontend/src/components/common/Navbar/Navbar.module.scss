@@ -1,0 +1,415 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+}
+
+.scrolled {
+  border-bottom-color: var(--navbar-border);
+  box-shadow: var(--navbar-shadow);
+}
+
+.nav {
+  @include container;
+}
+
+.inner {
+  @include flex-between;
+  height: $navbar-height;
+  gap: $space-4;
+}
+
+// ─── Logo ─────────────────────────────────────────────────────────────────────
+.logo {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  text-decoration: none;
+  flex-shrink: 0;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.logoIcon {
+  color: var(--primary);
+}
+
+.logoText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logoAccent {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-muted);
+  display: none;
+
+  @include respond-to(sm) {
+    display: inline;
+  }
+}
+
+// ─── Desktop Links ────────────────────────────────────────────────────────────
+.links {
+  display: none;
+  align-items: center;
+  gap: $space-1;
+  list-style: none;
+
+  @include respond-to(lg) {
+    display: flex;
+  }
+}
+
+.link {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  transition: color $transition-fast, background-color $transition-fast;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    text-decoration: none;
+  }
+}
+
+.linkActive {
+  color: var(--primary);
+  background-color: var(--primary-light);
+
+  &:hover {
+    color: var(--primary-dark);
+    background-color: var(--primary-light);
+  }
+}
+
+// ─── Actions ──────────────────────────────────────────────────────────────────
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.iconBtn {
+  @include flex-center;
+  gap: $space-1;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 $space-2;
+  border-radius: $radius-lg;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: color $transition-fast, background-color $transition-fast;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// ─── Language switcher ────────────────────────────────────────────────────────
+.langSwitcher {
+  position: relative;
+  display: none;
+
+  @include respond-to(md) {
+    display: block;
+  }
+}
+
+.langBtn {
+  gap: $space-1;
+  padding: 0 $space-2;
+}
+
+.langBtnLabel {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  max-width: 64px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  transition: transform $transition-fast;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.langDropdown {
+  position: absolute;
+  top: calc(100% + $space-2);
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  box-shadow: var(--shadow-lg);
+  min-width: 180px;
+  list-style: none;
+  overflow: hidden;
+  z-index: $z-dropdown;
+  padding: $space-1;
+}
+
+.langDropdownHeader {
+  padding: $space-2 $space-3 $space-1;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}
+
+.langOption {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  width: 100%;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+  text-align: left;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.langOptionActive {
+  background-color: var(--primary-light);
+  color: var(--primary);
+
+  &:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+  }
+}
+
+.langNative {
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  flex: 1;
+}
+
+.langEnglish {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.langCheck {
+  font-size: $font-size-xs;
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-left: $space-1;
+}
+
+// ─── Hamburger ────────────────────────────────────────────────────────────────
+.hamburger {
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+// ─── Search Bar expansion ─────────────────────────────────────────────────────
+.searchBar {
+  overflow: hidden;
+  border-top: 1px solid var(--border-color);
+}
+
+.searchInner {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 0;
+}
+
+.searchIcon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: $font-size-base;
+  outline: none;
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+}
+
+.searchClear {
+  @include flex-center;
+  width: 26px;
+  height: 26px;
+  border-radius: $radius-full;
+  color: var(--text-muted);
+  background: transparent;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+// ─── Mobile Menu ──────────────────────────────────────────────────────────────
+.mobileMenu {
+  overflow: hidden;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  padding: $space-4;
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.mobileLinks {
+  @include flex-column;
+  gap: $space-1;
+  list-style: none;
+}
+
+.mobileLink {
+  display: block;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  transition: color $transition-fast, background-color $transition-fast;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+  }
+}
+
+.mobileLinkActive {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.mobileSearch {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-top: $space-4;
+  padding: $space-3 $space-4;
+  background-color: var(--bg-secondary);
+  border-radius: $radius-xl;
+  border: 1px solid var(--border-color);
+}
+
+.mobileSearchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: $font-size-sm;
+  outline: none;
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+}
+
+.mobileExtras {
+  @include flex-between;
+  margin-top: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid var(--border-color);
+  gap: $space-3;
+  flex-wrap: wrap;
+}
+
+.mobileLang {
+  display: flex;
+  gap: $space-1;
+  flex-wrap: wrap;
+}
+
+.mobileLangBtn {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  padding: $space-1 $space-3;
+  border-radius: $radius-lg;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+.mobileLangActive {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-light);
+}
+
+.mobileThemeBtn {
+  @include flex-center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}

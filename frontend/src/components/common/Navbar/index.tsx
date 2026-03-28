@@ -1,0 +1,314 @@
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  BookOpen,
+  Sun,
+  Moon,
+  Menu,
+  X,
+  Globe,
+  ChevronDown,
+  Search,
+} from 'lucide-react'
+import { useTheme } from '@/hooks/useTheme'
+import { useLocale } from '@/hooks/useLocale'
+import { useDebounce } from '@/hooks/useDebounce'
+import { SUPPORTED_LOCALES, type LocaleCode } from '@/i18n'
+import styles from './Navbar.module.scss'
+
+const LOCALE_LABELS: Record<LocaleCode, { native: string; english: string }> = {
+  en:  { native: 'English',  english: 'English'  },
+  ur:  { native: 'اردو',     english: 'Urdu'     },
+  ks:  { native: 'کٲشُر',    english: 'Kashmiri' },
+  hi:  { native: 'हिंदी',    english: 'Hindi'    },
+  pa:  { native: 'ਪੰਜਾਬੀ',   english: 'Punjabi'  },
+  doi: { native: 'डोगरी',    english: 'Dogri'    },
+}
+
+export function Navbar(): React.ReactElement {
+  const { theme, toggleTheme } = useTheme()
+  const { t, locale, setLocale } = useLocale()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [langOpen, setLangOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const debouncedSearch = useDebounce(searchQuery, 400)
+  const langRef = useRef<HTMLDivElement>(null)
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false)
+    setSearchOpen(false)
+    setLangOpen(false)
+  }, [location.pathname])
+
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Close lang dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Navigate on debounced search
+  useEffect(() => {
+    if (debouncedSearch.trim().length > 1) {
+      navigate(`/${locale}/browse?q=${encodeURIComponent(debouncedSearch.trim())}`)
+    }
+  }, [debouncedSearch]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const navLinks = [
+    { href: `/${locale}/`, label: t.nav.home },
+    { href: `/${locale}/browse`, label: t.nav.browse },
+    { href: `/${locale}/contribute`, label: t.nav.contribute },
+    { href: `/${locale}/request`, label: t.nav.request },
+    { href: `/${locale}/about`, label: t.nav.about },
+  ]
+
+  const isActive = (href: string) => {
+    if (href === `/${locale}/`) return location.pathname === href
+    return location.pathname.startsWith(href)
+  }
+
+  return (
+    <header
+      className={[styles.header, isScrolled ? styles.scrolled : ''].join(' ')}
+    >
+      <nav className={styles.nav} aria-label="Main navigation">
+        <div className={styles.inner}>
+          {/* Logo */}
+          <Link to={`/${locale}/`} className={styles.logo} aria-label="NotesHub Kashmir - Home">
+            <BookOpen size={22} className={styles.logoIcon} aria-hidden="true" />
+            <span className={styles.logoText}>NotesHub</span>
+            <span className={styles.logoAccent}>Kashmir</span>
+          </Link>
+
+          {/* Desktop Nav Links */}
+          <ul className={styles.links} role="list">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  to={link.href}
+                  className={[
+                    styles.link,
+                    isActive(link.href) ? styles.linkActive : '',
+                  ].join(' ')}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop Actions */}
+          <div className={styles.actions}>
+            {/* Search toggle */}
+            <button
+              className={styles.iconBtn}
+              onClick={() => setSearchOpen((p) => !p)}
+              aria-label="Toggle search"
+              aria-expanded={searchOpen}
+            >
+              <Search size={18} />
+            </button>
+
+            {/* Language Switcher */}
+            <div className={styles.langSwitcher} ref={langRef}>
+              <button
+                className={[styles.iconBtn, styles.langBtn].join(' ')}
+                onClick={() => setLangOpen((p) => !p)}
+                aria-label="Change language"
+                aria-expanded={langOpen}
+                aria-haspopup="listbox"
+              >
+                <Globe size={16} />
+                <span className={styles.langBtnLabel}>{LOCALE_LABELS[locale].native}</span>
+                <ChevronDown
+                  size={13}
+                  className={[styles.chevron, langOpen ? styles.chevronOpen : ''].join(' ')}
+                />
+              </button>
+
+              <AnimatePresence>
+                {langOpen && (
+                  <motion.ul
+                    role="listbox"
+                    aria-label="Select language"
+                    className={styles.langDropdown}
+                    initial={{ opacity: 0, scale: 0.97, y: -6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.97, y: -6 }}
+                    transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
+                  >
+                    <li className={styles.langDropdownHeader}>Language</li>
+                    {SUPPORTED_LOCALES.map((code) => (
+                      <li key={code} role="option" aria-selected={code === locale}>
+                        <button
+                          className={[
+                            styles.langOption,
+                            code === locale ? styles.langOptionActive : '',
+                          ].join(' ')}
+                          onClick={() => {
+                            setLocale(code)
+                            setLangOpen(false)
+                          }}
+                        >
+                          <span className={styles.langNative}>{LOCALE_LABELS[code].native}</span>
+                          <span className={styles.langEnglish}>{LOCALE_LABELS[code].english}</span>
+                          {code === locale && (
+                            <span className={styles.langCheck} aria-hidden="true">✓</span>
+                          )}
+                        </button>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Theme Toggle */}
+            <button
+              className={styles.iconBtn}
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+
+            {/* Mobile hamburger */}
+            <button
+              className={[styles.iconBtn, styles.hamburger].join(' ')}
+              onClick={() => setMobileOpen((p) => !p)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+            >
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Search Bar expansion */}
+        <AnimatePresence>
+          {searchOpen && (
+            <motion.div
+              className={styles.searchBar}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className={styles.searchInner}>
+                <Search size={18} className={styles.searchIcon} aria-hidden="true" />
+                <input
+                  type="search"
+                  className={styles.searchInput}
+                  placeholder={t.nav.search}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                  aria-label={t.nav.search}
+                />
+                {searchQuery && (
+                  <button
+                    className={styles.searchClear}
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Clear search"
+                  >
+                    <X size={15} />
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-menu"
+            className={styles.mobileMenu}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <ul className={styles.mobileLinks} role="list">
+              {navLinks.map((link, i) => (
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.06 }}
+                >
+                  <Link
+                    to={link.href}
+                    className={[
+                      styles.mobileLink,
+                      isActive(link.href) ? styles.mobileLinkActive : '',
+                    ].join(' ')}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* Mobile search */}
+            <div className={styles.mobileSearch}>
+              <Search size={16} className={styles.searchIcon} aria-hidden="true" />
+              <input
+                type="search"
+                className={styles.mobileSearchInput}
+                placeholder={t.nav.search}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* Mobile lang + theme */}
+            <div className={styles.mobileExtras}>
+              <div className={styles.mobileLang}>
+                {SUPPORTED_LOCALES.map((code) => (
+                  <button
+                    key={code}
+                    className={[
+                      styles.mobileLangBtn,
+                      code === locale ? styles.mobileLangActive : '',
+                    ].join(' ')}
+                    onClick={() => setLocale(code)}
+                    title={LOCALE_LABELS[code].english}
+                  >
+                    {LOCALE_LABELS[code].native}
+                  </button>
+                ))}
+              </div>
+              <button className={styles.mobileThemeBtn} onClick={toggleTheme}>
+                {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+                {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  )
+}

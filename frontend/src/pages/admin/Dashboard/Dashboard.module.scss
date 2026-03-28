@@ -1,0 +1,204 @@
+.page {
+  @include flex-column;
+  gap: $space-8;
+}
+
+.pageHeader {
+  @include flex-column;
+  gap: $space-1;
+}
+
+.pageTitle {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: $font-size-base;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0 0 $space-5;
+}
+
+// ─── Stats grid ───────────────────────────────────────────────────────────────
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-4;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.statCard {
+  @include card-base;
+  @include flex-column;
+  gap: $space-3;
+  position: relative;
+  overflow: hidden;
+  padding: $space-5;
+  border-left: 4px solid var(--primary);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, var(--primary-lighter) 100%);
+    opacity: 0.3;
+  }
+}
+
+.color-blue { border-left-color: var(--primary); }
+.color-green { border-left-color: var(--accent); }
+.color-orange { border-left-color: var(--orange); }
+.color-purple { border-left-color: var(--secondary); }
+.color-default { border-left-color: var(--border-strong); }
+
+.statIcon {
+  color: var(--primary);
+
+  .color-green & { color: var(--accent); }
+  .color-orange & { color: var(--orange); }
+  .color-purple & { color: var(--secondary); }
+  .color-default & { color: var(--text-muted); }
+}
+
+.statContent {
+  @include flex-column;
+  gap: $space-1;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statValue {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.statSkeleton {
+  display: inline-block;
+  width: 60px;
+  height: 32px;
+  border-radius: $radius-md;
+  @include skeleton;
+}
+
+.statTrend {
+  position: absolute;
+  bottom: $space-4;
+  right: $space-4;
+  color: var(--text-muted);
+  opacity: 0.3;
+}
+
+// ─── Quick actions ────────────────────────────────────────────────────────────
+.quickActions {
+  @include flex-column;
+}
+
+.actionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.actionCard {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-5;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-xl;
+  text-decoration: none;
+  transition: box-shadow $transition-base, transform $transition-fast, border-color $transition-fast;
+  box-shadow: var(--shadow-sm);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    text-decoration: none;
+
+    .actionArrow {
+      transform: translateX(4px);
+      color: var(--primary);
+    }
+  }
+}
+
+.actionIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-xl;
+  @include flex-center;
+  flex-shrink: 0;
+}
+
+.actionIconBlue {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.actionIconPurple {
+  background-color: var(--secondary-light);
+  color: var(--secondary);
+}
+
+.actionIconGreen {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.actionInfo {
+  @include flex-column;
+  gap: $space-1;
+  flex: 1;
+}
+
+.actionTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.actionDesc {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.actionArrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform $transition-fast, color $transition-fast;
+}

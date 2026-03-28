@@ -1,0 +1,449 @@
+.page {
+  @include flex-column;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--primary-lighter) 50%,
+    var(--bg-primary) 100%
+  );
+  overflow: hidden;
+  padding-block: $space-16 $space-20;
+
+  @include respond-to(lg) {
+    padding-block: $space-20 $space-24;
+  }
+}
+
+.heroPattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, var(--primary-light) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--secondary-light) 0%, transparent 40%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.heroContent {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-10;
+  align-items: center;
+  position: relative;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr 1fr;
+    gap: $space-12;
+  }
+}
+
+.heroText {
+  @include flex-column;
+  gap: $space-6;
+  max-width: 600px;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  width: fit-content;
+}
+
+.heroTitle {
+  font-size: clamp($font-size-3xl, 6vw, $font-size-5xl);
+  font-weight: $font-weight-extrabold;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+
+  @include gradient-text(var(--primary), var(--secondary));
+}
+
+.heroSubtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  max-width: 520px;
+}
+
+.heroCta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  align-items: center;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background-color: var(--primary);
+  color: #ffffff;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  padding: $space-4 $space-6;
+  border-radius: $radius-lg;
+  text-decoration: none;
+  transition: background-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+
+  &:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: #ffffff;
+  }
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background-color: transparent;
+  color: var(--text-primary);
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  padding: $space-4 $space-6;
+  border-radius: $radius-lg;
+  border: 1.5px solid var(--border-strong);
+  text-decoration: none;
+  transition: background-color $transition-fast, border-color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--primary);
+    color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+.heroStats {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding-top: $space-2;
+  flex-wrap: wrap;
+}
+
+.heroStat {
+  @include flex-column;
+  gap: 2px;
+}
+
+.heroStatNumber {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.heroStatLabel {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.heroStatDivider {
+  width: 1px;
+  height: 40px;
+  background-color: var(--border-color);
+}
+
+.heroIllustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include respond-below(lg) {
+    display: none;
+  }
+}
+
+.heroImg {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: $radius-2xl;
+  filter: drop-shadow(0 20px 40px rgba(37, 99, 235, 0.15));
+}
+
+// ─── Section base ─────────────────────────────────────────────────────────────
+.section {
+  padding-block: $space-16;
+}
+
+.sectionAlt {
+  background-color: var(--bg-secondary);
+}
+
+.sectionInner {
+  @include container;
+}
+
+.sectionHeader {
+  @include flex-between;
+  align-items: flex-start;
+  gap: $space-4;
+  margin-bottom: $space-8;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0 0 $space-1;
+}
+
+.sectionSubtitle {
+  font-size: $font-size-base;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: var(--primary-light);
+    text-decoration: none;
+  }
+}
+
+// ─── Institutions grid ────────────────────────────────────────────────────────
+.institutionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.institutionCard {
+  @include card-base;
+  @include flex-column;
+  gap: $space-3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: box-shadow $transition-base, transform $transition-base, border-color $transition-base;
+  border: 1.5px solid var(--border-color);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    text-decoration: none;
+
+    .browseBtn {
+      color: var(--primary);
+    }
+  }
+}
+
+.institutionCardTop {
+  @include flex-between;
+  align-items: flex-start;
+}
+
+.institutionIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: $radius-xl;
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+  @include flex-center;
+  color: var(--primary);
+  overflow: hidden;
+}
+
+.institutionLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: $radius-xl;
+}
+
+.institutionName {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  line-height: $line-height-snug;
+  margin: 0;
+  @include line-clamp(2);
+}
+
+.institutionMeta {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.browseBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  transition: color $transition-fast;
+  margin-top: auto;
+}
+
+// ─── Carousel ─────────────────────────────────────────────────────────────────
+.carousel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+  overflow-x: auto;
+  @include custom-scrollbar;
+  padding-bottom: $space-2;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.carouselItem {
+  min-width: 0;
+}
+
+// ─── Resources grid ───────────────────────────────────────────────────────────
+.resourcesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ─── Ad row ───────────────────────────────────────────────────────────────────
+.adRow {
+  @include container;
+  padding-block: $space-2;
+}
+
+// ─── CTA Banner ───────────────────────────────────────────────────────────────
+.ctaBanner {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  padding-block: $space-16;
+}
+
+.ctaBannerInner {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-8;
+  flex-wrap: wrap;
+}
+
+.ctaBannerText {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.ctaBannerTitle {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+.ctaBannerSubtitle {
+  font-size: $font-size-base;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.ctaBannerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background-color: #ffffff;
+  color: var(--primary);
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  padding: $space-4 $space-8;
+  border-radius: $radius-lg;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color $transition-fast, transform $transition-fast;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: var(--primary-dark);
+  }
+}
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+.skeletonCard {
+  @include card-base;
+  @include flex-column;
+  gap: $space-2;
+}
+
+.skeletonLine {
+  @include skeleton;
+  height: 16px;
+  border-radius: $radius-md;
+}
+
+.emptyMessage {
+  color: var(--text-muted);
+  text-align: center;
+  padding: $space-12;
+  font-size: $font-size-base;
+}

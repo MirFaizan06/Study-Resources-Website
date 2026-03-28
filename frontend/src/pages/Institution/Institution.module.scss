@@ -1,0 +1,197 @@
+.page {
+  padding-block: $space-8 $space-16;
+}
+
+.container {
+  @include container;
+  @include flex-column;
+  gap: $space-8;
+}
+
+// ─── Institution Header ────────────────────────────────────────────────────────
+.institutionHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-6;
+  padding: $space-8;
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-card));
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.institutionIconWrap {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-xl;
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+  @include flex-center;
+  color: var(--primary);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.institutionLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: $space-2;
+}
+
+.institutionInfo {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.institutionTitleRow {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+}
+
+.institutionTitle {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.institutionMeta {
+  font-size: $font-size-base;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// ─── Programs section ─────────────────────────────────────────────────────────
+.sectionTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0 0 $space-6;
+}
+
+.programsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.programCard {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-5;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-xl;
+  text-decoration: none;
+  transition: box-shadow $transition-base, transform $transition-base, border-color $transition-fast;
+  box-shadow: var(--shadow-sm);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    text-decoration: none;
+
+    .programArrow {
+      transform: translateX(3px);
+      color: var(--primary);
+    }
+  }
+}
+
+.programCardIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-lg;
+  background-color: var(--primary-light);
+  @include flex-center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.programInfo {
+  @include flex-column;
+  gap: $space-1;
+  flex: 1;
+  min-width: 0;
+}
+
+.programName {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+  @include truncate;
+}
+
+.programMeta {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.programArrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform $transition-fast, color $transition-fast;
+}
+
+// ─── States ───────────────────────────────────────────────────────────────────
+.errorState {
+  @include flex-column-center;
+  gap: $space-4;
+  padding: $space-16;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.backLink {
+  color: var(--primary);
+  font-weight: $font-weight-medium;
+}
+
+.emptyMessage {
+  color: var(--text-muted);
+  text-align: center;
+  padding: $space-12;
+}
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+.skeleton {
+  @include flex-column;
+  gap: $space-8;
+}
+
+.skeletonHeader {
+  height: 120px;
+  border-radius: $radius-2xl;
+  @include skeleton;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-3;
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skeletonCard {
+  height: 80px;
+  border-radius: $radius-xl;
+  @include skeleton;
+}

@@ -1,0 +1,81 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+  z-index: $z-modal;
+  @include flex-center;
+  padding: $space-4;
+}
+
+.dialog {
+  background-color: var(--bg-card);
+  border-radius: $radius-2xl;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-2xl);
+  width: 100%;
+  max-height: calc(100vh - 2 * $space-4);
+  overflow-y: auto;
+  position: relative;
+  @include custom-scrollbar;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.size-sm {
+  max-width: 400px;
+}
+
+.size-md {
+  max-width: 560px;
+}
+
+.size-lg {
+  max-width: 720px;
+}
+
+.header {
+  @include flex-between;
+  padding: $space-6;
+  border-bottom: 1px solid var(--border-color);
+  gap: $space-4;
+}
+
+.title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.closeBtn {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-lg;
+  color: var(--text-muted);
+  background: transparent;
+  transition: background-color $transition-fast, color $transition-fast;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.closeBtnAbsolute {
+  position: absolute;
+  top: $space-4;
+  right: $space-4;
+}
+
+.body {
+  padding: $space-6;
+}

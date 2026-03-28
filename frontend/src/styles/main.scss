@@ -1,0 +1,55 @@
+// Global styles
+// Note: abstracts (_functions, _variables, _mixins) are auto-injected by
+// vite.config.ts additionalData into every SCSS file, so no @use needed here.
+
+// CSS Custom Properties (themes)
+@import 'themes/light';
+@import 'themes/dark';
+
+// Base reset + typography
+@import 'base/reset';
+@import 'base/typography';
+
+// ─── App shell ────────────────────────────────────────────────────────────────
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+}
+
+// ─── Skip to content link (accessibility) ─────────────────────────────────────
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: $space-4;
+  background-color: var(--primary);
+  color: #fff;
+  padding: $space-2 $space-4;
+  border-radius: $radius-md;
+  font-weight: $font-weight-semibold;
+  z-index: $z-toast;
+  text-decoration: none;
+
+  &:focus {
+    top: $space-4;
+  }
+}
+
+// ─── Utility classes ──────────────────────────────────────────────────────────
+.sr-only {
+  @include sr-only;
+}
+
+.container {
+  @include container;
+}
+
+// ─── Loading spinner (global) ─────────────────────────────────────────────────
+@keyframes global-spin {
+  to { transform: rotate(360deg); }
+}

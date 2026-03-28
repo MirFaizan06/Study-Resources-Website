@@ -1,0 +1,464 @@
+.page {
+  padding-block: $space-8 $space-16;
+}
+
+.container {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-8;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr 300px;
+    align-items: start;
+  }
+
+  // Make header/stepper span full width
+  > .pageHeader,
+  > .stepper {
+    @include respond-to(lg) {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.pageHeader {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.pageTitle {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ─── Stepper ──────────────────────────────────────────────────────────────────
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+  padding: $space-4 $space-6;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+}
+
+.stepperItem {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  opacity: 0.4;
+  transition: opacity $transition-fast;
+}
+
+.stepperActive,
+.stepperDone {
+  opacity: 1;
+}
+
+.stepperNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  @include flex-center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+
+  .stepperActive & {
+    background-color: var(--primary);
+    color: #ffffff;
+  }
+
+  .stepperDone & {
+    background-color: var(--accent);
+    color: #ffffff;
+  }
+}
+
+.stepperText {
+  @include flex-column;
+  gap: 1px;
+}
+
+.stepperLabel {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.stepperDesc {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  display: none;
+
+  @include respond-to(md) {
+    display: block;
+  }
+}
+
+.stepperArrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+// ─── Form area ────────────────────────────────────────────────────────────────
+.formArea {
+  @include card-base;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.formStep {
+  @include flex-column;
+  gap: $space-5;
+}
+
+.stepTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0 0 $space-2;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid var(--border-color);
+}
+
+// ─── Form fields ──────────────────────────────────────────────────────────────
+.fieldGroup {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.required {
+  color: var(--danger);
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: $space-3 $space-4;
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: $radius-lg;
+  color: var(--text-primary);
+  font-size: $font-size-base;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  outline: none;
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  &:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--bg-secondary);
+  }
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-3 center;
+  padding-right: $space-10;
+  cursor: pointer;
+}
+
+.inputError,
+.selectError {
+  border-color: var(--danger);
+
+  &:focus {
+    box-shadow: 0 0 0 3px var(--danger-light);
+  }
+}
+
+.fieldError {
+  font-size: $font-size-xs;
+  color: var(--danger);
+  font-weight: $font-weight-medium;
+}
+
+.fieldHelp {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-1;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  line-height: $line-height-relaxed;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}
+
+// ─── Checkbox ─────────────────────────────────────────────────────────────────
+.checkboxGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-4;
+  background-color: var(--bg-secondary);
+  border-radius: $radius-lg;
+  border: 1px solid var(--border-color);
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: $radius-sm;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkboxLabel {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.checkboxHelp {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  margin: $space-1 0 0;
+}
+
+// ─── Step actions ─────────────────────────────────────────────────────────────
+.stepActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding-top: $space-4;
+  border-top: 1px solid var(--border-color);
+}
+
+// ─── Review card ──────────────────────────────────────────────────────────────
+.reviewCard {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  overflow: hidden;
+}
+
+.reviewRow {
+  @include flex-between;
+  padding: $space-3 $space-5;
+  gap: $space-4;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.reviewKey {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.reviewValue {
+  font-size: $font-size-sm;
+  color: var(--text-primary);
+  text-align: right;
+  word-break: break-all;
+}
+
+.reviewLink {
+  font-size: $font-size-sm;
+  color: var(--primary);
+}
+
+.reviewNote {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  background-color: var(--warning-light);
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  margin: 0;
+}
+
+.submitError {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--danger);
+  background-color: var(--danger-light);
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+}
+
+// ─── Success state ────────────────────────────────────────────────────────────
+.successState {
+  @include flex-column-center;
+  gap: $space-5;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.successImg {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-full;
+  background-color: var(--accent-light);
+  @include flex-center;
+  color: var(--accent);
+}
+
+.successTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.successMessage {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin: 0;
+}
+
+// ─── Guidelines ───────────────────────────────────────────────────────────────
+.guidelines {
+  @include card-base;
+  @include flex-column;
+  gap: $space-4;
+  height: fit-content;
+}
+
+.guidelinesTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.guidelinesList {
+  @include flex-column;
+  gap: $space-3;
+  list-style: none;
+}
+
+.guidelinesItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
+
+.guidelinesIcon {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+// ─── Naming convention guide ──────────────────────────────────────────────────
+.namingGuide {
+  @include flex-column;
+  gap: $space-3;
+  padding-top: $space-4;
+  border-top: 1px solid var(--border-color);
+}
+
+.namingGuideTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.namingGuideSubtitle {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: $line-height-relaxed;
+}
+
+.namingItem {
+  @include flex-column;
+  gap: $space-1;
+  padding: $space-3;
+  background-color: var(--bg-secondary);
+  border-radius: $radius-lg;
+  border: 1px solid var(--border-color);
+}
+
+.namingLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.namingFormat {
+  font-size: $font-size-xs;
+  font-family: $font-family-mono;
+  color: var(--text-primary);
+  background-color: var(--bg-card);
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
+  word-break: break-all;
+}
+
+.namingExample {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.namingCategories {
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: $font-weight-medium;
+}

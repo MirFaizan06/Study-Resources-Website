@@ -1,0 +1,9 @@
+// Convert px to rem
+@function rem($px) {
+  @return #{math.div($px, 16)}rem;
+}
+
+// Fluid type clamping helper
+@function clamp-fluid($min, $max) {
+  @return clamp(#{$min}, calc(#{$min} + (#{$max} - #{$min}) * ((100vw - 320px) / (1280 - 320))), #{$max});
+}

@@ -1,0 +1,36 @@
+.adContainer {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.adUnit {
+  width: 100%;
+  min-height: 90px;
+}
+
+// Dev-only placeholder
+.adPlaceholder {
+  width: 100%;
+  min-height: 90px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg-secondary),
+    var(--bg-secondary) 10px,
+    var(--border-color) 10px,
+    var(--border-color) 20px
+  );
+  border: 1px dashed var(--border-color);
+  border-radius: $radius-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.4;
+}
+
+.adLabel {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  font-family: $font-family-mono;
+}

@@ -1,0 +1,130 @@
+.page {
+  min-height: 100vh;
+  @include flex-center;
+  background: linear-gradient(
+    135deg,
+    var(--primary-lighter) 0%,
+    var(--bg-secondary) 100%
+  );
+  padding: $space-6;
+}
+
+.card {
+  @include card-base;
+  width: 100%;
+  max-width: 440px;
+  padding: $space-10;
+}
+
+.header {
+  @include flex-column;
+  align-items: center;
+  gap: $space-3;
+  text-align: center;
+  margin-bottom: $space-8;
+}
+
+.logoWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-xl;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  @include flex-center;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.form {
+  @include flex-column;
+  gap: $space-5;
+}
+
+.fieldGroup {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: $space-4;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: $space-3 $space-4 $space-3 $space-10;
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: $radius-lg;
+  color: var(--text-primary);
+  font-size: $font-size-base;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  outline: none;
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  &:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+}
+
+.inputWithToggle {
+  padding-right: $space-10;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: $space-3;
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  color: var(--text-muted);
+  background: transparent;
+  transition: color $transition-fast, background-color $transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+  }
+}
+
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--danger);
+  background-color: var(--danger-light);
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+}

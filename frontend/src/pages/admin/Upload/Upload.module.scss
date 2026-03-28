@@ -1,0 +1,320 @@
+.page {
+  @include flex-column;
+  gap: $space-6;
+}
+
+.pageHeader {
+  @include flex-column;
+  gap: $space-1;
+}
+
+.pageTitle {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: $font-size-base;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// ─── Form ─────────────────────────────────────────────────────────────────────
+.form {
+  @include flex-column;
+  gap: $space-6;
+  max-width: 900px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.fieldset {
+  @include card-base;
+  @include flex-column;
+  gap: $space-4;
+  border: none;
+}
+
+.legendTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: $space-2;
+  padding: 0;
+}
+
+.fieldGroup {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.req {
+  color: var(--danger);
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: $space-3 $space-4;
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: $radius-lg;
+  color: var(--text-primary);
+  font-size: $font-size-base;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  outline: none;
+
+  &::placeholder { color: var(--input-placeholder); }
+
+  &:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--bg-secondary);
+  }
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-3 center;
+  padding-right: $space-10;
+  cursor: pointer;
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkboxLabel {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+// ─── Drop zone ────────────────────────────────────────────────────────────────
+.dropZone {
+  border: 2px dashed var(--border-strong);
+  border-radius: $radius-2xl;
+  padding: $space-12;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--bg-secondary);
+  transition: border-color $transition-fast, background-color $transition-fast;
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--primary);
+    background-color: var(--primary-lighter);
+  }
+
+  &:focus {
+    @include focus-ring;
+  }
+}
+
+.dropZoneHasFile {
+  border-style: solid;
+  border-color: var(--accent);
+  background-color: var(--accent-light);
+}
+
+.fileInput {
+  @include sr-only;
+}
+
+.dropPlaceholder {
+  @include flex-column;
+  align-items: center;
+  gap: $space-3;
+}
+
+.dropIcon {
+  color: var(--primary);
+  opacity: 0.6;
+}
+
+.dropTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dropSubtitle {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.dropHelp {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// ─── File preview ─────────────────────────────────────────────────────────────
+.filePreview {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-4;
+  background-color: var(--bg-card);
+  border-radius: $radius-xl;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.fileIcon {
+  color: var(--danger);
+  flex-shrink: 0;
+}
+
+.fileInfo {
+  @include flex-column;
+  gap: $space-1;
+  flex: 1;
+  min-width: 0;
+}
+
+.fileName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  @include truncate;
+}
+
+.fileSize {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+}
+
+.fileRemove {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  color: var(--text-muted);
+  background: transparent;
+  flex-shrink: 0;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background-color: var(--danger-light);
+    color: var(--danger);
+  }
+}
+
+// ─── Progress ─────────────────────────────────────────────────────────────────
+.progressWrap {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.progressLabel {
+  @include flex-between;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+}
+
+.progressBar {
+  height: 8px;
+  background-color: var(--bg-tertiary);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: $radius-full;
+  transition: width 0.3s ease;
+}
+
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--danger);
+  background-color: var(--danger-light);
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+}
+
+.submitRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// ─── Success state ────────────────────────────────────────────────────────────
+.successState {
+  @include card-base;
+  @include flex-column-center;
+  gap: $space-5;
+  text-align: center;
+  padding: $space-16;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-full;
+  background-color: var(--accent-light);
+  @include flex-center;
+  color: var(--accent);
+}
+
+.successTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.successDesc {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: $line-height-relaxed;
+}

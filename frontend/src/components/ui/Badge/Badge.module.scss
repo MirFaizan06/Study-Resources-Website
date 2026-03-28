@@ -1,0 +1,51 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.025em;
+  border-radius: $radius-full;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+// ─── Sizes ────────────────────────────────────────────────────────────────────
+.size-sm {
+  font-size: $font-size-xs;
+  padding: 0.2rem 0.5rem;
+}
+
+.size-md {
+  font-size: $font-size-xs;
+  padding: 0.3rem 0.65rem;
+}
+
+// ─── Variants ─────────────────────────────────────────────────────────────────
+.variant-default {
+  background-color: var(--badge-default-bg);
+  color: var(--badge-default-text);
+}
+
+.variant-blue {
+  background-color: var(--badge-blue-bg);
+  color: var(--badge-blue-text);
+}
+
+.variant-orange {
+  background-color: var(--badge-orange-bg);
+  color: var(--badge-orange-text);
+}
+
+.variant-green {
+  background-color: var(--badge-green-bg);
+  color: var(--badge-green-text);
+}
+
+.variant-purple {
+  background-color: var(--badge-purple-bg);
+  color: var(--badge-purple-text);
+}
+
+.variant-red {
+  background-color: var(--badge-red-bg);
+  color: var(--badge-red-text);
+}

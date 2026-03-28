@@ -1,0 +1,96 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: $radius-full;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+}
+
+.size-sm {
+  .input {
+    font-size: $font-size-sm;
+    padding: $space-2 $space-3;
+  }
+
+  .searchIcon {
+    padding-left: $space-3;
+  }
+}
+
+.size-lg {
+  .input {
+    font-size: $font-size-base;
+    padding: $space-3 $space-4;
+  }
+
+  .searchIcon {
+    padding-left: $space-4;
+  }
+}
+
+.searchIcon {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  outline: none;
+  min-width: 0;
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  // Remove browser search cancel button
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+}
+
+.clearBtn {
+  @include flex-center;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-full;
+  margin-right: $space-2;
+  color: var(--text-muted);
+  background: transparent;
+  flex-shrink: 0;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+.submitBtn {
+  @include button-base;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: $font-size-sm;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  margin: 4px;
+  font-weight: $font-weight-semibold;
+
+  &:hover {
+    background-color: var(--primary-dark);
+  }
+}

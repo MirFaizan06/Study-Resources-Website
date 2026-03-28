@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow admin routes from indexing
+Disallow: /en/admin/
+Disallow: /ur/admin/
+Disallow: /ks/admin/
+Disallow: /hi/admin/
+Disallow: /pa/admin/
+
+# Sitemap location
+Sitemap: https://noteshubkashmir.in/sitemap.xml

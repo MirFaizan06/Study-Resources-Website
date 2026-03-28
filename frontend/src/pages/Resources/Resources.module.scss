@@ -1,0 +1,254 @@
+.page {
+  padding-block: $space-8 $space-16;
+}
+
+.container {
+  @include container;
+  @include flex-column;
+  gap: $space-6;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.pageHeader {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: $space-4;
+}
+
+.pageTitle {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0 0 $space-1;
+}
+
+.pageSubtitle {
+  font-size: $font-size-base;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// ─── Filter bar ───────────────────────────────────────────────────────────────
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+  padding: $space-4;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+}
+
+.searchWrap {
+  flex: 1;
+  min-width: 200px;
+}
+
+.typeTabs {
+  display: flex;
+  gap: $space-1;
+  flex-wrap: wrap;
+}
+
+.typeTab {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+  }
+}
+
+.typeTabActive {
+  background-color: var(--primary);
+  color: #ffffff;
+
+  &:hover {
+    background-color: var(--primary-dark);
+    color: #ffffff;
+  }
+}
+
+.sortWrap {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  position: relative;
+  color: var(--text-muted);
+}
+
+.sortSelect {
+  appearance: none;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-lg;
+  color: var(--text-primary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  padding: $space-2 $space-8 $space-2 $space-3;
+  cursor: pointer;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+}
+
+.selectChevron {
+  position: absolute;
+  right: $space-3;
+  pointer-events: none;
+  color: var(--text-muted);
+}
+
+// ─── Resources grid ───────────────────────────────────────────────────────────
+.resourcesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ─── Subjects / Semester view ─────────────────────────────────────────────────
+.semesterSection {
+  @include flex-column;
+  gap: $space-4;
+}
+
+.semesterTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+  padding-bottom: $space-3;
+  border-bottom: 2px solid var(--primary);
+  display: inline-block;
+}
+
+.subjectsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.subjectCard {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-4 $space-5;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-xl;
+  text-decoration: none;
+  transition: box-shadow $transition-base, transform $transition-base, border-color $transition-fast;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+.subjectBadges {
+  display: flex;
+  gap: $space-1;
+  flex-wrap: wrap;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.subjectIcon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.subjectName {
+  flex: 1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  @include truncate;
+}
+
+// ─── Empty state ──────────────────────────────────────────────────────────────
+.emptyState {
+  @include flex-column-center;
+  gap: $space-4;
+  padding: $space-20 $space-8;
+  text-align: center;
+}
+
+.emptyImg {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  max-height: 160px;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.85;
+}
+
+.emptyIcon {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.emptyTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.emptySubtitle {
+  font-size: $font-size-base;
+  color: var(--text-muted);
+  max-width: 360px;
+  margin: 0;
+}
+
+.emptyMessage {
+  color: var(--text-muted);
+  text-align: center;
+  padding: $space-12;
+}
+
+// ─── Load more ────────────────────────────────────────────────────────────────
+.loadMoreWrap {
+  @include flex-center;
+  padding-top: $space-4;
+}
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+.skeletonCard {
+  height: 180px;
+  border-radius: $radius-xl;
+  @include skeleton;
+}
