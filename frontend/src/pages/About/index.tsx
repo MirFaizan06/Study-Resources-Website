@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Search, Download, BookOpen, Heart, ExternalLink } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
+import { api } from '@/services/api'
+import type { PlatformStats } from '@/types'
 import styles from './About.module.scss'
 
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -13,6 +15,11 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 
 export default function About(): React.ReactElement {
   const { t } = useLocale()
+  const [platformStats, setPlatformStats] = useState<PlatformStats | null>(null)
+
+  useEffect(() => {
+    api.stats.get().then(setPlatformStats).catch(() => null)
+  }, [])
 
   useHead({
     title: t.seo.about.title,
@@ -101,19 +108,37 @@ export default function About(): React.ReactElement {
             Platform Statistics
           </h2>
           <div className={styles.statsGrid}>
-            {t.about.stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                className={styles.statCard}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-              >
-                <span className={styles.statValue}>{stat.value}</span>
-                <span className={styles.statLabel}>{stat.label}</span>
-              </motion.div>
-            ))}
+            {t.about.stats.map((stat, i) => {
+              let liveValue: string
+              if (!platformStats) {
+                liveValue = '—'
+              } else if (i === 0) {
+                liveValue = `${platformStats.totalResources.toLocaleString()}+`
+              } else if (i === 1) {
+                liveValue = platformStats.totalDownloads >= 1000
+                  ? `${Math.floor(platformStats.totalDownloads / 1000)}k+`
+                  : `${platformStats.totalDownloads}+`
+              } else if (i === 2) {
+                liveValue = `${platformStats.totalInstitutions}+`
+              } else if (i === 3) {
+                liveValue = `${platformStats.requestsFulfilled}+`
+              } else {
+                liveValue = '—'
+              }
+              return (
+                <motion.div
+                  key={i}
+                  className={styles.statCard}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <span className={styles.statValue}>{liveValue}</span>
+                  <span className={styles.statLabel}>{stat.label}</span>
+                </motion.div>
+              )
+            })}
           </div>
         </section>
 
@@ -147,7 +172,7 @@ export default function About(): React.ReactElement {
             </h2>
             <p className={styles.donateDescription}>{t.about.donate.description}</p>
             <a
-              href="https://rzp.io/l/noteshub-kasmir"
+              href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.donateBtn}

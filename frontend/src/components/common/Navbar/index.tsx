@@ -6,8 +6,10 @@ import {
   Menu,
   X,
   Search,
-  SlidersHorizontal,
+  Globe,
+  Palette,
   Check,
+  ChevronDown,
 } from 'lucide-react'
 import { useThemeContext } from '@/contexts/ThemeContext'
 import { useLocale } from '@/hooks/useLocale'
@@ -26,10 +28,18 @@ const LOCALE_LABELS: Record<LocaleCode, { native: string; english: string }> = {
 }
 
 const THEME_META: Record<Theme, { label: string; swatch: string }> = {
-  orange:      { label: 'Warm',      swatch: '#ea580c' },
-  'orange-dark': { label: 'Warm Dark', swatch: '#7a2e08' },
-  light:       { label: 'Light',     swatch: '#2563eb' },
-  dark:        { label: 'Dark',      swatch: '#0f172a' },
+  orange:        { label: 'Warm',         swatch: '#ea580c' },
+  'orange-dark': { label: 'Warm Dark',    swatch: '#7a2e08' },
+  teal:          { label: 'Teal',         swatch: '#0d9488' },
+  'teal-dark':   { label: 'Teal Dark',    swatch: '#061a18' },
+  rose:          { label: 'Rose',         swatch: '#e11d48' },
+  'rose-dark':   { label: 'Rose Dark',    swatch: '#1a0009' },
+  indigo:        { label: 'Indigo',       swatch: '#4f46e5' },
+  'indigo-dark': { label: 'Indigo Dark',  swatch: '#0d0b2e' },
+  emerald:       { label: 'Emerald',      swatch: '#059669' },
+  'emerald-dark':{ label: 'Emerald Dark', swatch: '#061a12' },
+  light:         { label: 'Light',        swatch: '#2563eb' },
+  dark:          { label: 'Dark',         swatch: '#0f172a' },
 }
 
 export function Navbar(): React.ReactElement {
@@ -40,17 +50,20 @@ export function Navbar(): React.ReactElement {
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [langOpen, setLangOpen] = useState(false)
+  const [themeOpen, setThemeOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   const debouncedSearch = useDebounce(searchQuery, 400)
-  const settingsRef = useRef<HTMLDivElement>(null)
+  const langRef = useRef<HTMLDivElement>(null)
+  const themeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMobileOpen(false)
     setSearchOpen(false)
-    setSettingsOpen(false)
+    setLangOpen(false)
+    setThemeOpen(false)
   }, [location.pathname])
 
   useEffect(() => {
@@ -61,9 +74,8 @@ export function Navbar(): React.ReactElement {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
-        setSettingsOpen(false)
-      }
+      if (langRef.current && !langRef.current.contains(e.target as Node)) setLangOpen(false)
+      if (themeRef.current && !themeRef.current.contains(e.target as Node)) setThemeOpen(false)
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
@@ -78,7 +90,7 @@ export function Navbar(): React.ReactElement {
   const navLinks = [
     { href: `/${locale}/`, label: t.nav.home },
     { href: `/${locale}/browse`, label: t.nav.browse },
-    { href: `/${locale}/ai`, label: 'AI' },
+    { href: `/${locale}/ai`, label: t.nav.ai },
     { href: `/${locale}/contribute`, label: t.nav.contribute },
     { href: `/${locale}/request`, label: t.nav.request },
     { href: `/${locale}/about`, label: t.nav.about },
@@ -89,123 +101,146 @@ export function Navbar(): React.ReactElement {
     return location.pathname.startsWith(href)
   }
 
+  const panelVariants = {
+    hidden: { opacity: 0, scale: 0.97, y: -4 },
+    show:   { opacity: 1, scale: 1,    y: 0    },
+  }
+
   return (
-    <header
-      className={[styles.header, isScrolled ? styles.scrolled : ''].join(' ')}
-    >
+    <header className={[styles.header, isScrolled ? styles.scrolled : ''].join(' ')}>
       <nav className={styles.nav} aria-label="Main navigation">
         <div className={styles.inner}>
-          {/* Logo */}
-          <Link to={`/${locale}/`} className={styles.logo} aria-label="NotesHub Kashmir - Home">
-            <BookOpen size={22} className={styles.logoIcon} aria-hidden="true" />
+
+          {/* ─── Logo ─────────────────────────────────────────────────────── */}
+          <Link to={`/${locale}/`} className={styles.logo} aria-label="NotesHub Kashmir – Home">
+            <div className={styles.logoMark} aria-hidden="true">
+              <BookOpen size={16} />
+            </div>
             <span className={styles.logoText}>NotesHub</span>
-            <span className={styles.logoAccent}>Kashmir</span>
+            <span className={styles.logoSub}>Kashmir</span>
           </Link>
 
-          {/* Desktop Nav Links */}
+          {/* ─── Desktop Links ────────────────────────────────────────────── */}
           <ul className={styles.links} role="list">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   to={link.href}
-                  className={[
-                    styles.link,
-                    isActive(link.href) ? styles.linkActive : '',
-                  ].join(' ')}
+                  className={[styles.link, isActive(link.href) ? styles.linkActive : ''].join(' ')}
                 >
                   {link.label}
+                  {isActive(link.href) && <span className={styles.linkDot} aria-hidden="true" />}
                 </Link>
               </li>
             ))}
           </ul>
 
-          {/* Desktop Actions */}
+          {/* ─── Desktop Actions ──────────────────────────────────────────── */}
           <div className={styles.actions}>
-            {/* Search toggle */}
+            {/* Search */}
             <button
-              className={styles.iconBtn}
+              className={[styles.iconBtn, searchOpen ? styles.iconBtnActive : ''].join(' ')}
               onClick={() => setSearchOpen((p) => !p)}
-              aria-label="Toggle search"
+              aria-label="Search"
               aria-expanded={searchOpen}
             >
-              <Search size={18} />
+              <Search size={17} />
             </button>
 
-            {/* Settings Panel */}
-            <div className={styles.settingsWrap} ref={settingsRef}>
+            {/* Language dropdown */}
+            <div className={styles.dropdownWrap} ref={langRef}>
               <button
-                className={[styles.iconBtn, styles.settingsBtn].join(' ')}
-                onClick={() => setSettingsOpen((p) => !p)}
-                aria-label="Preferences"
-                aria-expanded={settingsOpen}
-                aria-haspopup="true"
+                className={[styles.chipBtn, langOpen ? styles.chipBtnActive : ''].join(' ')}
+                onClick={() => { setLangOpen((p) => !p); setThemeOpen(false) }}
+                aria-label="Select language"
+                aria-expanded={langOpen}
+                aria-haspopup="listbox"
               >
-                <SlidersHorizontal size={17} />
-                <span className={styles.settingsBtnLabel}>{LOCALE_LABELS[locale].native}</span>
+                <Globe size={14} aria-hidden="true" />
+                <span className={styles.chipBtnLabel}>{LOCALE_LABELS[locale].native}</span>
+                <ChevronDown size={12} className={[styles.chevron, langOpen ? styles.chevronOpen : ''].join(' ')} aria-hidden="true" />
               </button>
 
               <AnimatePresence>
-                {settingsOpen && (
+                {langOpen && (
                   <motion.div
-                    className={styles.settingsPanel}
-                    initial={{ opacity: 0, scale: 0.97, y: -6 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.97, y: -6 }}
-                    transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
-                    role="dialog"
-                    aria-label="Preferences"
+                    className={styles.dropdown}
+                    variants={panelVariants}
+                    initial="hidden" animate="show" exit="hidden"
+                    transition={{ duration: 0.14, ease: [0.4, 0, 0.2, 1] }}
+                    role="listbox"
+                    aria-label="Select language"
                   >
-                    {/* Language section */}
-                    <p className={styles.panelSectionLabel}>Language</p>
-                    <ul className={styles.langList} role="listbox" aria-label="Select language">
-                      {SUPPORTED_LOCALES.map((code) => (
-                        <li key={code} role="option" aria-selected={code === locale}>
-                          <button
-                            className={[
-                              styles.langOption,
-                              code === locale ? styles.langOptionActive : '',
-                            ].join(' ')}
-                            onClick={() => setLocale(code)}
-                          >
-                            <span className={styles.langNative}>{LOCALE_LABELS[code].native}</span>
-                            <span className={styles.langEnglish}>{LOCALE_LABELS[code].english}</span>
-                            {code === locale && <Check size={13} className={styles.optionCheck} aria-hidden="true" />}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className={styles.panelDivider} />
-
-                    {/* Theme section */}
-                    <p className={styles.panelSectionLabel}>Theme</p>
-                    <div className={styles.themeRow}>
-                      {THEMES.map((t) => (
-                        <button
-                          key={t}
-                          className={[
-                            styles.themeBtn,
-                            t === theme ? styles.themeBtnActive : '',
-                          ].join(' ')}
-                          onClick={() => setTheme(t)}
-                          aria-pressed={t === theme}
-                          title={THEME_META[t].label}
-                        >
-                          <span
-                            className={styles.themeSwatch}
-                            style={{ background: THEME_META[t].swatch }}
-                          />
-                          <span className={styles.themeLabel}>{THEME_META[t].label}</span>
-                          {t === theme && <Check size={11} className={styles.optionCheck} aria-hidden="true" />}
-                        </button>
-                      ))}
-                    </div>
+                    {SUPPORTED_LOCALES.map((code) => (
+                      <button
+                        key={code}
+                        className={[styles.dropdownItem, code === locale ? styles.dropdownItemActive : ''].join(' ')}
+                        onClick={() => { setLocale(code); setLangOpen(false) }}
+                        role="option"
+                        aria-selected={code === locale}
+                      >
+                        <span className={styles.itemNative}>{LOCALE_LABELS[code].native}</span>
+                        <span className={styles.itemEn}>{LOCALE_LABELS[code].english}</span>
+                        {code === locale && <Check size={12} className={styles.itemCheck} aria-hidden="true" />}
+                      </button>
+                    ))}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            {/* Mobile hamburger */}
+            {/* Theme dropdown */}
+            <div className={styles.dropdownWrap} ref={themeRef}>
+              <button
+                className={[styles.chipBtn, themeOpen ? styles.chipBtnActive : ''].join(' ')}
+                onClick={() => { setThemeOpen((p) => !p); setLangOpen(false) }}
+                aria-label="Select theme"
+                aria-expanded={themeOpen}
+                aria-haspopup="listbox"
+              >
+                <span
+                  className={styles.themeSwatchInline}
+                  style={{ background: THEME_META[theme].swatch }}
+                  aria-hidden="true"
+                />
+                <Palette size={14} aria-hidden="true" />
+                <ChevronDown size={12} className={[styles.chevron, themeOpen ? styles.chevronOpen : ''].join(' ')} aria-hidden="true" />
+              </button>
+
+              <AnimatePresence>
+                {themeOpen && (
+                  <motion.div
+                    className={[styles.dropdown, styles.dropdownTheme].join(' ')}
+                    variants={panelVariants}
+                    initial="hidden" animate="show" exit="hidden"
+                    transition={{ duration: 0.14, ease: [0.4, 0, 0.2, 1] }}
+                    role="listbox"
+                    aria-label="Select theme"
+                  >
+                    {THEMES.map((th) => (
+                      <button
+                        key={th}
+                        className={[styles.themeItem, th === theme ? styles.themeItemActive : ''].join(' ')}
+                        onClick={() => { setTheme(th); setThemeOpen(false) }}
+                        role="option"
+                        aria-selected={th === theme}
+                        title={THEME_META[th].label}
+                      >
+                        <span
+                          className={styles.themeSwatch}
+                          style={{ background: THEME_META[th].swatch }}
+                          aria-hidden="true"
+                        />
+                        <span className={styles.themeLabel}>{THEME_META[th].label}</span>
+                        {th === theme && <Check size={11} className={styles.itemCheck} aria-hidden="true" />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Hamburger */}
             <button
               className={[styles.iconBtn, styles.hamburger].join(' ')}
               onClick={() => setMobileOpen((p) => !p)}
@@ -213,12 +248,17 @@ export function Navbar(): React.ReactElement {
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              <AnimatePresence mode="wait" initial={false}>
+                {mobileOpen
+                  ? <motion.span key="x"   initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><X size={20} /></motion.span>
+                  : <motion.span key="mnu" initial={{ rotate: 90, opacity: 0 }}  animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><Menu size={20} /></motion.span>
+                }
+              </AnimatePresence>
             </button>
           </div>
         </div>
 
-        {/* Search Bar expansion */}
+        {/* ─── Search Bar ───────────────────────────────────────────────────── */}
         <AnimatePresence>
           {searchOpen && (
             <motion.div
@@ -226,10 +266,10 @@ export function Navbar(): React.ReactElement {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
             >
               <div className={styles.searchInner}>
-                <Search size={18} className={styles.searchIcon} aria-hidden="true" />
+                <Search size={17} className={styles.searchIcon} aria-hidden="true" />
                 <input
                   type="search"
                   className={styles.searchInput}
@@ -240,12 +280,8 @@ export function Navbar(): React.ReactElement {
                   aria-label={t.nav.search}
                 />
                 {searchQuery && (
-                  <button
-                    className={styles.searchClear}
-                    onClick={() => setSearchQuery('')}
-                    aria-label="Clear search"
-                  >
-                    <X size={15} />
+                  <button className={styles.searchClear} onClick={() => setSearchQuery('')} aria-label="Clear search">
+                    <X size={14} />
                   </button>
                 )}
               </div>
@@ -254,41 +290,20 @@ export function Navbar(): React.ReactElement {
         </AnimatePresence>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* ─── Mobile Menu ──────────────────────────────────────────────────────── */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             id="mobile-menu"
             className={styles.mobileMenu}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           >
-            <ul className={styles.mobileLinks} role="list">
-              {navLinks.map((link, i) => (
-                <motion.li
-                  key={link.href}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
-                >
-                  <Link
-                    to={link.href}
-                    className={[
-                      styles.mobileLink,
-                      isActive(link.href) ? styles.mobileLinkActive : '',
-                    ].join(' ')}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-
             {/* Mobile search */}
             <div className={styles.mobileSearch}>
-              <Search size={16} className={styles.searchIcon} aria-hidden="true" />
+              <Search size={15} className={styles.searchIcon} aria-hidden="true" />
               <input
                 type="search"
                 className={styles.mobileSearchInput}
@@ -298,17 +313,36 @@ export function Navbar(): React.ReactElement {
               />
             </div>
 
-            {/* Mobile preferences */}
-            <div className={styles.mobilePrefs}>
-              <p className={styles.mobilePrefLabel}>Language</p>
-              <div className={styles.mobileLang}>
+            {/* Nav links */}
+            <ul className={styles.mobileLinks} role="list">
+              {navLinks.map((link, i) => (
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                >
+                  <Link
+                    to={link.href}
+                    className={[styles.mobileLink, isActive(link.href) ? styles.mobileLinkActive : ''].join(' ')}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* Language */}
+            <div className={styles.mobilePrefSection}>
+              <p className={styles.mobilePrefLabel}>
+                <Globe size={12} aria-hidden="true" />
+                Language
+              </p>
+              <div className={styles.mobileChips}>
                 {SUPPORTED_LOCALES.map((code) => (
                   <button
                     key={code}
-                    className={[
-                      styles.mobileLangBtn,
-                      code === locale ? styles.mobileLangActive : '',
-                    ].join(' ')}
+                    className={[styles.mobileChip, code === locale ? styles.mobileChipActive : ''].join(' ')}
                     onClick={() => setLocale(code)}
                     title={LOCALE_LABELS[code].english}
                   >
@@ -316,21 +350,25 @@ export function Navbar(): React.ReactElement {
                   </button>
                 ))}
               </div>
+            </div>
 
-              <p className={styles.mobilePrefLabel} style={{ marginTop: '12px' }}>Theme</p>
-              <div className={styles.mobileThemeRow}>
+            {/* Theme */}
+            <div className={styles.mobilePrefSection}>
+              <p className={styles.mobilePrefLabel}>
+                <Palette size={12} aria-hidden="true" />
+                Theme
+              </p>
+              <div className={styles.mobileThemeGrid}>
                 {THEMES.map((th) => (
                   <button
                     key={th}
-                    className={[
-                      styles.mobileThemeBtn,
-                      th === theme ? styles.mobileThemeActive : '',
-                    ].join(' ')}
+                    className={[styles.mobileThemeBtn, th === theme ? styles.mobileThemeBtnActive : ''].join(' ')}
                     onClick={() => setTheme(th)}
                   >
                     <span
                       className={styles.mobileThemeSwatch}
                       style={{ background: THEME_META[th].swatch }}
+                      aria-hidden="true"
                     />
                     {THEME_META[th].label}
                   </button>

@@ -1,0 +1,80 @@
+[data-theme='teal-dark'] {
+  // Backgrounds — deep dark teal
+  --bg-primary: #061a18;
+  --bg-secondary: #0a2320;
+  --bg-tertiary: #0d2d2a;
+  --bg-card: #0d2d2a;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  // Text
+  --text-primary: #e6faf6;
+  --text-secondary: #99f6e4;
+  --text-muted: #4db8b0;
+  --text-inverse: #042f2e;
+
+  // Borders
+  --border-color: #134440;
+  --border-strong: #1a5e59;
+
+  // Shadows
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+  // Brand — teal (brighter for dark bg)
+  --primary: #2dd4bf;
+  --primary-dark: #14b8a6;
+  --primary-light: #134440;
+  --primary-lighter: #0a2320;
+
+  --secondary: #22d3ee;
+  --secondary-dark: #06b6d4;
+  --secondary-light: #0e3d4a;
+
+  --accent: #a78bfa;
+  --accent-dark: #8b5cf6;
+  --accent-light: #2e1f5e;
+
+  --danger: #f87171;
+  --danger-dark: #ef4444;
+  --danger-light: #3b1515;
+
+  --warning: #fbbf24;
+  --warning-light: #3b2a00;
+
+  --orange: #fb923c;
+  --orange-light: #3b1900;
+
+  // Navbar
+  --navbar-bg: rgba(6, 26, 24, 0.92);
+  --navbar-border: rgba(19, 68, 64, 0.8);
+  --navbar-shadow: 0 1px 20px rgba(0, 0, 0, 0.4);
+
+  // Input
+  --input-bg: #0d2d2a;
+  --input-border: #1a5e59;
+  --input-border-focus: #2dd4bf;
+  --input-placeholder: #4db8b0;
+
+  // Badge backgrounds
+  --badge-blue-bg: #0e3d4a;
+  --badge-blue-text: #22d3ee;
+  --badge-orange-bg: #3b1900;
+  --badge-orange-text: #fb923c;
+  --badge-green-bg: #134440;
+  --badge-green-text: #2dd4bf;
+  --badge-purple-bg: #2e1f5e;
+  --badge-purple-text: #a78bfa;
+  --badge-red-bg: #3b1515;
+  --badge-red-text: #f87171;
+  --badge-default-bg: #0d2d2a;
+  --badge-default-text: #99f6e4;
+
+  // Footer
+  --footer-bg: #030d0c;
+  --footer-text: #4db8b0;
+  --footer-heading: #e6faf6;
+  --footer-border: #0a2320;
+}

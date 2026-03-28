@@ -8,6 +8,7 @@ import resourcesRouter from './modules/resources/resources.router';
 import requestsRouter from './modules/requests/requests.router';
 import contributeRouter from './modules/contribute/contribute.router';
 import adminRouter from './modules/admin/admin.router';
+import statsRouter from './modules/stats/stats.router';
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/resources', resourcesRouter);
 app.use('/api/requests', requestsRouter);
 app.use('/api/contribute', contributeRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/stats', statsRouter);
 
 // ─── 404 Handler ──────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {

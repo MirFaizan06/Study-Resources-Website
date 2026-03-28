@@ -74,6 +74,13 @@ export interface AdminStats {
   totalInstitutions: number
 }
 
+export interface PlatformStats {
+  totalResources: number
+  totalDownloads: number
+  totalInstitutions: number
+  requestsFulfilled: number
+}
+
 export interface ResourceQueryParams {
   search?: string
   institutionSlug?: string

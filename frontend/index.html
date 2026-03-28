@@ -8,9 +8,9 @@
     <meta name="color-scheme" content="light dark" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/x-icon" href="/website_icon.ico" />
+    <link rel="shortcut icon" href="/website_icon.ico" />
+    <link rel="apple-touch-icon" href="/website_icon.ico" />
 
     <!-- Default SEO (overridden per-page via useHead hook) -->
     <title>NotesHub Kashmir - Free Study Materials for Kashmir University Students</title>
@@ -82,8 +82,9 @@
     <script>
       ;(function () {
         try {
+          var valid = ['light','dark','orange','orange-dark','teal','teal-dark','rose','rose-dark','indigo','indigo-dark','emerald','emerald-dark']
           var stored = localStorage.getItem('theme')
-          var preferred = stored ? stored : 'orange'
+          var preferred = (stored && valid.indexOf(stored) !== -1) ? stored : 'orange'
           document.documentElement.setAttribute('data-theme', preferred)
         } catch (e) {}
       })()

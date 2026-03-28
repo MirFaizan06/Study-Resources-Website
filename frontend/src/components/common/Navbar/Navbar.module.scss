@@ -1,11 +1,12 @@
+// ─── Header shell ─────────────────────────────────────────────────────────────
 .header {
   position: sticky;
   top: 0;
   z-index: $z-sticky;
   background-color: var(--navbar-bg);
   border-bottom: 1px solid transparent;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: border-color $transition-fast, box-shadow $transition-fast;
 }
 
@@ -19,9 +20,10 @@
 }
 
 .inner {
-  @include flex-between;
+  display: flex;
+  align-items: center;
   height: $navbar-height;
-  gap: $space-4;
+  gap: $space-2;
 }
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
@@ -31,36 +33,53 @@
   gap: $space-2;
   text-decoration: none;
   flex-shrink: 0;
+  margin-right: $space-2;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
-.logoIcon {
-  color: var(--primary);
+.logoMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-lg;
+  background: var(--primary);
+  color: #fff;
+  flex-shrink: 0;
 }
 
 .logoText {
-  font-size: $font-size-lg;
+  font-size: $font-size-base;
   font-weight: $font-weight-bold;
   color: var(--text-primary);
   letter-spacing: -0.02em;
 }
 
-.logoAccent {
-  font-size: $font-size-sm;
+.logoSub {
+  font-size: $font-size-xs;
   font-weight: $font-weight-medium;
   color: var(--text-muted);
   display: none;
+  padding: 2px $space-2;
+  background-color: var(--bg-secondary);
+  border-radius: $radius-full;
 
   @include respond-to(sm) {
     display: inline;
   }
 }
 
-// ─── Desktop Links ────────────────────────────────────────────────────────────
+// ─── Desktop Nav Links ────────────────────────────────────────────────────────
 .links {
   display: none;
   align-items: center;
-  gap: $space-1;
+  gap: 2px;
   list-style: none;
+  flex: 1;
 
   @include respond-to(lg) {
     display: flex;
@@ -68,6 +87,7 @@
 }
 
 .link {
+  position: relative;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   color: var(--text-secondary);
@@ -80,38 +100,50 @@
   &:hover {
     color: var(--text-primary);
     background-color: var(--bg-secondary);
+    text-decoration: none;
   }
 }
 
 .linkActive {
   color: var(--primary);
-  background-color: var(--primary-light);
+  font-weight: $font-weight-semibold;
 
   &:hover {
-    color: var(--primary-dark);
+    color: var(--primary);
     background-color: var(--primary-light);
   }
 }
 
-// ─── Actions ──────────────────────────────────────────────────────────────────
+.linkDot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: $radius-full;
+  background-color: var(--primary);
+}
+
+// ─── Actions row ──────────────────────────────────────────────────────────────
 .actions {
   display: flex;
   align-items: center;
   gap: $space-1;
+  margin-left: auto;
 }
 
 .iconBtn {
   @include flex-center;
-  gap: $space-1;
-  min-width: 36px;
-  height: 36px;
-  padding: 0 $space-2;
+  width: 34px;
+  height: 34px;
   border-radius: $radius-lg;
   color: var(--text-secondary);
   background: transparent;
-  transition: color $transition-fast, background-color $transition-fast;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
+  transition: color $transition-fast, background-color $transition-fast;
+  flex-shrink: 0;
 
   &:hover {
     color: var(--text-primary);
@@ -123,32 +155,75 @@
   }
 }
 
-// ─── Settings button ──────────────────────────────────────────────────────────
-.settingsWrap {
-  position: relative;
+.iconBtnActive {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+// ─── Chip button (language / theme trigger) ───────────────────────────────────
+.chipBtn {
   display: none;
+  align-items: center;
+  gap: $space-1;
+  height: 32px;
+  padding: 0 $space-3;
+  border-radius: $radius-full;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+  white-space: nowrap;
 
   @include respond-to(md) {
-    display: block;
+    display: flex;
+  }
+
+  &:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
   }
 }
 
-.settingsBtn {
-  gap: $space-2;
-  padding: 0 $space-3;
+.chipBtnActive {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
-.settingsBtnLabel {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  max-width: 68px;
+.chipBtnLabel {
+  max-width: 64px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-// ─── Settings panel ───────────────────────────────────────────────────────────
-.settingsPanel {
+.chevron {
+  transition: transform $transition-fast;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.themeSwatchInline {
+  width: 10px;
+  height: 10px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.15);
+}
+
+// ─── Dropdown shell ───────────────────────────────────────────────────────────
+.dropdownWrap {
+  position: relative;
+}
+
+.dropdown {
   position: absolute;
   top: calc(100% + $space-2);
   right: 0;
@@ -156,45 +231,26 @@
   border: 1px solid var(--border-color);
   border-radius: $radius-xl;
   box-shadow: var(--shadow-lg);
-  min-width: 220px;
+  min-width: 200px;
   z-index: $z-dropdown;
-  padding: $space-3;
-  display: flex;
-  flex-direction: column;
-  gap: $space-1;
+  padding: $space-1;
+  overflow: hidden;
 }
 
-.panelSectionLabel {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: $space-1 $space-2 $space-1;
-  pointer-events: none;
-  user-select: none;
-}
-
-.panelDivider {
-  height: 1px;
-  background-color: var(--border-color);
-  margin: $space-2 0;
-}
-
-// ─── Language list in panel ───────────────────────────────────────────────────
-.langList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
+.dropdownTheme {
+  min-width: 240px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2px;
 }
 
-.langOption {
+// ─── Language dropdown items ──────────────────────────────────────────────────
+.dropdownItem {
   display: flex;
   align-items: center;
   gap: $space-2;
   width: 100%;
-  padding: $space-2 $space-2;
+  padding: $space-2 $space-3;
   border-radius: $radius-lg;
   font-size: $font-size-sm;
   color: var(--text-secondary);
@@ -210,7 +266,7 @@
   }
 }
 
-.langOptionActive {
+.dropdownItemActive {
   background-color: var(--primary-light);
   color: var(--primary);
 
@@ -220,67 +276,60 @@
   }
 }
 
-.langNative {
+.itemNative {
   font-weight: $font-weight-semibold;
-  font-size: $font-size-sm;
   flex: 1;
 }
 
-.langEnglish {
+.itemEn {
   font-size: $font-size-xs;
   color: var(--text-muted);
-  flex-shrink: 0;
 }
 
-.optionCheck {
+.itemCheck {
   color: var(--primary);
   flex-shrink: 0;
 }
 
-// ─── Theme row in panel ───────────────────────────────────────────────────────
-.themeRow {
+// ─── Theme dropdown items ─────────────────────────────────────────────────────
+.themeItem {
   display: flex;
-  gap: $space-2;
-}
-
-.themeBtn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: $space-1;
-  padding: $space-2 $space-1;
+  gap: $space-2;
+  padding: $space-2 $space-3;
   border-radius: $radius-lg;
-  border: 1.5px solid var(--border-color);
-  background: transparent;
-  cursor: pointer;
-  transition: border-color $transition-fast, background-color $transition-fast;
-  color: var(--text-secondary);
   font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+  text-align: left;
+  width: 100%;
 
   &:hover {
     background-color: var(--bg-secondary);
-    border-color: var(--border-strong);
     color: var(--text-primary);
   }
 }
 
-.themeBtnActive {
-  border-color: var(--primary);
+.themeItemActive {
   background-color: var(--primary-light);
   color: var(--primary);
 }
 
 .themeSwatch {
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: $radius-full;
   flex-shrink: 0;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.12);
 }
 
 .themeLabel {
-  font-weight: $font-weight-medium;
+  flex: 1;
+  white-space: nowrap;
 }
 
 // ─── Hamburger ────────────────────────────────────────────────────────────────
@@ -290,7 +339,7 @@
   }
 }
 
-// ─── Search Bar expansion ─────────────────────────────────────────────────────
+// ─── Search Bar ───────────────────────────────────────────────────────────────
 .searchBar {
   overflow: hidden;
   border-top: 1px solid var(--border-color);
@@ -327,12 +376,13 @@
 
 .searchClear {
   @include flex-center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: $radius-full;
   color: var(--text-muted);
   background: transparent;
-  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     background-color: var(--bg-secondary);
@@ -342,49 +392,23 @@
 
 // ─── Mobile Menu ──────────────────────────────────────────────────────────────
 .mobileMenu {
-  overflow: hidden;
   border-top: 1px solid var(--border-color);
   background-color: var(--bg-card);
   padding: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
 
   @include respond-to(lg) {
     display: none;
   }
 }
 
-.mobileLinks {
-  @include flex-column;
-  gap: $space-1;
-  list-style: none;
-}
-
-.mobileLink {
-  display: block;
-  font-size: $font-size-base;
-  font-weight: $font-weight-medium;
-  color: var(--text-secondary);
-  padding: $space-3 $space-4;
-  border-radius: $radius-lg;
-  transition: color $transition-fast, background-color $transition-fast;
-  text-decoration: none;
-
-  &:hover {
-    color: var(--text-primary);
-    background-color: var(--bg-secondary);
-  }
-}
-
-.mobileLinkActive {
-  color: var(--primary);
-  background-color: var(--primary-light);
-}
-
 .mobileSearch {
   display: flex;
   align-items: center;
   gap: $space-2;
-  margin-top: $space-4;
-  padding: $space-3 $space-4;
+  padding: $space-2 $space-3;
   background-color: var(--bg-secondary);
   border-radius: $radius-xl;
   border: 1px solid var(--border-color);
@@ -403,38 +427,74 @@
   }
 }
 
-// ─── Mobile preferences ───────────────────────────────────────────────────────
-.mobilePrefs {
-  margin-top: $space-4;
-  padding-top: $space-4;
-  border-top: 1px solid var(--border-color);
+.mobileLinks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-1;
+  list-style: none;
+}
+
+.mobileLink {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  transition: color $transition-fast, background-color $transition-fast;
+  text-decoration: none;
+  text-align: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+    text-decoration: none;
+  }
+}
+
+.mobileLinkActive {
+  color: var(--primary);
+  background-color: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
+// ─── Mobile pref sections ─────────────────────────────────────────────────────
+.mobilePrefSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
 }
 
 .mobilePrefLabel {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   color: var(--text-muted);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: $space-2;
+  margin: 0;
 }
 
-.mobileLang {
+.mobileChips {
   display: flex;
-  gap: $space-1;
   flex-wrap: wrap;
+  gap: $space-1;
 }
 
-.mobileLangBtn {
+.mobileChip {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   padding: $space-1 $space-3;
-  border-radius: $radius-lg;
+  border-radius: $radius-full;
   background-color: var(--bg-secondary);
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
   cursor: pointer;
-  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+  transition: background-color $transition-fast, color $transition-fast;
   white-space: nowrap;
 
   &:hover {
@@ -443,31 +503,37 @@
   }
 }
 
-.mobileLangActive {
+.mobileChipActive {
   background-color: var(--primary-light);
   color: var(--primary);
   border-color: var(--primary-light);
 }
 
-.mobileThemeRow {
-  display: flex;
+// ─── Mobile theme grid ────────────────────────────────────────────────────────
+.mobileThemeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: $space-2;
-  flex-wrap: wrap;
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .mobileThemeBtn {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: $space-2;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: var(--text-secondary);
-  background: var(--bg-secondary);
+  gap: $space-1;
+  padding: $space-2;
+  border-radius: $radius-lg;
+  background-color: var(--bg-secondary);
   border: 1.5px solid var(--border-color);
   cursor: pointer;
-  padding: $space-2 $space-3;
-  border-radius: $radius-lg;
-  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+  transition: background-color $transition-fast, border-color $transition-fast;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
 
   &:hover {
     background-color: var(--bg-tertiary);
@@ -475,16 +541,16 @@
   }
 }
 
-.mobileThemeActive {
+.mobileThemeBtnActive {
   border-color: var(--primary);
   background-color: var(--primary-light);
   color: var(--primary);
 }
 
 .mobileThemeSwatch {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: $radius-full;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12);
   flex-shrink: 0;
-  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.15);
 }

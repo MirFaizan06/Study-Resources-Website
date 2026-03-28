@@ -30,7 +30,7 @@ export function Footer(): React.ReactElement {
                 <p className={styles.donateDesc}>{t.common.footer.donateDesc}</p>
               </div>
               <a
-                href="https://rzp.io/l/noteshub-kasmir"
+                href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.donateBtn}

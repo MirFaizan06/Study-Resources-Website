@@ -129,32 +129,38 @@ Export instructions:
 
 ---
 
-## 12–16. Hero Background Images (Carousel)
-File paths: frontend/public/images/hero/1.png through 5.png
+## 12–18. Hero Background Images (Carousel)
+File paths: frontend/public/images/hero/1.png through 7.png
 Placement: Home page hero section — subtle looping background images behind the hero content
-Size: 1400x700px (wide landscape, will be object-fit: cover)
-Style: NO text. Photorealistic or high-quality illustrated landscapes. Each image should be serene, aspirational, and evoke Kashmir's landscape and academic atmosphere. They are displayed at ~14% opacity over a warm gradient so the image tone should be rich and distinct.
+Size: 1400x700px (wide, will be object-fit: cover)
+Style: NO text. Each image should be rich, distinct, and contextually tied to Kashmir student life or academic culture. Displayed at ~14% opacity over a warm gradient — image tone should be bold enough to show through.
 
 Prompt 12 — hero/1.png:
-"A breathtaking wide-angle photorealistic landscape of Dal Lake in Kashmir at golden hour — a shikara boat drifting on calm reflective water, snow-capped mountains in the distance, warm amber and orange sky. Vivid but serene. No people, no text. 16:9 landscape."
+"A breathtaking wide-angle photorealistic landscape of Dal Lake in Kashmir at golden hour — a shikara boat drifting on calm reflective water, snow-capped mountains in the distance, warm amber and orange sky. Vivid but serene. No people, no text. 16:9."
 
 Prompt 13 — hero/2.png:
-"A photorealistic wide landscape of a Kashmiri university campus in autumn — tall chinar trees with fiery orange and red leaves lining a stone path, traditional Kashmiri architecture in the background, soft morning light. Peaceful, academic atmosphere. No text. 16:9 format."
+"A photorealistic wide view of a Kashmiri university campus in autumn — tall chinar trees with fiery orange and red leaves lining a stone path, traditional Kashmiri architecture in the background, soft morning light. Peaceful, academic atmosphere. No text. 16:9."
 
 Prompt 14 — hero/3.png:
 "A wide aerial view of Srinagar city at dusk — the Jhelum river winding through the city, city lights beginning to glow, mountains silhouetted in the background, moody blue and purple tones. Cinematic, no text. 16:9."
 
 Prompt 15 — hero/4.png:
-"A serene wide photograph of the Kashmir valley in spring — green meadows with wildflowers, distant snow-capped Himalayan peaks under a partly cloudy sky, soft diffused light. Peaceful, open, expansive. No people, no text. 16:9."
+"A close-up wide shot of an open textbook on a wooden desk, surrounded by handwritten notes, a highlighter, and a steaming cup of Kashmiri pink chai (noon chai). Warm, focused study atmosphere. Shallow depth of field, rich warm tones. No text visible on pages. 16:9."
 
 Prompt 16 — hero/5.png:
-"A wide cozy interior shot of a traditional Kashmiri library or study room — warm wooden bookshelves full of books, a window with a soft view of snow outside, a lit candle and tea cup on a wooden table. Warm amber lighting, inviting and academic. No people, no text. 16:9."
+"A wide flat-lay overhead shot of a university student's study spread — notebooks, printed past papers, a pen, sticky notes, and a laptop showing a PDF, all arranged neatly on a warm wooden surface. Clean, organized, academic. No legible text. Warm natural light. 16:9."
+
+Prompt 17 — hero/6.png:
+"A photorealistic wide shot of a row of ornate wooden windows in a traditional Kashmiri building (khatamband ceiling visible), morning light streaming through in golden rays, dust particles visible in the beams. Architectural beauty, warm and contemplative. No people, no text. 16:9."
+
+Prompt 18 — hero/7.png:
+"A wide dramatic shot of a graduation ceremony moment — rows of mortar boards tossed in the air against a bright blue sky, a university building facade blurred in the background. Joyful, aspirational, celebratory energy. No faces needed, no text. 16:9."
 
 Notes:
 - These images auto-loop in the hero section at 14% opacity over the gradient
-- Drop them as: frontend/public/images/hero/1.png, 2.png, 3.png, 4.png, 5.png
+- Drop them as: frontend/public/images/hero/1.png, 2.png, 3.png, 4.png, 5.png, 6.png, 7.png
 - The carousel detects them automatically — no code changes needed
-- If you have fewer than 5, just add what you have; missing slots are silently skipped
+- If you have fewer than 7, just add what you have; missing slots are silently skipped
 
 ---
 

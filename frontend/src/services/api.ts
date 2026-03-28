@@ -5,6 +5,7 @@ import type {
   Resource,
   MaterialRequest,
   AdminStats,
+  PlatformStats,
   PaginatedResult,
   ResourceQueryParams,
   CreateResourcePayload,
@@ -138,6 +139,12 @@ export const api = {
         method: 'POST',
         body: JSON.stringify(data),
       })
+    },
+  },
+
+  stats: {
+    get(): Promise<PlatformStats> {
+      return apiFetch<PlatformStats>('/api/stats')
     },
   },
 

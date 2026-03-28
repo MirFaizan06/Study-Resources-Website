@@ -227,6 +227,36 @@ const en = {
     },
     imageAlt: 'Our team working',
   },
+  ai: {
+    badge: 'Coming Soon',
+    title: 'AI-Powered',
+    titleAccent: 'Exam Tools',
+    subtitle:
+      "We're building a suite of AI tools designed specifically for Kashmir University students — guess paper generation, mock exams, and instant last-minute prep. All free.",
+    progressLabel: 'Development in progress',
+    featuresTitle: "What's being built",
+    featuresSubtitle: 'Every tool is built around one goal: help you pass your exams with less stress.',
+    noticeText: 'In the meantime, browse our existing collection of AI-generated Guess Papers — already available for multiple subjects, clearly tagged so you know what you\'re reading.',
+    noticeBtn: 'Browse Resources',
+    features: [
+      {
+        title: 'AI Guess Paper Generator',
+        desc: 'Upload a syllabus or past papers — our AI will generate targeted guess questions ranked by exam likelihood, so you focus only on what matters.',
+      },
+      {
+        title: 'Mock Examiner',
+        desc: 'Get quizzed on any subject in exam format. The AI grades your answers, explains mistakes, and tracks your confidence over time.',
+      },
+      {
+        title: 'Smart Notes Summariser',
+        desc: 'Paste or upload dense notes and get a clean, exam-ready summary in seconds — bullet points, key definitions, and memory hooks included.',
+      },
+      {
+        title: 'Last-Minute Prep Mode',
+        desc: "Got 30 minutes before an exam? Tell us the subject and we'll build a personalised crash-plan — the 20% of content that covers 80% of marks.",
+      },
+    ],
+  },
   admin: {
     login: {
       title: 'Admin Login',
