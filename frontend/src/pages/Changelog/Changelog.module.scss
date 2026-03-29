@@ -1,0 +1,224 @@
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.page {
+  max-width: 900px;
+  margin-inline: auto;
+  padding: $space-8 $space-4 $space-16;
+
+  @include respond-to(md) {
+    padding: $space-12 $space-6 $space-20;
+  }
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  @include flex-column;
+  align-items: flex-start;
+  gap: $space-3;
+  margin-bottom: $space-12;
+}
+
+.betaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-1 $space-3;
+  background-color: $warning-light;
+  border: 1px solid $warning;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $warning;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: $space-2;
+}
+
+.title {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  line-height: $line-height-tight;
+  margin: 0;
+
+  @include respond-to(md) {
+    font-size: $font-size-5xl;
+  }
+}
+
+.subtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+// ─── Timeline ─────────────────────────────────────────────────────────────────
+.timeline {
+  position: relative;
+  padding-left: $space-8;
+
+  @include respond-to(md) {
+    padding-left: $space-12;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--border-color);
+
+    @include respond-to(md) {
+      left: 15px;
+    }
+  }
+}
+
+// ─── Entry ────────────────────────────────────────────────────────────────────
+.entry {
+  position: relative;
+  padding-bottom: $space-10;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+// ─── Dot ──────────────────────────────────────────────────────────────────────
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  top: 4px;
+}
+
+.dotMajor {
+  width: 20px;
+  height: 20px;
+  left: -30px;
+  border-color: var(--primary);
+  background-color: var(--primary);
+  box-shadow: 0 0 0 4px $primary-light;
+
+  @include respond-to(md) {
+    width: 24px;
+    height: 24px;
+    left: -46px;
+  }
+}
+
+.dotPatch {
+  width: 12px;
+  height: 12px;
+  left: -26px;
+  border-color: var(--border-color);
+  background-color: var(--bg-secondary);
+  top: 7px;
+
+  @include respond-to(md) {
+    left: -38px;
+    top: 6px;
+  }
+}
+
+// ─── Entry Content ────────────────────────────────────────────────────────────
+.entryContent {
+  @include flex-column;
+  gap: $space-2;
+}
+
+.entryHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.versionBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  font-family: $font-family-mono;
+  letter-spacing: 0.02em;
+}
+
+.latestBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-2;
+  background-color: $primary-light;
+  color: $primary-dark;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.releaseName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  line-height: $line-height-snug;
+}
+
+.releaseDate {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  font-weight: $font-weight-medium;
+}
+
+// ─── Feature List ─────────────────────────────────────────────────────────────
+.featureList {
+  @include flex-column;
+  gap: $space-2;
+  list-style: none;
+  padding: 0;
+  margin-top: $space-2;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-2;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    line-height: $line-height-relaxed;
+    padding: $space-2 $space-3;
+    background-color: var(--bg-secondary);
+    border-radius: $radius-md;
+    border: 1px solid var(--border-color);
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: $primary;
+      flex-shrink: 0;
+      margin-top: 0.45em;
+    }
+  }
+}
+
+// ─── Patch Note ───────────────────────────────────────────────────────────────
+.patchNote {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+  padding: $space-3;
+  background-color: var(--bg-secondary);
+  border-radius: $radius-md;
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--border-color);
+  font-style: italic;
+}

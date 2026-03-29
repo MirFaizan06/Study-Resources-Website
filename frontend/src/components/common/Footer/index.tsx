@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Heart, Instagram, Linkedin, Mail, ExternalLink, Globe } from 'lucide-react'
+import { BookOpen, Heart, Instagram, Linkedin, Mail, ExternalLink, Globe, Tag } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import styles from './Footer.module.scss'
+
+const APP_VERSION = 'v0.0.7 Beta'
 
 export function Footer(): React.ReactElement {
   const { t, locale } = useLocale()
@@ -99,7 +101,35 @@ export function Footer(): React.ReactElement {
             </ul>
           </div>
 
-          {/* Links column 3: Social */}
+          {/* Links column 3: Study Hub */}
+          <div className={styles.linksCol}>
+            <h3 className={styles.colTitle}>Study Hub</h3>
+            <ul className={styles.linkList}>
+              <li>
+                <Link to={`/${locale}/blogs`} className={styles.link}>
+                  Study Blogs
+                </Link>
+              </li>
+              <li>
+                <Link to={`/${locale}/study-plans`} className={styles.link}>
+                  Study Plans
+                </Link>
+              </li>
+              <li>
+                <Link to={`/${locale}/ai`} className={styles.link}>
+                  AI Guess Papers
+                </Link>
+              </li>
+              <li>
+                <Link to={`/${locale}/changelog`} className={styles.link}>
+                  <Tag size={14} aria-hidden="true" />
+                  Changelog
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Links column 4: Social */}
           <div className={styles.linksCol}>
             <h3 className={styles.colTitle}>Connect</h3>
             <ul className={styles.linkList}>
@@ -151,6 +181,10 @@ export function Footer(): React.ReactElement {
           <p className={styles.copyright}>
             {t.common.footer.copyright.replace('2026', String(currentYear))}
           </p>
+          <Link to={`/${locale}/changelog`} className={styles.versionBadge} aria-label="View changelog">
+            <Tag size={11} aria-hidden="true" />
+            {APP_VERSION}
+          </Link>
           <p className={styles.credit}>
             {t.common.footer.built}
           </p>

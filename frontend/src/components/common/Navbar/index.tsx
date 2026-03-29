@@ -13,8 +13,9 @@ import {
   User,
   LogOut,
   MessageCircleWarning,
-  Library,
-  Megaphone,
+  BookMarked,
+  CalendarCheck,
+  GitBranch,
 } from 'lucide-react'
 import { useThemeContext } from '@/contexts/ThemeContext'
 import { useLocale } from '@/hooks/useLocale'
@@ -63,16 +64,19 @@ export function Navbar(): React.ReactElement {
   const [themeOpen, setThemeOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [studyHubOpen, setStudyHubOpen] = useState(false)
 
   const debouncedSearch = useDebounce(searchQuery, 400)
   const langRef = useRef<HTMLDivElement>(null)
   const themeRef = useRef<HTMLDivElement>(null)
+  const studyHubRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMobileOpen(false)
     setSearchOpen(false)
     setLangOpen(false)
     setThemeOpen(false)
+    setStudyHubOpen(false)
   }, [location.pathname])
 
   useEffect(() => {
@@ -86,6 +90,7 @@ export function Navbar(): React.ReactElement {
       if (langRef.current && !langRef.current.contains(e.target as Node)) setLangOpen(false)
       if (themeRef.current && !themeRef.current.contains(e.target as Node)) setThemeOpen(false)
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setUserMenuOpen(false)
+      if (studyHubRef.current && !studyHubRef.current.contains(e.target as Node)) setStudyHubOpen(false)
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
@@ -99,8 +104,8 @@ export function Navbar(): React.ReactElement {
 
   const navLinks = [
     { href: `/${locale}/`, label: t.nav.home },
-    { href: `/${locale}/resources`, label: t.nav.browse, highlight: 'resources' as const },
-    { href: `/${locale}/board`, label: t.nav.board, highlight: 'board' as const },
+    { href: `/${locale}/resources`, label: t.nav.browse },
+    { href: `/${locale}/board`, label: t.nav.board },
     { href: `/${locale}/ai`, label: t.nav.ai },
     { href: `/${locale}/contribute`, label: t.nav.contribute },
     { href: `/${locale}/request`, label: t.nav.request },
@@ -140,17 +145,65 @@ export function Navbar(): React.ReactElement {
                   className={[
                     styles.link,
                     isActive(link.href) ? styles.linkActive : '',
-                    link.highlight === 'resources' ? styles.linkResources : '',
-                    link.highlight === 'board' ? styles.linkBoard : '',
                   ].join(' ')}
                 >
-                  {link.highlight === 'resources' && <Library size={13} aria-hidden="true" />}
-                  {link.highlight === 'board' && <Megaphone size={13} aria-hidden="true" />}
                   {link.label}
-                  {isActive(link.href) && <span className={styles.linkDot} aria-hidden="true" />}
                 </Link>
               </li>
             ))}
+            {/* Study Hub dropdown */}
+            <li>
+              <div className={styles.dropdownWrap} ref={studyHubRef}>
+                <button
+                  className={[
+                    styles.link,
+                    styles.studyHubBtn,
+                    (location.pathname.includes('/blogs') || location.pathname.includes('/study-plans') || location.pathname.includes('/changelog'))
+                      ? styles.linkActive : '',
+                  ].join(' ')}
+                  onClick={() => setStudyHubOpen((p) => !p)}
+                  aria-expanded={studyHubOpen}
+                  aria-haspopup="menu"
+                >
+                  Study Hub
+                  <ChevronDown size={12} className={[styles.chevron, studyHubOpen ? styles.chevronOpen : ''].join(' ')} aria-hidden="true" />
+                </button>
+                <AnimatePresence>
+                  {studyHubOpen && (
+                    <motion.div
+                      className={[styles.dropdown, styles.studyHubDropdown].join(' ')}
+                      variants={panelVariants}
+                      initial="hidden" animate="show" exit="hidden"
+                      transition={{ duration: 0.14, ease: [0.4, 0, 0.2, 1] }}
+                      role="menu"
+                    >
+                      <Link to={`/${locale}/blogs`} className={styles.studyHubItem} role="menuitem">
+                        <span className={styles.studyHubItemIcon}><BookMarked size={15} aria-hidden="true" /></span>
+                        <span>
+                          <span className={styles.studyHubItemTitle}>Study Blogs</span>
+                          <span className={styles.studyHubItemDesc}>Study tips & techniques</span>
+                        </span>
+                      </Link>
+                      <Link to={`/${locale}/study-plans`} className={styles.studyHubItem} role="menuitem">
+                        <span className={styles.studyHubItemIcon}><CalendarCheck size={15} aria-hidden="true" /></span>
+                        <span>
+                          <span className={styles.studyHubItemTitle}>Study Plans</span>
+                          <span className={styles.studyHubItemDesc}>Download semester plans</span>
+                        </span>
+                      </Link>
+                      <div className={styles.studyHubDivider} />
+                      <Link to={`/${locale}/changelog`} className={[styles.studyHubItem, styles.studyHubItemMuted].join(' ')} role="menuitem">
+                        <span className={styles.studyHubItemIcon}><GitBranch size={15} aria-hidden="true" /></span>
+                        <span>
+                          <span className={styles.studyHubItemTitle}>Changelog</span>
+                          <span className={styles.studyHubItemDesc}>What's new · v0.0.7 Beta</span>
+                        </span>
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </li>
           </ul>
 
           {/* ─── Desktop Actions ──────────────────────────────────────────── */}
@@ -402,16 +455,35 @@ export function Navbar(): React.ReactElement {
                     className={[
                       styles.mobileLink,
                       isActive(link.href) ? styles.mobileLinkActive : '',
-                      link.highlight === 'resources' ? styles.mobileLinkResources : '',
-                      link.highlight === 'board' ? styles.mobileLinkBoard : '',
                     ].join(' ')}
                   >
-                    {link.highlight === 'resources' && <Library size={13} aria-hidden="true" />}
-                    {link.highlight === 'board' && <Megaphone size={13} aria-hidden="true" />}
                     {link.label}
                   </Link>
                 </motion.li>
               ))}
+              {/* Study Hub group in mobile */}
+              <motion.li
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.04 }}
+                className={styles.mobileStudyHubGroup}
+              >
+                <p className={styles.mobileStudyHubLabel}>
+                  <BookMarked size={12} aria-hidden="true" />
+                  Study Hub
+                </p>
+                <div className={styles.mobileStudyHubLinks}>
+                  <Link to={`/${locale}/blogs`} className={[styles.mobileLink, isActive(`/${locale}/blogs`) ? styles.mobileLinkActive : ''].join(' ')}>
+                    Study Blogs
+                  </Link>
+                  <Link to={`/${locale}/study-plans`} className={[styles.mobileLink, isActive(`/${locale}/study-plans`) ? styles.mobileLinkActive : ''].join(' ')}>
+                    Study Plans
+                  </Link>
+                  <Link to={`/${locale}/changelog`} className={[styles.mobileLink, isActive(`/${locale}/changelog`) ? styles.mobileLinkActive : ''].join(' ')}>
+                    Changelog
+                  </Link>
+                </div>
+              </motion.li>
             </ul>
 
             {/* Language */}

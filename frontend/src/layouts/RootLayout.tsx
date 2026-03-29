@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Navbar } from '@/components/common/Navbar'
@@ -19,6 +19,11 @@ const pageTransition = {
 
 export function RootLayout(): React.ReactElement {
   const location = useLocation()
+
+  // Scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [location.pathname])
 
   return (
     <div className="app-shell">

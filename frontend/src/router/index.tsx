@@ -34,6 +34,14 @@ const RegisterPage = lazy(() => import('@/pages/Auth/Register'))
 const ProfilePage = lazy(() => import('@/pages/Profile'))
 const LegalPage = lazy(() => import('@/pages/Legal'))
 const SupportersPage = lazy(() => import('@/pages/Supporters'))
+const BlogsPage = lazy(() => import('@/pages/Blogs'))
+const RulesOfStudying = lazy(() => import('@/pages/Blogs/posts/RulesOfStudying'))
+const StudyTechniques = lazy(() => import('@/pages/Blogs/posts/StudyTechniques'))
+const SemesterPlanning = lazy(() => import('@/pages/Blogs/posts/SemesterPlanning'))
+const TypesOfStudents = lazy(() => import('@/pages/Blogs/posts/TypesOfStudents'))
+const DeepWork = lazy(() => import('@/pages/Blogs/posts/DeepWork'))
+const StudyPlansPage = lazy(() => import('@/pages/StudyPlans'))
+const ChangelogPage = lazy(() => import('@/pages/Changelog'))
 
 // ─── Not Found page ───────────────────────────────────────────────────────────
 function NotFound(): React.ReactElement {
@@ -331,6 +339,73 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<PageLoader />}>
                 <SupportersPage />
+              </Suspense>
+            ),
+          },
+          // ─── Study Blogs ────────────────────────────────────────────────
+          {
+            path: 'blogs',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <BlogsPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'blogs/rules-of-studying',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <RulesOfStudying />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'blogs/study-techniques',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <StudyTechniques />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'blogs/semester-planning',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <SemesterPlanning />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'blogs/types-of-students',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <TypesOfStudents />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'blogs/deep-work',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <DeepWork />
+              </Suspense>
+            ),
+          },
+          // ─── Study Plans ────────────────────────────────────────────────
+          {
+            path: 'study-plans',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <StudyPlansPage />
+              </Suspense>
+            ),
+          },
+          // ─── Changelog ──────────────────────────────────────────────────
+          {
+            path: 'changelog',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <ChangelogPage />
               </Suspense>
             ),
           },

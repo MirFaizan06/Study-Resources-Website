@@ -1,0 +1,146 @@
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.page {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: $space-8 $space-4 $space-16;
+
+  @include respond-to(md) {
+    padding: $space-12 $space-6 $space-20;
+  }
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  @include flex-column;
+  align-items: flex-start;
+  gap: $space-3;
+  margin-bottom: $space-10;
+
+  @include respond-to(md) {
+    margin-bottom: $space-12;
+  }
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-1 $space-3;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-secondary);
+  margin-bottom: $space-2;
+}
+
+.title {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  line-height: $line-height-tight;
+  margin: 0;
+
+  @include respond-to(md) {
+    font-size: $font-size-5xl;
+  }
+}
+
+.subtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  max-width: 600px;
+  margin: 0;
+}
+
+// ─── Grid ─────────────────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-5;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+.card {
+  @include flex-column;
+  gap: $space-3;
+  padding: $space-6;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, #{$radius-lg});
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow $transition-base, border-color $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    border-color: var(--primary);
+  }
+}
+
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-md;
+  background-color: $primary-light;
+  color: $primary;
+  @include flex-center;
+  flex-shrink: 0;
+}
+
+.categoryBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-2;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+
+.cardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  line-height: $line-height-snug;
+  margin: 0;
+}
+
+.cardExcerpt {
+  @include line-clamp(3);
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+  flex: 1;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  margin-top: auto;
+  padding-top: $space-2;
+  border-top: 1px solid var(--border-color);
+}
+
+.cardArrow {
+  margin-left: auto;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+}
