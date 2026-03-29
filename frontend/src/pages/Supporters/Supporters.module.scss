@@ -1,0 +1,334 @@
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.page {
+  @include flex-column;
+  min-height: 80vh;
+}
+
+// ─── Thank-you banner ─────────────────────────────────────────────────────────
+.thankBanner {
+  background: linear-gradient(135deg, #f43f5e 0%, #c026d3 100%);
+  padding-block: $space-6;
+}
+
+.thankBannerInner {
+  @include container;
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  flex-wrap: wrap;
+}
+
+.thankIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-full;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  animation: heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.15); }
+}
+
+.thankTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: #fff;
+  margin: 0 0 $space-1;
+}
+
+.thankDesc {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
+  border-bottom: 1px solid var(--border-color);
+  padding-block: $space-12 $space-10;
+}
+
+.heroInner {
+  @include container;
+}
+
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.eyebrowIcon { color: #f43f5e; }
+
+.eyebrow {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f43f5e;
+}
+
+.heroTitle {
+  font-size: clamp($font-size-3xl, 5vw, $font-size-4xl);
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  margin: 0 0 $space-3;
+}
+
+.heroSubtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0;
+  line-height: $line-height-relaxed;
+}
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+.layout {
+  @include container;
+  @include flex-column;
+  gap: $space-16;
+  padding-block: $space-12;
+}
+
+// ─── Section title ────────────────────────────────────────────────────────────
+.sectionTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0 0 $space-4;
+}
+
+// ─── Why section ──────────────────────────────────────────────────────────────
+.whySection {
+  @include flex-column;
+}
+
+.whyDesc {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  max-width: 680px;
+  margin: 0 0 $space-8;
+}
+
+.reasonsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+  margin-bottom: $space-8;
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.reasonCard {
+  @include card-base;
+  @include flex-column;
+  gap: $space-3;
+}
+
+.reasonIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-xl;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.reasonTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.reasonDesc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+// ─── Donate CTA ───────────────────────────────────────────────────────────────
+.donateCta {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.donateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: #f43f5e;
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-3 $space-6;
+  border-radius: $radius-xl;
+  text-decoration: none;
+  transition: background $transition-fast, transform $transition-fast;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
+
+  &:hover {
+    background: #e11d48;
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: #fff;
+  }
+}
+
+// ─── Donors section ───────────────────────────────────────────────────────────
+.donorsSection {
+  @include flex-column;
+}
+
+.donorGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.donorCard {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-5;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  transition: box-shadow $transition-fast;
+
+  &:hover { box-shadow: var(--shadow-md); }
+}
+
+.donorAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, #f43f5e, #c026d3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+}
+
+.donorInfo {
+  @include flex-column;
+  gap: $space-1;
+  flex: 1;
+  min-width: 0;
+}
+
+.donorName {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+}
+
+.donorAmount {
+  font-size: $font-size-xs;
+  color: var(--primary);
+  font-weight: $font-weight-medium;
+}
+
+.donorMessage {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: $space-1 0 0;
+  line-height: $line-height-relaxed;
+}
+
+.donorHeart {
+  color: #f43f5e;
+  flex-shrink: 0;
+  margin-top: $space-1;
+}
+
+// ─── Empty state ──────────────────────────────────────────────────────────────
+.emptyState {
+  @include flex-column-center;
+  gap: $space-4;
+  padding: $space-16;
+  text-align: center;
+  border: 2px dashed var(--border-color);
+  border-radius: $radius-2xl;
+}
+
+.emptyIcon {
+  color: #f43f5e;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.emptyHint {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+.skeletonDonor {
+  height: 96px;
+  border-radius: $radius-xl;
+  background: var(--bg-secondary);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+// ─── Back link ────────────────────────────────────────────────────────────────
+.backRow {
+  @include container;
+  padding-bottom: $space-10;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover { color: var(--primary); }
+}

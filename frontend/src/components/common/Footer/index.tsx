@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Heart, Github, Mail, ExternalLink } from 'lucide-react'
+import { BookOpen, Heart, Instagram, Linkedin, Mail, ExternalLink, Globe } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import styles from './Footer.module.scss'
 
@@ -74,20 +74,19 @@ export function Footer(): React.ReactElement {
                 </Link>
               </li>
               <li>
-                <Link to={`/${locale}/about#privacy`} className={styles.link}>
+                <Link to={`/${locale}/legal?tab=privacy`} className={styles.link}>
                   {t.common.footer.links.privacy}
                 </Link>
               </li>
               <li>
-                <a
-                  href="/sitemap.xml"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.link}
-                >
-                  <ExternalLink size={13} aria-hidden="true" />
-                  Sitemap
-                </a>
+                <Link to={`/${locale}/legal?tab=tos`} className={styles.link}>
+                  {t.common.footer.links.tos}
+                </Link>
+              </li>
+              <li>
+                <Link to={`/${locale}/supporters`} className={styles.link}>
+                  {t.common.footer.links.supporters}
+                </Link>
               </li>
               <li>
                 <a
@@ -106,13 +105,35 @@ export function Footer(): React.ReactElement {
             <ul className={styles.linkList}>
               <li>
                 <a
-                  href="https://github.com/hachiwastudios"
+                  href="https://www.instagram.com/hachiwastudios/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.link}
                 >
-                  <Github size={14} aria-hidden="true" />
-                  GitHub
+                  <Instagram size={14} aria-hidden="true" />
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/hachi-wa-studios-52a4393a0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  <Linkedin size={14} aria-hidden="true" />
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://desk-of-saar.netlify.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  <Globe size={14} aria-hidden="true" />
+                  Omar's Portfolio
                 </a>
               </li>
               <li>

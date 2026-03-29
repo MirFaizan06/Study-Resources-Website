@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Navbar } from '@/components/common/Navbar'
 import { Footer } from '@/components/common/Footer'
 import { ErrorBoundary } from '@/components/common/ErrorBoundary'
+import { DonatePopup } from '@/components/common/DonatePopup'
 
 const pageVariants = {
   initial: { opacity: 0, y: 8 },
@@ -38,6 +39,7 @@ export function RootLayout(): React.ReactElement {
         </AnimatePresence>
       </ErrorBoundary>
       <Footer />
+      <DonatePopup />
     </div>
   )
 }

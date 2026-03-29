@@ -282,6 +282,15 @@ export const api = {
     },
   },
 
+  donors: {
+    list(): Promise<Array<{ id: string; donorName: string; message: string | null; amount: number | null; isAnonymous: boolean; createdAt: string }>> {
+      return apiFetch('/api/donors')
+    },
+    thank(data: { donorName?: string; message?: string; amount?: number; isAnonymous?: boolean; paymentId?: string }): Promise<void> {
+      return apiFetch('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) })
+    },
+  },
+
   admin: {
     login(email: string, password: string): Promise<{ token: string }> {
       return apiFetch<{ token: string }>('/api/admin/login', {

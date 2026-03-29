@@ -31,6 +31,8 @@ const CreatePostPage = lazy(() => import('@/pages/Board/CreatePost'))
 const LoginPage = lazy(() => import('@/pages/Auth/Login'))
 const RegisterPage = lazy(() => import('@/pages/Auth/Register'))
 const ProfilePage = lazy(() => import('@/pages/Profile'))
+const LegalPage = lazy(() => import('@/pages/Legal'))
+const SupportersPage = lazy(() => import('@/pages/Supporters'))
 
 // ─── Not Found page ───────────────────────────────────────────────────────────
 function NotFound(): React.ReactElement {
@@ -304,6 +306,22 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<PageLoader />}>
                 <ProfilePage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'legal',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <LegalPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'supporters',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <SupportersPage />
               </Suspense>
             ),
           },

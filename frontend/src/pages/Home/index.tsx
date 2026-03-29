@@ -59,6 +59,8 @@ function HeroCarousel(): React.ReactElement {
             styles.heroBgImg,
             i === active && available.has(i) ? styles.heroBgImgActive : '',
           ].join(' ')}
+          loading={i < 2 ? 'eager' : 'lazy'}
+          fetchPriority={i === 0 ? 'high' : 'low'}
           onLoad={() => setAvailable((s) => new Set([...s, i]))}
           onError={() => { failed.current.add(i) }}
         />

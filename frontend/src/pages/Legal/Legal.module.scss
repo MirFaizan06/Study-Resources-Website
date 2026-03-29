@@ -1,0 +1,198 @@
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.page {
+  @include flex-column;
+  min-height: 80vh;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
+  border-bottom: 1px solid var(--border-color);
+  padding-block: $space-12 $space-10;
+}
+
+.heroInner {
+  @include container;
+}
+
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.eyebrowIcon {
+  color: var(--primary);
+}
+
+.eyebrow {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+}
+
+.heroTitle {
+  font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  margin: 0 0 $space-2;
+}
+
+.heroSub {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+.layout {
+  @include container;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-8;
+  padding-block: $space-10;
+
+  @include respond-to(lg) {
+    grid-template-columns: 220px 1fr;
+    align-items: start;
+    gap: $space-12;
+  }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+.sidebar {
+  display: none;
+
+  @include respond-to(lg) {
+    display: block;
+    position: sticky;
+    top: 90px;
+  }
+}
+
+.tabList {
+  @include flex-column;
+  gap: $space-1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  padding: $space-2;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  text-align: left;
+  transition: background $transition-fast, color $transition-fast;
+  width: 100%;
+
+  &:hover:not(.tabActive) {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+.tabActive {
+  background: var(--primary);
+  color: #fff;
+  font-weight: $font-weight-semibold;
+}
+
+.tabChevron {
+  margin-left: auto;
+}
+
+// ─── Mobile tabs ──────────────────────────────────────────────────────────────
+.mobileTabs {
+  display: flex;
+  gap: $space-2;
+  margin-bottom: $space-8;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  padding: $space-1;
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.mobileTab {
+  flex: 1;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover:not(.mobileTabActive) {
+    color: var(--text-primary);
+  }
+}
+
+.mobileTabActive {
+  background: var(--primary);
+  color: #fff;
+  font-weight: $font-weight-semibold;
+}
+
+// ─── Content sections ─────────────────────────────────────────────────────────
+.content {
+  max-width: 760px;
+}
+
+.section {
+  padding-bottom: $space-8;
+  margin-bottom: $space-8;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-of-type {
+    border-bottom: none;
+    margin-bottom: $space-6;
+  }
+}
+
+.sectionHeading {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0 0 $space-3;
+}
+
+.sectionBody {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+// ─── Contact note ─────────────────────────────────────────────────────────────
+.contactNote {
+  font-size: $font-size-sm;
+  color: var(--text-tertiary);
+  padding-top: $space-6;
+  border-top: 1px solid var(--border-color);
+}
+
+.emailLink {
+  color: var(--primary);
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}

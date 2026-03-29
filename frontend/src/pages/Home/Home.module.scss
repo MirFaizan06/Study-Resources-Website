@@ -498,6 +498,12 @@
   transition: background $transition-fast, transform $transition-fast;
   box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 35%, transparent);
 
+  @include respond-below(sm) {
+    width: 100%;
+    justify-content: center;
+    flex-shrink: unset;
+  }
+
   &:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
@@ -571,12 +577,28 @@
   transition: background-color $transition-fast, transform $transition-fast;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 
+  // On very small screens: full-width stacked below text
+  @include respond-below(sm) {
+    width: 100%;
+    justify-content: center;
+    flex-shrink: unset;
+  }
+
   &:hover {
     background: rgba(255, 255, 255, 0.92);
     transform: translateY(-1px);
     text-decoration: none;
     color: var(--primary-dark);
   }
+}
+
+// Force ctaBannerInner to stack nicely on mobile
+@include respond-below(sm) {
+  .ctaBannerInner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ctaBannerIcon { display: none; }
 }
 
 // ══════════════════════════════════════════════════════════ SKELETON ═════════

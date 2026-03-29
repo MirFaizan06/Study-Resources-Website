@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Download, BookOpen, Heart, ExternalLink } from 'lucide-react'
+import { Search, Download, BookOpen, Heart, ExternalLink, Code2 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
@@ -154,6 +154,46 @@ export default function About(): React.ReactElement {
               </h2>
               <p className={styles.teamDesc}>{t.about.team.description}</p>
             </div>
+          </div>
+        </section>
+
+        {/* Developers */}
+        <section className={styles.devSection} aria-labelledby="dev-heading">
+          <h2 id="dev-heading" className={styles.sectionTitle}>
+            {t.about.developers.title}
+          </h2>
+          <p className={styles.devSubtitle}>{t.about.developers.subtitle}</p>
+          <div className={styles.devGrid}>
+            {t.about.developers.people.map((person, i) => (
+              <motion.div
+                key={i}
+                className={styles.devCard}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ delay: i * 0.1, duration: 0.4 }}
+              >
+                <div className={styles.devAvatar} aria-hidden="true">
+                  <Code2 size={28} />
+                </div>
+                <div className={styles.devInfo}>
+                  <h3 className={styles.devName}>{person.name}</h3>
+                  <p className={styles.devRole}>{person.role}</p>
+                  <p className={styles.devBio}>{person.bio}</p>
+                  {person.portfolioUrl && (
+                    <a
+                      href={person.portfolioUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.devPortfolio}
+                    >
+                      Portfolio
+                      <ExternalLink size={12} aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
 

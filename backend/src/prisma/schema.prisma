@@ -211,3 +211,19 @@ model CommentVote {
   @@index([commentId])
   @@index([userId])
 }
+
+// ─── Donors / Supporters ──────────────────────────────────────────────────────
+
+model Donation {
+  id          String   @id @default(cuid())
+  donorName   String
+  message     String?  @db.Text
+  amount      Int?
+  isAnonymous Boolean  @default(false)
+  isPublic    Boolean  @default(true)
+  paymentId   String?  @unique
+  createdAt   DateTime @default(now())
+
+  @@index([isPublic])
+  @@index([createdAt])
+}
