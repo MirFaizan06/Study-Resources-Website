@@ -60,7 +60,7 @@ export default function Institution(): React.ReactElement {
         <div className={styles.container}>
           <div className={styles.errorState}>
             <p>{error ?? 'Institution not found.'}</p>
-            <Link to={`/${locale}/browse`} className={styles.backLink}>
+            <Link to={`/${locale}/resources`} className={styles.backLink}>
               Back to Browse
             </Link>
           </div>
@@ -71,7 +71,7 @@ export default function Institution(): React.ReactElement {
 
   const breadcrumbs = [
     { label: 'Home', href: `/${locale}/` },
-    { label: 'Browse', href: `/${locale}/browse` },
+    { label: 'Resources', href: `/${locale}/resources` },
     { label: institution.name },
   ]
 
@@ -143,7 +143,7 @@ export default function Institution(): React.ReactElement {
                   }}
                 >
                   <Link
-                    to={`/${locale}/browse/${institutionSlug}/${program.id}`}
+                    to={`/${locale}/resources/${institutionSlug}/${program.id}`}
                     className={styles.programCard}
                   >
                     <div className={styles.programCardIcon} aria-hidden="true">

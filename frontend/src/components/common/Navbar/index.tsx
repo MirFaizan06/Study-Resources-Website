@@ -13,6 +13,8 @@ import {
   User,
   LogOut,
   MessageCircleWarning,
+  Library,
+  Megaphone,
 } from 'lucide-react'
 import { useThemeContext } from '@/contexts/ThemeContext'
 import { useLocale } from '@/hooks/useLocale'
@@ -91,14 +93,14 @@ export function Navbar(): React.ReactElement {
 
   useEffect(() => {
     if (debouncedSearch.trim().length > 1) {
-      navigate(`/${locale}/browse?q=${encodeURIComponent(debouncedSearch.trim())}`)
+      navigate(`/${locale}/resources?q=${encodeURIComponent(debouncedSearch.trim())}`)
     }
   }, [debouncedSearch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const navLinks = [
     { href: `/${locale}/`, label: t.nav.home },
-    { href: `/${locale}/browse`, label: t.nav.browse },
-    { href: `/${locale}/board`, label: t.nav.board },
+    { href: `/${locale}/resources`, label: t.nav.browse, highlight: 'resources' as const },
+    { href: `/${locale}/board`, label: t.nav.board, highlight: 'board' as const },
     { href: `/${locale}/ai`, label: t.nav.ai },
     { href: `/${locale}/contribute`, label: t.nav.contribute },
     { href: `/${locale}/request`, label: t.nav.request },
@@ -135,8 +137,15 @@ export function Navbar(): React.ReactElement {
               <li key={link.href}>
                 <Link
                   to={link.href}
-                  className={[styles.link, isActive(link.href) ? styles.linkActive : ''].join(' ')}
+                  className={[
+                    styles.link,
+                    isActive(link.href) ? styles.linkActive : '',
+                    link.highlight === 'resources' ? styles.linkResources : '',
+                    link.highlight === 'board' ? styles.linkBoard : '',
+                  ].join(' ')}
                 >
+                  {link.highlight === 'resources' && <Library size={13} aria-hidden="true" />}
+                  {link.highlight === 'board' && <Megaphone size={13} aria-hidden="true" />}
                   {link.label}
                   {isActive(link.href) && <span className={styles.linkDot} aria-hidden="true" />}
                 </Link>
@@ -390,8 +399,15 @@ export function Navbar(): React.ReactElement {
                 >
                   <Link
                     to={link.href}
-                    className={[styles.mobileLink, isActive(link.href) ? styles.mobileLinkActive : ''].join(' ')}
+                    className={[
+                      styles.mobileLink,
+                      isActive(link.href) ? styles.mobileLinkActive : '',
+                      link.highlight === 'resources' ? styles.mobileLinkResources : '',
+                      link.highlight === 'board' ? styles.mobileLinkBoard : '',
+                    ].join(' ')}
                   >
+                    {link.highlight === 'resources' && <Library size={13} aria-hidden="true" />}
+                    {link.highlight === 'board' && <Megaphone size={13} aria-hidden="true" />}
                     {link.label}
                   </Link>
                 </motion.li>

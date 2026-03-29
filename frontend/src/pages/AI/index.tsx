@@ -166,7 +166,7 @@ export default function AIPage(): React.ReactElement {
         <div className={styles.noticeInner}>
           <Sparkles size={20} className={styles.noticeIcon} aria-hidden="true" />
           <p className={styles.noticeText}>{t.ai.noticeText}</p>
-          <a href={`/${locale}/browse`} className={styles.noticeBtn}>
+          <a href={`/${locale}/resources`} className={styles.noticeBtn}>
             {t.ai.noticeBtn}
           </a>
         </div>

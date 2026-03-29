@@ -207,7 +207,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'browse',
+            path: 'resources',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <Resources />
@@ -215,7 +215,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'browse/:institutionSlug',
+            path: 'resources/:institutionSlug',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <Institution />
@@ -223,7 +223,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'browse/:institutionSlug/:programId',
+            path: 'resources/:institutionSlug/:programId',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <Resources />
@@ -231,7 +231,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'browse/:institutionSlug/:programId/:subjectId',
+            path: 'resources/:institutionSlug/:programId/:subjectId',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <Resources />

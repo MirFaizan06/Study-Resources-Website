@@ -1,7 +1,7 @@
 const en = {
   nav: {
     home: 'Home',
-    browse: 'Browse',
+    browse: 'Resources',
     board: 'Board',
     ai: 'AI',
     contribute: 'Contribute',
@@ -408,12 +408,12 @@ This platform is yours. It exists for you, because of students like you who were
   },
   board: {
     title: 'Student Concerns Board',
-    subtitle: 'Voice campus issues. Upvote what matters most. Hold institutions accountable.',
+    subtitle: 'A community-driven platform for Kashmir\'s students. Post real campus issues — academic, infrastructure, hostel, transport — and let the community upvote what matters most. Every concern you raise holds institutions accountable.',
     newPost: 'Post a Concern',
     signInToPost: 'Sign in to Post',
     categories: 'Categories',
     joinTitle: 'Join the Community',
-    joinDesc: 'Create a free account to post concerns, vote, and comment.',
+    joinDesc: 'Create a free account to post concerns, vote on issues, comment and make your voice heard.',
     sortHot: 'Hot',
     sortNew: 'New',
     sortTop: 'Top',

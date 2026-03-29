@@ -206,43 +206,64 @@ export default function Home(): React.ReactElement {
         <div className={styles.heroScrim} aria-hidden="true" />
 
         <div className={styles.heroContent}>
-          <motion.div
-            className={styles.heroInner}
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          >
+          <div className={styles.heroInner}>
             {/* Eyebrow */}
-            <div className={styles.heroBadge}>
+            <motion.div
+              className={styles.heroBadge}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.05, ease: [0.4, 0, 0.2, 1] }}
+            >
               <span className={styles.heroBadgeDot} aria-hidden="true" />
               Kashmir's Free Academic Hub
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h1 className={styles.heroTitle}>
+            <motion.h1
+              className={styles.heroTitle}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
+            >
               Find Your
               <br />
               <Typewriter />
-            </h1>
+            </motion.h1>
 
-            <p className={styles.heroSubtitle}>
+            <motion.p
+              className={styles.heroSubtitle}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            >
               Free notes, past papers, syllabi and AI-powered guess papers for
               Kashmir University, Cluster University and more — all in one place.
-            </p>
+            </motion.p>
 
             {/* Feature pills */}
-            <div className={styles.featurePills} aria-hidden="true">
+            <motion.div
+              className={styles.featurePills}
+              aria-hidden="true"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.32, ease: [0.4, 0, 0.2, 1] }}
+            >
               {FEATURES.map((f) => (
                 <span key={f.label} className={styles.pill}>
                   {f.icon}
                   {f.label}
                 </span>
               ))}
-            </div>
+            </motion.div>
 
             {/* CTAs */}
-            <div className={styles.heroCta}>
-              <Link to={`/${locale}/browse`} className={styles.ctaPrimary}>
+            <motion.div
+              className={styles.heroCta}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            >
+              <Link to={`/${locale}/resources`} className={styles.ctaPrimary}>
                 <BookOpen size={17} aria-hidden="true" />
                 Browse Resources
                 <ArrowRight size={15} aria-hidden="true" />
@@ -264,10 +285,15 @@ export default function Home(): React.ReactElement {
                 <Heart size={15} aria-hidden="true" />
                 Support Us
               </a>
-            </div>
+            </motion.div>
 
             {/* Live stats */}
-            <div className={styles.statsStrip}>
+            <motion.div
+              className={styles.statsStrip}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            >
               {[
                 { val: platformStats ? `${platformStats.totalResources.toLocaleString()}+` : '—', lbl: 'Resources' },
                 { val: platformStats ? fmtNum(platformStats.totalDownloads) : '—', lbl: 'Downloads' },
@@ -282,8 +308,8 @@ export default function Home(): React.ReactElement {
                   </div>
                 </React.Fragment>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
 
         {/* Scroll hint */}
@@ -310,7 +336,7 @@ export default function Home(): React.ReactElement {
               </h2>
               <p className={styles.sectionSubtitle}>Select your institution to get started</p>
             </div>
-            <Link to={`/${locale}/browse`} className={styles.viewAllLink}>
+            <Link to={`/${locale}/resources`} className={styles.viewAllLink}>
               {t.home.sections.browseAll} <ChevronRight size={14} aria-hidden="true" />
             </Link>
           </div>
@@ -330,7 +356,7 @@ export default function Home(): React.ReactElement {
             >
               {institutions.map((inst) => (
                 <motion.div key={inst.id} variants={stagger.item}>
-                  <Link to={`/${locale}/browse/${inst.slug}`} className={styles.institutionCard}>
+                  <Link to={`/${locale}/resources/${inst.slug}`} className={styles.institutionCard}>
                     <div className={styles.instCardTop}>
                       <div className={styles.instIcon}>
                         {inst.logoUrl ? (
@@ -381,7 +407,7 @@ export default function Home(): React.ReactElement {
               </h2>
               <p className={styles.sectionSubtitle}>Latest study materials uploaded</p>
             </div>
-            <Link to={`/${locale}/browse?sort=newest`} className={styles.viewAllLink}>
+            <Link to={`/${locale}/resources?sort=newest`} className={styles.viewAllLink}>
               {t.home.sections.viewAll} <ChevronRight size={14} aria-hidden="true" />
             </Link>
           </div>
@@ -419,7 +445,7 @@ export default function Home(): React.ReactElement {
               </h2>
               <p className={styles.sectionSubtitle}>Most downloaded by students this month</p>
             </div>
-            <Link to={`/${locale}/browse?sort=popular`} className={styles.viewAllLink}>
+            <Link to={`/${locale}/resources?sort=popular`} className={styles.viewAllLink}>
               {t.home.sections.viewAll} <ChevronRight size={14} aria-hidden="true" />
             </Link>
           </div>

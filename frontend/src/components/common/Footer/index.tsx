@@ -47,7 +47,7 @@ export function Footer(): React.ReactElement {
             <h3 className={styles.colTitle}>{t.common.footer.resources}</h3>
             <ul className={styles.linkList}>
               <li>
-                <Link to={`/${locale}/browse`} className={styles.link}>
+                <Link to={`/${locale}/resources`} className={styles.link}>
                   {t.common.footer.links.browse}
                 </Link>
               </li>

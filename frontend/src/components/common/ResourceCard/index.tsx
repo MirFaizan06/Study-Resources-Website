@@ -51,7 +51,7 @@ export function ResourceCard({ resource, locale = 'en' }: ResourceCardProps): Re
 
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault()
-    const shareUrl = `${window.location.origin}/${locale}/browse?resource=${resource.id}`
+    const shareUrl = `${window.location.origin}/${locale}/resources?resource=${resource.id}`
 
     if (navigator.share) {
       try {

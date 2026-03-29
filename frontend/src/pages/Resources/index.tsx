@@ -162,12 +162,12 @@ export default function Resources(): React.ReactElement {
 
   const breadcrumbs = [
     { label: 'Home', href: `/${locale}/` },
-    { label: 'Browse', href: `/${locale}/browse` },
+    { label: 'Resources', href: `/${locale}/resources` },
     ...(institution
-      ? [{ label: institution.name, href: `/${locale}/browse/${institutionSlug}` }]
+      ? [{ label: institution.name, href: `/${locale}/resources/${institutionSlug}` }]
       : []),
     ...(program && institutionSlug
-      ? [{ label: program.name, href: `/${locale}/browse/${institutionSlug}/${programId}` }]
+      ? [{ label: program.name, href: `/${locale}/resources/${institutionSlug}/${programId}` }]
       : []),
     ...(subject ? [{ label: subject.name }] : []),
   ]
@@ -200,7 +200,7 @@ export default function Resources(): React.ReactElement {
                   {semSubjects.map((s) => (
                     <Link
                       key={s.id}
-                      to={`/${locale}/browse/${institutionSlug}/${programId}/${s.id}`}
+                      to={`/${locale}/resources/${institutionSlug}/${programId}/${s.id}`}
                       className={styles.subjectCard}
                     >
                       <BookOpen size={20} className={styles.subjectIcon} aria-hidden="true" />
