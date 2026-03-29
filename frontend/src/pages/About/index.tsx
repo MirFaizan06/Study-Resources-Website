@@ -157,6 +157,25 @@ export default function About(): React.ReactElement {
           </div>
         </section>
 
+        {/* Origin Story */}
+        <section className={styles.originSection} aria-labelledby="origin-heading">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.45 }}
+          >
+            <h2 id="origin-heading" className={styles.sectionTitle}>
+              {t.about.origin.title}
+            </h2>
+            <div className={styles.originText}>
+              {t.about.origin.body.split('\n\n').map((para, i) => (
+                <p key={i} className={styles.originParagraph}>{para}</p>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
         {/* Developers */}
         <section className={styles.devSection} aria-labelledby="dev-heading">
           <h2 id="dev-heading" className={styles.sectionTitle}>

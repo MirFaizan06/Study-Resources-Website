@@ -16,6 +16,9 @@ import {
   getModerationComments,
   setCommentStatus,
   getBoardStats,
+  listUsers,
+  banUser,
+  unbanUser,
 } from './admin.service';
 import { CreateResourceSchema, RequestUploadUrlSchema } from '../resources/resources.schema';
 import crypto from 'crypto';
@@ -175,8 +178,8 @@ export async function setPostStatusHandler(
     const id = req.params['id'];
     const { status } = req.body as { status?: string };
     if (!id) throw new AppError('Post id required.', 400, 'VALIDATION_ERROR');
-    if (status !== 'ACTIVE' && status !== 'REMOVED') {
-      throw new AppError('status must be ACTIVE or REMOVED.', 400, 'VALIDATION_ERROR');
+    if (status !== 'ACTIVE' && status !== 'REMOVED' && status !== 'PENDING_REVIEW') {
+      throw new AppError('status must be ACTIVE, REMOVED, or PENDING_REVIEW.', 400, 'VALIDATION_ERROR');
     }
     const post = await setPostStatus(id, status);
     res.status(200).json({ success: true, data: post });
@@ -226,6 +229,53 @@ export async function getBoardStatsHandler(
   try {
     const stats = await getBoardStats();
     res.status(200).json({ success: true, data: stats });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ─── User Management ──────────────────────────────────────────────────────────
+export async function listUsersHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const page = parseInt(String(req.query['page'] ?? '1'), 10);
+    const limit = parseInt(String(req.query['limit'] ?? '50'), 10);
+    const result = await listUsers(page, limit);
+    res.status(200).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function banUserHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    if (!id) throw new AppError('User id required.', 400, 'VALIDATION_ERROR');
+    const { reason } = req.body as { reason?: string };
+    const user = await banUser(id, reason);
+    res.status(200).json({ success: true, data: user });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function unbanUserHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    if (!id) throw new AppError('User id required.', 400, 'VALIDATION_ERROR');
+    const user = await unbanUser(id);
+    res.status(200).json({ success: true, data: user });
   } catch (err) {
     next(err);
   }

@@ -231,9 +231,23 @@ const en = {
       button: 'Donate to Keep It Free',
     },
     imageAlt: 'Our team working',
+    origin: {
+      title: 'Why We Built This',
+      body: `When we first walked into college, we quickly discovered something that felt almost absurd — getting your own study materials was a battle. Notes were scattered across random WhatsApp groups you had to know the right person to join. Past papers were hoarded. Syllabi were not even reliably posted anywhere official. You had to text strangers, chase seniors, and sometimes just give up hoping someone would come through before the exam.
+
+And the worst part? None of this was by accident. The structure to organise and distribute academic resources is supposed to exist — universities, colleges, and government bodies have both the authority and the obligation to make this seamless. But it simply wasn't happening. Things were incomplete, outdated, or just absent entirely. It was a mess, and we were expected to study inside it.
+
+By our second and third semesters, the frustration had built past the point of just complaining about it. We kept asking ourselves: why does this have to be this way? Why can't there be one place — free, organised, always updated — where a student in any Kashmir university can just go and find what they need?
+
+So we decided to build it ourselves. Not because there was money in it. Not for recognition. But because the problem was real, the solution was buildable, and no one else was doing it.
+
+That is how NotesHub Kashmir came to exist. The three of us started working on it, and today we are still here — continuously building, expanding, adding more institutions, more resources, and soon AI tools designed specifically for Kashmir students.
+
+This platform is yours. It exists for you, because of students like you who were just as frustrated as we were. If it has helped you even once, please consider supporting us. Running a server costs real money, and we are doing this without any funding or institutional backing. Even a small contribution keeps this alive for the next student who needs it.`,
+    },
     developers: {
       title: 'Meet the Team',
-      subtitle: 'The people who built NotesHub Kashmir from the ground up.',
+      subtitle: 'The three people behind NotesHub Kashmir.',
       people: [
         {
           name: 'Faizan Mir',
@@ -244,8 +258,14 @@ const en = {
         {
           name: 'Omar Rashid Lone',
           role: 'Programmer & Developer',
-          bio: 'Contributed to programming, development, image assets via Gemini, and overall project direction.',
+          bio: 'Co-developer, contributed to programming, Gemini image asset generation, and overall project direction.',
           portfolioUrl: 'https://desk-of-saar.netlify.app/',
+        },
+        {
+          name: 'Sameer Sharief',
+          role: 'Designer & Content Manager',
+          bio: 'Responsible for UI/UX design direction, visual consistency, and managing content across the platform.',
+          portfolioUrl: '',
         },
       ],
     },
@@ -279,8 +299,8 @@ const en = {
         body: 'Resources uploaded to the platform remain the intellectual property of their original authors. By contributing, you grant NotesHub Kashmir a non-exclusive licence to host and distribute the material. AI-generated guess papers are clearly labelled and are provided as study aids only — not official exam predictions.',
       },
       {
-        heading: '6. Student Concerns Board',
-        body: 'Posts on the Concerns Board must be genuine campus-related issues. Users are limited to one post per week. Content that is abusive, defamatory, or off-topic may be removed by moderators without notice.',
+        heading: '6. Student Concerns Board — Important',
+        body: 'The Student Concerns Board exists to raise genuine, constructive campus issues. By posting, you agree that your content is truthful, relevant, and non-defamatory. NotesHub Kashmir strictly prohibits: illegal content of any kind, posts that target individuals with harassment or threats, fake or fabricated complaints, spam, political propaganda, and content that is wholly irrelevant to campus life. Violations may result in (a) immediate post removal, (b) a temporary or permanent account ban, (c) an IP-level ban from the platform, or (d) in the most serious cases — where the content may constitute a criminal offence under applicable Indian law — referral to the appropriate legal authorities. We do not take these measures lightly, but we will not hesitate to act when necessary to protect the integrity of the platform and the people it serves. All posts go through an admin approval stage before being publicly visible.',
       },
       {
         heading: '7. Donations',
@@ -420,6 +440,8 @@ const en = {
     descriptionPlaceholder: 'Provide more context about the issue (optional)...',
     category: 'Category',
     postBtn: 'Submit Concern',
+    postSubmitted: 'Post submitted for review',
+    postPendingReview: 'Your concern has been submitted and is pending review by our team. Once approved, it will appear publicly on the board. This usually takes a short while.',
     uploading: 'Uploading image...',
     posting: 'Posting...',
     titleRequired: 'Title is required.',
@@ -478,6 +500,32 @@ const en = {
       authCta: 'Start Exploring',
       authDonate: 'Donate',
     },
+  },
+  boardTos: {
+    title: 'Before you post — please read',
+    body: 'The Student Concerns Board is a space for real, constructive campus issues. Before you can post, you must agree to the following:\n\n• Your post must be about a genuine campus issue — academic, infrastructure, administration, or similar.\n• Do not post anything illegal, defamatory, fake, harassing, or off-topic.\n• Violations can result in your post being removed, your account being banned, an IP ban, or in serious cases, legal action under applicable Indian law.\n• All posts are reviewed by our team before going public.\n\nNotesHub Kashmir takes the integrity of this board seriously. We built it as a tool for positive change — help us keep it that way.',
+    agree: 'I have read and I agree to the Board Terms',
+    readFull: 'Read full Terms of Service',
+    proceed: 'Continue to Post',
+    decline: 'Cancel',
+    alreadyAgreed: 'You have already agreed to the Board Terms.',
+  },
+  profile: {
+    nameVisibility: 'Name visibility on posts',
+    namePublic: 'Show my name publicly',
+    namePrivate: 'Hide my name (show as Anonymous)',
+    nameVisibilityHelp: 'When set to anonymous, your name will appear as "Anonymous" on all your Concern Board posts and comments. Admins can always see your real name.',
+  },
+  aiFundraiser: {
+    title: 'Help Us Build AI Tools',
+    subtitle: 'We\'re raising ₹10,000 to cover 6 months of AI server costs on Railway. Every rupee directly funds development.',
+    goal: 'Goal',
+    raised: 'Raised',
+    contributors: 'contributors',
+    contribute: 'Contribute to AI Development',
+    thankYou: 'Thank you for supporting AI development!',
+    progressLabel: 'of ₹10,000 goal',
+    funded: 'funded',
   },
   ai: {
     badge: 'Coming Soon',
@@ -603,7 +651,31 @@ const en = {
       requests: 'Requests',
       upload: 'Upload Resource',
       moderation: 'Moderation',
+      users: 'Users',
       logout: 'Logout',
+    },
+    users: {
+      title: 'User Management',
+      subtitle: 'View all registered users, ban or unban accounts.',
+      columns: {
+        name: 'Name',
+        email: 'Email',
+        role: 'Role',
+        university: 'University',
+        posts: 'Posts',
+        status: 'Status',
+        joined: 'Joined',
+        actions: 'Actions',
+      },
+      ban: 'Ban',
+      unban: 'Unban',
+      banned: 'Banned',
+      active: 'Active',
+      banReasonPlaceholder: 'Reason for ban (optional)',
+      confirmBan: 'Are you sure you want to ban this user?',
+      noUsers: 'No users found.',
+      banSuccess: 'User banned.',
+      unbanSuccess: 'User unbanned.',
     },
     moderation: {
       title: 'Board Moderation',

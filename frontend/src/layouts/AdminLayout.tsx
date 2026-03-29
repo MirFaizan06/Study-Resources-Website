@@ -11,6 +11,7 @@ import {
   X,
   BookOpen,
   ShieldAlert,
+  Users,
 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import styles from './AdminLayout.module.scss'
@@ -58,6 +59,11 @@ export function AdminLayout(): React.ReactElement {
       href: `/${locale}/admin/moderation`,
       label: t.admin.sidebar.moderation,
       icon: <ShieldAlert size={18} />,
+    },
+    {
+      href: `/${locale}/admin/users`,
+      label: t.admin.sidebar.users,
+      icon: <Users size={18} />,
     },
   ]
 

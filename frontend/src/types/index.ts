@@ -123,7 +123,7 @@ export interface CreateRequestPayload {
 
 // ─── Concerns Board ───────────────────────────────────────────────────────────
 
-export type PostStatus = 'ACTIVE' | 'REMOVED'
+export type PostStatus = 'ACTIVE' | 'REMOVED' | 'PENDING_REVIEW'
 export type PostCategory =
   | 'ACADEMICS'
   | 'INFRASTRUCTURE'
@@ -188,11 +188,42 @@ export interface StudentUser {
   semester: number | null
   profilePicUrl: string | null
   role: string
+  nameIsPublic: boolean
+  boardTosAccepted: boolean
 }
 
 export interface AuthResponse {
   token: string
+  refreshToken: string
   user: StudentUser
+}
+
+export interface FundraiserStatus {
+  totalRaised: number
+  goal: number
+  contributorCount: number
+  percentFunded: number
+}
+
+export interface AdminUserEntry {
+  id: string
+  email: string
+  name: string
+  role: string
+  university: string | null
+  college: string | null
+  isBanned: boolean
+  banReason: string | null
+  boardTosAccepted: boolean
+  createdAt: string
+  _count: { concernPosts: number; resources: number }
+}
+
+export interface AdminUsersPage {
+  users: AdminUserEntry[]
+  total: number
+  page: number
+  limit: number
 }
 
 export interface RegisterPayload {

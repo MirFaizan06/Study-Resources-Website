@@ -7,10 +7,19 @@ import type { CreatePost, ListPosts, CreateComment } from './board.schema';
 const authorSelect = {
   id: true,
   name: true,
+  nameIsPublic: true,
   profilePicUrl: true,
   university: true,
   college: true,
 } as const;
+
+// Mask name if user chose to keep it private
+function maskAuthor<T extends { name: string; nameIsPublic: boolean }>(
+  author: T
+): Omit<T, 'nameIsPublic'> & { name: string } {
+  const { nameIsPublic, ...rest } = author;
+  return { ...rest, name: nameIsPublic ? author.name : 'Anonymous' };
+}
 
 // ─── Hot score (Reddit-style, no SQL needed) ─────────────────────────────────
 function hotScore(upvotes: number, createdAt: Date): number {
@@ -26,7 +35,7 @@ export async function listPosts(
   const { sort, category, cursor, limit } = params;
 
   const where: Prisma.ConcernPostWhereInput = {
-    status: 'ACTIVE',
+    status: 'ACTIVE',   // only approved posts are shown publicly
     ...(category !== 'ALL' && { category: category as PostCategory }),
   };
 
@@ -54,7 +63,7 @@ export async function listPosts(
     const nextCursor = page.length === limit ? page[page.length - 1]?.id : null;
 
     return {
-      items: enrichWithVote(page, viewerId),
+      items: enrichWithVote(page.map((p) => ({ ...p, author: maskAuthor(p.author) })), viewerId),
       nextCursor,
     };
   }
@@ -82,7 +91,7 @@ export async function listPosts(
   const nextCursor = hasMore ? page[page.length - 1]?.id ?? null : null;
 
   return {
-    items: enrichWithVote(page, viewerId),
+    items: enrichWithVote(page.map((p) => ({ ...p, author: maskAuthor(p.author) })), viewerId),
     nextCursor,
   };
 }
@@ -104,7 +113,7 @@ export async function getPost(id: string, viewerId?: string) {
     },
   });
 
-  if (!post || post.status === 'REMOVED') {
+  if (!post || post.status === 'REMOVED' || post.status === 'PENDING_REVIEW') {
     throw new AppError('Post not found.', 404, 'NOT_FOUND');
   }
 
@@ -131,9 +140,11 @@ export async function getPost(id: string, viewerId?: string) {
 
   return {
     ...post,
+    author: maskAuthor(post.author),
     hasVoted,
     comments: post.comments.map((c) => ({
       ...c,
+      author: maskAuthor(c.author),
       hasVoted: commentVotedIds.has(c.id),
     })),
   };
@@ -141,6 +152,21 @@ export async function getPost(id: string, viewerId?: string) {
 
 // ─── Create post ──────────────────────────────────────────────────────────────
 export async function createPost(data: CreatePost, authorId: string) {
+  // Require Board ToS acceptance
+  const author = await prisma.user.findUnique({
+    where: { id: authorId },
+    select: { boardTosAccepted: true, isBanned: true },
+  });
+  if (!author) throw new AppError('User not found.', 404, 'NOT_FOUND');
+  if (author.isBanned) throw new AppError('Your account has been suspended.', 403, 'ACCOUNT_BANNED');
+  if (!author.boardTosAccepted) {
+    throw new AppError(
+      'You must agree to the Board Terms of Service before posting.',
+      403,
+      'TOS_NOT_ACCEPTED'
+    );
+  }
+
   // Enforce 1 post per week
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const recentPost = await prisma.concernPost.findFirst({
@@ -157,12 +183,13 @@ export async function createPost(data: CreatePost, authorId: string) {
     );
   }
 
-  return prisma.concernPost.create({
+  const post = await prisma.concernPost.create({
     data: {
       title: data.title,
       description: data.description ?? null,
       imageUrl: data.imageUrl,
       category: data.category as PostCategory,
+      status: 'PENDING_REVIEW',
       authorId,
     },
     include: {
@@ -170,6 +197,8 @@ export async function createPost(data: CreatePost, authorId: string) {
       _count: { select: { comments: true } },
     },
   });
+
+  return { ...post, author: maskAuthor(post.author) };
 }
 
 // ─── Toggle vote ──────────────────────────────────────────────────────────────

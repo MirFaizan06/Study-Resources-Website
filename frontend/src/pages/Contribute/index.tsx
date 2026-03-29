@@ -5,6 +5,7 @@ import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
+import ContributeTutorial from './ContributeTutorial'
 import type { Institution, Program, Subject, ResourceType, ContributePayload } from '@/types'
 import styles from './Contribute.module.scss'
 
@@ -184,6 +185,7 @@ export default function Contribute(): React.ReactElement {
 
   return (
     <div className={styles.page}>
+      <ContributeTutorial />
       <div className={styles.container}>
         {/* Page header */}
         <div className={styles.pageHeader}>

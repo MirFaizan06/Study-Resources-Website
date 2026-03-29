@@ -24,6 +24,8 @@ import type {
   BoardModerationPost,
   BoardModerationComment,
   BoardStats,
+  FundraiserStatus,
+  AdminUsersPage,
 } from '@/types'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:4000'
@@ -211,6 +213,24 @@ export const api = {
         body: JSON.stringify({ fileName, contentType }),
       })
     },
+
+    refresh(refreshToken: string): Promise<{ token: string; refreshToken: string }> {
+      return apiFetch<{ token: string; refreshToken: string }>('/api/auth/refresh', {
+        method: 'POST',
+        body: JSON.stringify({ refreshToken }),
+      })
+    },
+
+    logout(refreshToken: string): Promise<void> {
+      return apiFetch<void>('/api/auth/logout', {
+        method: 'POST',
+        body: JSON.stringify({ refreshToken }),
+      })
+    },
+
+    acceptBoardTos(): Promise<void> {
+      return apiFetch<void>('/api/auth/accept-board-tos', { method: 'POST' })
+    },
   },
 
   board: {
@@ -288,6 +308,18 @@ export const api = {
     },
     thank(data: { donorName?: string; message?: string; amount?: number; isAnonymous?: boolean; paymentId?: string }): Promise<void> {
       return apiFetch('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) })
+    },
+  },
+
+  fundraiser: {
+    getStatus(): Promise<FundraiserStatus> {
+      return apiFetch<FundraiserStatus>('/api/fundraiser')
+    },
+    contribute(data: { amount: number; paymentId?: string; donorName?: string }): Promise<void> {
+      return apiFetch<void>('/api/fundraiser/contribute', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
     },
   },
 
@@ -375,6 +407,21 @@ export const api = {
 
     getBoardStats(): Promise<BoardStats> {
       return apiFetch<BoardStats>('/api/admin/moderation/board-stats')
+    },
+
+    getUsers(page = 1): Promise<AdminUsersPage> {
+      return apiFetch<AdminUsersPage>(`/api/admin/users?page=${page}&limit=50`)
+    },
+
+    banUser(id: string, reason?: string): Promise<void> {
+      return apiFetch<void>(`/api/admin/users/${id}/ban`, {
+        method: 'PATCH',
+        body: JSON.stringify({ reason }),
+      })
+    },
+
+    unbanUser(id: string): Promise<void> {
+      return apiFetch<void>(`/api/admin/users/${id}/unban`, { method: 'PATCH' })
     },
   },
 }

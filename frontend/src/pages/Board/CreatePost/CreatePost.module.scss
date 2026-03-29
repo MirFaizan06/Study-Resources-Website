@@ -243,3 +243,183 @@
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+// ─── Success state ────────────────────────────────────────────────────────────
+.successCard {
+  @include card-base;
+  padding: $space-10 $space-8;
+  @include flex-column;
+  align-items: center;
+  gap: $space-4;
+  text-align: center;
+}
+
+.successIcon {
+  @include flex-center;
+  width: 72px;
+  height: 72px;
+  border-radius: $radius-full;
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+}
+
+.successTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.successBody {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  max-width: 400px;
+  margin: 0;
+}
+
+// ─── ToS Gate ─────────────────────────────────────────────────────────────────
+.tosOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+}
+
+.tosModal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  padding: $space-8;
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  @include flex-column;
+  gap: $space-4;
+  box-shadow: var(--shadow-xl);
+}
+
+.tosIconWrap {
+  @include flex-center;
+  width: 52px;
+  height: 52px;
+  border-radius: $radius-xl;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  flex-shrink: 0;
+}
+
+.tosTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.tosBody {
+  @include flex-column;
+  gap: $space-3;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: $space-1;
+}
+
+.tosPara {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+.tosReadFull {
+  font-size: $font-size-xs;
+  color: var(--primary);
+  text-decoration: underline;
+  align-self: flex-start;
+
+  &:hover { color: var(--primary-dark); }
+}
+
+.tosError {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  margin: 0;
+}
+
+.tosCheck {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--text-primary);
+  cursor: pointer;
+  line-height: $line-height-relaxed;
+}
+
+.tosCheckInput {
+  accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.tosActions {
+  display: flex;
+  gap: $space-3;
+  flex-wrap: wrap;
+}
+
+.tosProceedBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-3 $space-6;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover:not(:disabled) { background: var(--primary-dark); }
+  &:disabled { opacity: 0.55; cursor: not-allowed; }
+}
+
+.tosDeclineBtn {
+  background: none;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: #dc2626;
+    color: #dc2626;
+  }
+}
+
+.tosSpin {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}

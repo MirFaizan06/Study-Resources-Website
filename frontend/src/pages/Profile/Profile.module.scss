@@ -147,6 +147,46 @@
   &::placeholder { color: var(--text-muted); }
 }
 
+// ─── Name visibility ──────────────────────────────────────────────────────────
+.visibilityHelp {
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: $space-1 0 $space-3;
+}
+
+.visibilityOptions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.visibilityOption {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: $space-3 $space-4;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-lg;
+  transition: border-color $transition-fast, background $transition-fast;
+
+  &:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-lighter);
+  }
+}
+
+.visibilityRadio {
+  accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
 .actions {
   display: flex;
   align-items: center;

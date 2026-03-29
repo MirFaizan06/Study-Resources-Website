@@ -12,6 +12,7 @@ import statsRouter from './modules/stats/stats.router';
 import authRouter from './modules/auth/auth.router';
 import boardRouter from './modules/board/board.router';
 import donorsRouter from './modules/donors/donors.router';
+import fundraiserRouter from './modules/fundraiser/fundraiser.router';
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/api/stats', statsRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/board', boardRouter);
 app.use('/api/donors', donorsRouter);
+app.use('/api/fundraiser', fundraiserRouter);
 
 // ─── 404 Handler ──────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {

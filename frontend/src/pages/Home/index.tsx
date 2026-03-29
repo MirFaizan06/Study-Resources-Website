@@ -14,6 +14,7 @@ import {
   Lightbulb,
   LayoutGrid,
   Upload,
+  Heart,
 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
@@ -254,6 +255,15 @@ export default function Home(): React.ReactElement {
                 <MessageSquare size={16} aria-hidden="true" />
                 Request Notes
               </Link>
+              <a
+                href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.ctaDonate}
+              >
+                <Heart size={15} aria-hidden="true" />
+                Support Us
+              </a>
             </div>
 
             {/* Live stats */}

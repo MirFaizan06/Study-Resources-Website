@@ -8,12 +8,16 @@ import {
   LoginSchema,
   UpdateProfileSchema,
   ProfilePicUploadSchema,
+  RefreshTokenSchema,
 } from './auth.schema';
 import {
   registerStudent,
   loginStudent,
+  refreshAccessToken,
+  logoutStudent,
   getMe,
   updateProfile,
+  acceptBoardTos,
 } from './auth.service';
 
 export async function register(
@@ -68,6 +72,48 @@ export async function patchProfile(
     const data = UpdateProfileSchema.parse(req.body);
     const user = await updateProfile(req.user.id, data);
     res.status(200).json({ success: true, data: user });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function refreshToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { refreshToken: rt } = RefreshTokenSchema.parse(req.body);
+    const result = await refreshAccessToken(rt);
+    res.status(200).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function logout(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { refreshToken: rt } = RefreshTokenSchema.parse(req.body);
+    await logoutStudent(rt);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function postAcceptBoardTos(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    if (!req.user) throw new AppError('Authentication required.', 401, 'AUTH_REQUIRED');
+    await acceptBoardTos(req.user.id);
+    res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }

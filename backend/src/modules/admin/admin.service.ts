@@ -96,6 +96,8 @@ export async function getModerationPosts(status?: string) {
     ? { status: 'REMOVED' as const }
     : status === 'ACTIVE'
     ? { status: 'ACTIVE' as const }
+    : status === 'PENDING_REVIEW'
+    ? { status: 'PENDING_REVIEW' as const }
     : {};
 
   return prisma.concernPost.findMany({
@@ -109,7 +111,7 @@ export async function getModerationPosts(status?: string) {
   });
 }
 
-export async function setPostStatus(id: string, status: 'ACTIVE' | 'REMOVED') {
+export async function setPostStatus(id: string, status: 'ACTIVE' | 'REMOVED' | 'PENDING_REVIEW') {
   const post = await prisma.concernPost.findUnique({ where: { id } });
   if (!post) throw new AppError(`Post '${id}' not found.`, 404, 'NOT_FOUND');
   return prisma.concernPost.update({ where: { id }, data: { status } });
@@ -146,6 +148,62 @@ export async function getBoardStats() {
     prisma.concernPost.count({ where: { status: 'REMOVED' } }),
   ]);
   return { totalPosts, totalComments, removedPosts };
+}
+
+// ─── User Management ──────────────────────────────────────────────────────────
+
+export async function listUsers(page = 1, limit = 50) {
+  const skip = (page - 1) * limit;
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        university: true,
+        college: true,
+        isBanned: true,
+        banReason: true,
+        boardTosAccepted: true,
+        createdAt: true,
+        _count: {
+          select: {
+            concernPosts: true,
+            resources: true,
+          },
+        },
+      },
+    }),
+    prisma.user.count(),
+  ]);
+  return { users, total, page, limit };
+}
+
+export async function banUser(id: string, reason?: string) {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) throw new AppError(`User '${id}' not found.`, 404, 'NOT_FOUND');
+  if (user.role === 'ADMIN') throw new AppError('Cannot ban an admin account.', 403, 'FORBIDDEN');
+  // Revoke all refresh tokens
+  await prisma.refreshToken.deleteMany({ where: { userId: id } });
+  return prisma.user.update({
+    where: { id },
+    data: { isBanned: true, banReason: reason ?? null },
+    select: { id: true, email: true, name: true, isBanned: true, banReason: true },
+  });
+}
+
+export async function unbanUser(id: string) {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) throw new AppError(`User '${id}' not found.`, 404, 'NOT_FOUND');
+  return prisma.user.update({
+    where: { id },
+    data: { isBanned: false, banReason: null },
+    select: { id: true, email: true, name: true, isBanned: true, banReason: true },
+  });
 }
 
 export async function adminUploadResource(

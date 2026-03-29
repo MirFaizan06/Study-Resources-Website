@@ -20,6 +20,11 @@ export const UpdateProfileSchema = z.object({
   college: z.string().min(2).max(120).optional(),
   semester: z.coerce.number().int().min(1).max(12).optional(),
   profilePicUrl: z.string().url().optional().nullable(),
+  nameIsPublic: z.boolean().optional(),
+});
+
+export const RefreshTokenSchema = z.object({
+  refreshToken: z.string().min(1, 'Refresh token is required'),
 });
 
 export const ProfilePicUploadSchema = z.object({

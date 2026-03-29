@@ -1,0 +1,299 @@
+.page {
+  @include flex-column;
+  gap: $space-6;
+}
+
+.header {
+  @include flex-column;
+  gap: $space-1;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.toast {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #15803d;
+  padding: $space-2 $space-4;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  margin: 0;
+}
+
+// ─── Table ────────────────────────────────────────────────────────────────────
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  background: var(--bg-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+
+  thead tr {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    padding: $space-3 $space-4;
+    text-align: left;
+    font-weight: $font-weight-semibold;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background $transition-fast;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: var(--bg-secondary); }
+  }
+
+  td {
+    padding: $space-3 $space-4;
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+}
+
+.rowBanned {
+  opacity: 0.7;
+}
+
+.nameCell {
+  @include flex-column;
+  gap: 2px;
+}
+
+.userName {
+  font-weight: $font-weight-medium;
+  color: var(--text-primary);
+}
+
+.userRole {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.emailCell {
+  color: var(--text-secondary);
+  font-size: $font-size-xs;
+}
+
+.countCell {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.none {
+  color: var(--text-muted);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px $space-2;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+}
+
+.badgeActive {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.badgeBanned {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+// ─── Action buttons ───────────────────────────────────────────────────────────
+.banBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1 $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  color: #dc2626;
+  background: none;
+  transition: background $transition-fast, border-color $transition-fast;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.banBtnConfirm {
+  border-color: #dc2626;
+  background: rgba(239, 68, 68, 0.08);
+  animation: pulse-warn 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-warn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.15); }
+  50% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15); }
+}
+
+.unbanBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1 $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  border: 1.5px solid rgba(34, 197, 94, 0.4);
+  color: #16a34a;
+  background: none;
+  transition: background $transition-fast;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) { background: rgba(34, 197, 94, 0.08); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+// ─── Ban reason row ───────────────────────────────────────────────────────────
+.banReasonRow td {
+  padding: 0 $space-4 $space-3;
+  background: rgba(239, 68, 68, 0.03);
+}
+
+.banReasonInner {
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+}
+
+.banReasonInput {
+  flex: 1;
+  padding: $space-2 $space-3;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: $font-size-xs;
+
+  &:focus {
+    outline: none;
+    border-color: #dc2626;
+  }
+  &::placeholder { color: var(--text-muted); }
+}
+
+.cancelBanBtn {
+  background: none;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  padding: $space-2 $space-3;
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover { border-color: var(--text-primary); color: var(--text-primary); }
+}
+
+// ─── Loader / empty ───────────────────────────────────────────────────────────
+.loaderRow {
+  display: flex;
+  justify-content: center;
+  padding: $space-12;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty {
+  padding: $space-10;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: $font-size-sm;
+}
+
+.spin {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  opacity: 0.6;
+}
+
+// ─── Pagination ───────────────────────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+}
+
+.pageBtn {
+  @include flex-center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--border-color);
+  border-radius: $radius-md;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.pageInfo {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  min-width: 60px;
+  text-align: center;
+}
+
+// ─── Responsive hide ──────────────────────────────────────────────────────────
+.hideXs {
+  @media (max-width: 480px) { display: none; }
+}
+
+.hideSm {
+  @media (max-width: 640px) { display: none; }
+}

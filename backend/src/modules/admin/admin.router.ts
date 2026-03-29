@@ -12,6 +12,9 @@ import {
   getModerationCommentsHandler,
   setCommentStatusHandler,
   getBoardStatsHandler,
+  listUsersHandler,
+  banUserHandler,
+  unbanUserHandler,
 } from './admin.controller';
 import { requireAuth, requireAdmin } from '../../middleware/auth';
 import { authLimiter, uploadLimiter } from '../../middleware/rateLimit';
@@ -41,6 +44,11 @@ router.post('/resources/upload-url', uploadLimiter, adminRequestUploadUrl);
 
 // POST /api/admin/resources
 router.post('/resources', adminCreateResource);
+
+// ─── User Management ─────────────────────────────────────────────────────────
+router.get('/users', listUsersHandler);
+router.patch('/users/:id/ban', banUserHandler);
+router.patch('/users/:id/unban', unbanUserHandler);
 
 // ─── Board Moderation ─────────────────────────────────────────────────────────
 router.get('/moderation/posts', getModerationPostsHandler);

@@ -27,6 +27,7 @@ export default function ProfilePage(): React.ReactElement {
   const [university, setUniversity] = useState(user.university ?? '')
   const [college, setCollege] = useState(user.college ?? '')
   const [semester, setSemester] = useState(user.semester ?? 1)
+  const [nameIsPublic, setNameIsPublic] = useState(user.nameIsPublic ?? true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
@@ -38,7 +39,7 @@ export default function ProfilePage(): React.ReactElement {
     setSaving(true)
     setError('')
     try {
-      await api.auth.updateProfile({ name, university, college, semester })
+      await api.auth.updateProfile({ name, university, college, semester, nameIsPublic })
       await refreshUser()
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
@@ -162,6 +163,34 @@ export default function ProfilePage(): React.ReactElement {
                 value={college}
                 onChange={(e) => setCollege(e.target.value)}
               />
+            </div>
+
+            {/* Name visibility */}
+            <div className={styles.field}>
+              <span className={styles.label}>{t.profile.nameVisibility}</span>
+              <p className={styles.visibilityHelp}>{t.profile.nameVisibilityHelp}</p>
+              <div className={styles.visibilityOptions}>
+                <label className={styles.visibilityOption}>
+                  <input
+                    type="radio"
+                    name="nameVisibility"
+                    checked={nameIsPublic}
+                    onChange={() => setNameIsPublic(true)}
+                    className={styles.visibilityRadio}
+                  />
+                  <span>{t.profile.namePublic}</span>
+                </label>
+                <label className={styles.visibilityOption}>
+                  <input
+                    type="radio"
+                    name="nameVisibility"
+                    checked={!nameIsPublic}
+                    onChange={() => setNameIsPublic(false)}
+                    className={styles.visibilityRadio}
+                  />
+                  <span>{t.profile.namePrivate}</span>
+                </label>
+              </div>
             </div>
 
             <div className={styles.actions}>

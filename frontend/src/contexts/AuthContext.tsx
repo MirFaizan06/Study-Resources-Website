@@ -24,9 +24,20 @@ interface AuthContextValue {
   }): Promise<void>
   logout(): void
   refreshUser(): Promise<void>
+  acceptBoardTos(): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
+
+function storeTokens(token: string, refreshToken: string) {
+  localStorage.setItem('student_token', token)
+  localStorage.setItem('student_refresh_token', refreshToken)
+}
+
+function clearTokens() {
+  localStorage.removeItem('student_token')
+  localStorage.removeItem('student_refresh_token')
+}
 
 export function AuthProvider({ children }: { children: ReactNode }): React.ReactElement {
   const [user, setUser] = useState<StudentUser | null>(null)
@@ -35,15 +46,31 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
 
   // Restore session from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('student_token')
-    if (stored) {
-      setToken(stored)
+    const storedToken = localStorage.getItem('student_token')
+    const storedRefresh = localStorage.getItem('student_refresh_token')
+
+    if (storedToken) {
+      setToken(storedToken)
       api.auth
         .me()
         .then((u) => setUser(u))
-        .catch(() => {
-          localStorage.removeItem('student_token')
-          setToken(null)
+        .catch(async () => {
+          // Access token expired — try refreshing
+          if (storedRefresh) {
+            try {
+              const result = await api.auth.refresh(storedRefresh)
+              storeTokens(result.token, result.refreshToken)
+              setToken(result.token)
+              const u = await api.auth.me()
+              setUser(u)
+            } catch {
+              clearTokens()
+              setToken(null)
+            }
+          } else {
+            clearTokens()
+            setToken(null)
+          }
         })
         .finally(() => setIsLoading(false))
     } else {
@@ -53,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await api.auth.login(email, password)
-    localStorage.setItem('student_token', res.token)
+    storeTokens(res.token, res.refreshToken)
     setToken(res.token)
     setUser(res.user)
   }, [])
@@ -68,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
       semester: number
     }) => {
       const res = await api.auth.register(data)
-      localStorage.setItem('student_token', res.token)
+      storeTokens(res.token, res.refreshToken)
       setToken(res.token)
       setUser(res.user)
     },
@@ -76,7 +103,12 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
   )
 
   const logout = useCallback(() => {
-    localStorage.removeItem('student_token')
+    const rt = localStorage.getItem('student_refresh_token')
+    if (rt) {
+      // Fire-and-forget — revoke server-side token
+      api.auth.logout(rt).catch(() => null)
+    }
+    clearTokens()
     setToken(null)
     setUser(null)
   }, [])
@@ -86,8 +118,13 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
     setUser(u)
   }, [])
 
+  const acceptBoardTos = useCallback(async () => {
+    await api.auth.acceptBoardTos()
+    await refreshUser()
+  }, [refreshUser])
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, refreshUser, acceptBoardTos }}>
       {children}
     </AuthContext.Provider>
   )

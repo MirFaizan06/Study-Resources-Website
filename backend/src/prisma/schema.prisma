@@ -43,6 +43,7 @@ enum SubjectCategory {
 enum PostStatus {
   ACTIVE
   REMOVED
+  PENDING_REVIEW
 }
 
 enum PostCategory {
@@ -56,22 +57,44 @@ enum PostCategory {
 }
 
 model User {
-  id              String           @id @default(cuid())
-  email           String           @unique
-  name            String
-  role            Role             @default(STUDENT)
-  passwordHash    String
-  university      String?
-  college         String?
-  semester        Int?
-  profilePicUrl   String?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  resources       Resource[]
-  concernPosts    ConcernPost[]
-  concernVotes    ConcernVote[]
-  concernComments ConcernComment[]
-  commentVotes    CommentVote[]
+  id                 String           @id @default(cuid())
+  email              String           @unique
+  name               String
+  role               Role             @default(STUDENT)
+  passwordHash       String
+  university         String?
+  college            String?
+  semester           Int?
+  profilePicUrl      String?
+  nameIsPublic       Boolean          @default(true)
+  isBanned           Boolean          @default(false)
+  banReason          String?
+  boardTosAccepted   Boolean          @default(false)
+  boardTosAcceptedAt DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  resources          Resource[]
+  concernPosts       ConcernPost[]
+  concernVotes       ConcernVote[]
+  concernComments    ConcernComment[]
+  commentVotes       CommentVote[]
+  refreshTokens      RefreshToken[]
+
+  @@index([isBanned])
+  @@index([createdAt])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
 }
 
 model Institution {
@@ -152,7 +175,7 @@ model ConcernPost {
   description  String?          @db.Text
   imageUrl     String
   category     PostCategory     @default(OTHER)
-  status       PostStatus       @default(ACTIVE)
+  status       PostStatus       @default(PENDING_REVIEW)
   upvotesCount Int              @default(0)
   authorId     String
   createdAt    DateTime         @default(now())
@@ -225,5 +248,17 @@ model Donation {
   createdAt   DateTime @default(now())
 
   @@index([isPublic])
+  @@index([createdAt])
+}
+
+// ─── AI Fundraiser ────────────────────────────────────────────────────────────
+
+model AiFundraiserContribution {
+  id        String   @id @default(cuid())
+  amount    Int      // in INR
+  paymentId String?  @unique
+  donorName String?
+  createdAt DateTime @default(now())
+
   @@index([createdAt])
 }

@@ -1,19 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, FileText, FlaskConical, Sparkles, Clock } from 'lucide-react'
+import { Brain, FileText, FlaskConical, Sparkles, Clock, Heart } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
+import { api } from '@/services/api'
+import type { FundraiserStatus } from '@/types'
 import styles from './AI.module.scss'
 
 const FEATURE_ICONS = [Brain, FlaskConical, FileText, Sparkles]
 
 export default function AIPage(): React.ReactElement {
   const { t, locale } = useLocale()
+  const [fundraiser, setFundraiser] = useState<FundraiserStatus | null>(null)
 
   useHead({
     title: t.seo.ai.title,
     description: t.seo.ai.description,
   })
+
+  useEffect(() => {
+    api.fundraiser.getStatus().then(setFundraiser).catch(() => null)
+  }, [])
+
+  const razorpayLink = import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'
 
   return (
     <div className={styles.page}>
@@ -90,6 +99,65 @@ export default function AIPage(): React.ReactElement {
               )
             })}
           </div>
+        </div>
+      </section>
+
+      {/* ─── Fundraiser ──────────────────────────────────────────────────────── */}
+      <section className={styles.fundraiser} aria-labelledby="fundraiser-heading">
+        <div className={styles.fundraiserInner}>
+          <motion.div
+            className={styles.fundraiserCard}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.45 }}
+          >
+            <h2 id="fundraiser-heading" className={styles.fundraiserTitle}>
+              {t.aiFundraiser.title}
+            </h2>
+            <p className={styles.fundraiserSubtitle}>{t.aiFundraiser.subtitle}</p>
+
+            <div className={styles.fundraiserStats}>
+              <div className={styles.fundraiserStat}>
+                <span className={styles.fundraiserStatValue}>
+                  {fundraiser ? `₹${fundraiser.totalRaised.toLocaleString()}` : '—'}
+                </span>
+                <span className={styles.fundraiserStatLabel}>{t.aiFundraiser.raised}</span>
+              </div>
+              <div className={styles.fundraiserStat}>
+                <span className={styles.fundraiserStatValue}>
+                  {fundraiser ? `₹${fundraiser.goal.toLocaleString()}` : '₹10,000'}
+                </span>
+                <span className={styles.fundraiserStatLabel}>{t.aiFundraiser.goal}</span>
+              </div>
+              <div className={styles.fundraiserStat}>
+                <span className={styles.fundraiserStatValue}>
+                  {fundraiser ? fundraiser.contributorCount : '—'}
+                </span>
+                <span className={styles.fundraiserStatLabel}>{t.aiFundraiser.contributors}</span>
+              </div>
+            </div>
+
+            <div className={styles.fundraiserBar} role="progressbar" aria-valuenow={fundraiser?.percentFunded ?? 0} aria-valuemin={0} aria-valuemax={100}>
+              <div
+                className={styles.fundraiserFill}
+                style={{ width: `${fundraiser?.percentFunded ?? 0}%` }}
+              />
+            </div>
+            <p className={styles.fundraiserPercent}>
+              {fundraiser ? fundraiser.percentFunded : 0}% {t.aiFundraiser.funded} · {t.aiFundraiser.progressLabel}
+            </p>
+
+            <a
+              href={razorpayLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.fundraiserBtn}
+            >
+              <Heart size={15} aria-hidden="true" />
+              {t.aiFundraiser.contribute}
+            </a>
+          </motion.div>
         </div>
       </section>
 

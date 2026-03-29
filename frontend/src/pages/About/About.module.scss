@@ -316,6 +316,35 @@
   }
 }
 
+// ─── Origin Story ─────────────────────────────────────────────────────────────
+.originSection {
+  @include flex-column;
+}
+
+.originText {
+  @include flex-column;
+  gap: $space-4;
+  max-width: 780px;
+  padding: $space-8;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  border-left: 4px solid var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.originParagraph {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin: 0;
+
+  &:first-child {
+    color: var(--text-primary);
+    font-weight: $font-weight-medium;
+  }
+}
+
 // ─── Developers ───────────────────────────────────────────────────────────────
 .devSection {
   @include flex-column;
@@ -335,6 +364,10 @@
 
   @include respond-to(md) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
