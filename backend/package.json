@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
+    "build": "prisma generate --schema=src/prisma/schema.prisma && tsc",
     "start": "node dist/server.js",
     "db:push": "prisma db push --schema=src/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema=src/prisma/schema.prisma",
     "db:studio": "prisma studio --schema=src/prisma/schema.prisma",
-    "db:seed": "ts-node-dev src/prisma/seed.ts",
+    "db:seed": "node dist/prisma/seed.js",
     "db:generate": "prisma generate --schema=src/prisma/schema.prisma"
   },
   "dependencies": {
