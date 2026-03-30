@@ -49,42 +49,53 @@ function getStudentToken(): string | null {
 }
 
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const url = `${BASE_URL}${path}`
+  const url = `${BASE_URL}${path}`;
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
-  }
+  };
 
-  const adminToken = getAdminToken()
-  const studentToken = getStudentToken()
-  const token = adminToken ?? studentToken
+  const adminToken = getAdminToken();
+  const studentToken = getStudentToken();
+  const token = adminToken ?? studentToken;
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const response = await fetch(url, {
     ...options,
     headers,
-  })
+  });
 
   if (!response.ok) {
-    let message = `Request failed with status ${response.status}`
+    let message = `Request failed with status ${response.status}`;
     try {
-      const errorBody = await response.json() as { message?: string }
-      if (errorBody.message) message = errorBody.message
+      const errorBody = await response.json() as { message?: string };
+      if (errorBody.message) message = errorBody.message;
     } catch {
       // ignore JSON parse error
     }
-    throw new ApiError(message, response.status)
+    throw new ApiError(message, response.status);
   }
 
-  // Handle 204 No Content
   if (response.status === 204) {
-    return undefined as T
+    return undefined as T;
   }
 
-  return response.json() as Promise<T>
+  const result = await response.json();
+
+  // Global Unwrapper: Extract .data if the backend wrapped it
+  if (
+    result &&
+    typeof result === 'object' &&
+    result.success === true &&
+    'data' in result
+  ) {
+    return result.data as T;
+  }
+
+  return result as T;
 }
 
 function buildQueryString(params: Record<string, string | number | boolean | undefined>): string {
@@ -101,56 +112,50 @@ function buildQueryString(params: Record<string, string | number | boolean | und
 export const api = {
   institutions: {
     getAll(): Promise<Institution[]> {
-      return apiFetch<Institution[]>('/api/institutions')
+      return apiFetch<Institution[]>('/api/institutions');
     },
 
     getBySlug(slug: string): Promise<Institution> {
-      return apiFetch<Institution>(`/api/institutions/${slug}`)
+      return apiFetch<Institution>(`/api/institutions/${slug}`);
     },
 
     getProgram(programId: string): Promise<Program> {
-      return apiFetch<Program>(`/api/institutions/programs/${programId}`)
+      return apiFetch<Program>(`/api/institutions/programs/${programId}`);
     },
 
     getSubject(subjectId: string): Promise<Subject> {
-      return apiFetch<Subject>(`/api/institutions/subjects/${subjectId}`)
+      return apiFetch<Subject>(`/api/institutions/subjects/${subjectId}`);
     },
   },
 
   resources: {
     getAll(params: ResourceQueryParams): Promise<PaginatedResult<Resource>> {
-      const query = buildQueryString(params as Record<string, string | number | boolean | undefined>)
-      return apiFetch<PaginatedResult<Resource>>(`/api/resources${query}`)
+      const query = buildQueryString(params as Record<string, string | number | boolean | undefined>);
+      return apiFetch<PaginatedResult<Resource>>(`/api/resources${query}`);
     },
 
     getById(id: string): Promise<Resource> {
-      return apiFetch<Resource>(`/api/resources/${id}`)
+      return apiFetch<Resource>(`/api/resources/${id}`);
     },
 
     download(id: string): Promise<{ fileUrl: string }> {
       return apiFetch<{ fileUrl: string }>(`/api/resources/${id}/download`, {
         method: 'POST',
-      })
+      });
     },
 
-    requestUploadUrl(
-      filename: string,
-      contentType: string
-    ): Promise<{ uploadUrl: string; fileUrl: string }> {
-      return apiFetch<{ uploadUrl: string; fileUrl: string }>(
-        '/api/resources/upload-url',
-        {
-          method: 'POST',
-          body: JSON.stringify({ filename, contentType }),
-        }
-      )
+    requestUploadUrl(filename: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
+      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/resources/upload-url', {
+        method: 'POST',
+        body: JSON.stringify({ filename, contentType }),
+      });
     },
 
     create(data: CreateResourcePayload): Promise<Resource> {
       return apiFetch<Resource>('/api/resources', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
   },
 
@@ -159,13 +164,13 @@ export const api = {
       return apiFetch<void>('/api/requests', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
   },
 
   stats: {
     get(): Promise<PlatformStats> {
-      return apiFetch<PlatformStats>('/api/stats')
+      return apiFetch<PlatformStats>('/api/stats');
     },
   },
 
@@ -174,7 +179,7 @@ export const api = {
       return apiFetch<void>('/api/contribute', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
   },
 
@@ -183,143 +188,119 @@ export const api = {
       return apiFetch<AuthResponse>('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
 
     login(email: string, password: string): Promise<AuthResponse> {
       return apiFetch<AuthResponse>('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
-      })
+      });
     },
 
     me(): Promise<StudentUser> {
-      return apiFetch<StudentUser>('/api/auth/me')
+      return apiFetch<StudentUser>('/api/auth/me');
     },
 
     updateProfile(data: Partial<Omit<StudentUser, 'id' | 'email' | 'role'>>): Promise<StudentUser> {
       return apiFetch<StudentUser>('/api/auth/profile', {
         method: 'PATCH',
         body: JSON.stringify(data),
-      })
+      });
     },
 
-    requestProfilePicUrl(
-      fileName: string,
-      contentType: string
-    ): Promise<{ uploadUrl: string; fileUrl: string }> {
+    requestProfilePicUrl(fileName: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
       return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/auth/profile-pic-url', {
         method: 'POST',
         body: JSON.stringify({ fileName, contentType }),
-      })
+      });
     },
 
     refresh(refreshToken: string): Promise<{ token: string; refreshToken: string }> {
       return apiFetch<{ token: string; refreshToken: string }>('/api/auth/refresh', {
         method: 'POST',
         body: JSON.stringify({ refreshToken }),
-      })
+      });
     },
 
     logout(refreshToken: string): Promise<void> {
       return apiFetch<void>('/api/auth/logout', {
         method: 'POST',
         body: JSON.stringify({ refreshToken }),
-      })
+      });
     },
 
     acceptBoardTos(): Promise<void> {
-      return apiFetch<void>('/api/auth/accept-board-tos', { method: 'POST' })
+      return apiFetch<void>('/api/auth/accept-board-tos', { method: 'POST' });
     },
   },
 
   board: {
-    getPosts(params: {
-      sort?: PostSort
-      category?: PostCategory | 'ALL'
-      cursor?: string
-      limit?: number
-    }): Promise<BoardPage> {
-      const query = buildQueryString(
-        params as Record<string, string | number | boolean | undefined>
-      )
-      return apiFetch<BoardPage>(`/api/board/posts${query}`)
+    getPosts(params: { sort?: PostSort; category?: PostCategory | 'ALL'; cursor?: string; limit?: number }): Promise<BoardPage> {
+      const query = buildQueryString(params as Record<string, string | number | boolean | undefined>);
+      return apiFetch<BoardPage>(`/api/board/posts${query}`);
     },
 
     getPost(id: string): Promise<ConcernPostDetail> {
-      return apiFetch<ConcernPostDetail>(`/api/board/posts/${id}`)
+      return apiFetch<ConcernPostDetail>(`/api/board/posts/${id}`);
     },
 
-    requestImageUrl(
-      fileName: string,
-      contentType: string
-    ): Promise<{ uploadUrl: string; fileUrl: string }> {
+    requestImageUrl(fileName: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
       return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/board/posts/image-url', {
         method: 'POST',
         body: JSON.stringify({ fileName, contentType }),
-      })
+      });
     },
 
     createPost(data: CreatePostPayload): Promise<ConcernPost> {
       return apiFetch<ConcernPost>('/api/board/posts', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
 
     vote(postId: string): Promise<{ voted: boolean; upvotesCount: number }> {
-      return apiFetch<{ voted: boolean; upvotesCount: number }>(
-        `/api/board/posts/${postId}/vote`,
-        { method: 'POST' }
-      )
+      return apiFetch<{ voted: boolean; upvotesCount: number }>(`/api/board/posts/${postId}/vote`, { method: 'POST' });
     },
 
     deletePost(postId: string): Promise<void> {
-      return apiFetch<void>(`/api/board/posts/${postId}`, { method: 'DELETE' })
+      return apiFetch<void>(`/api/board/posts/${postId}`, { method: 'DELETE' });
     },
 
     addComment(postId: string, content: string): Promise<ConcernComment> {
       return apiFetch<ConcernComment>(`/api/board/posts/${postId}/comments`, {
         method: 'POST',
         body: JSON.stringify({ content }),
-      })
+      });
     },
 
     deleteComment(postId: string, commentId: string): Promise<void> {
-      return apiFetch<void>(`/api/board/posts/${postId}/comments/${commentId}`, {
-        method: 'DELETE',
-      })
+      return apiFetch<void>(`/api/board/posts/${postId}/comments/${commentId}`, { method: 'DELETE' });
     },
 
-    voteComment(
-      postId: string,
-      commentId: string
-    ): Promise<{ voted: boolean; upvotesCount: number }> {
-      return apiFetch<{ voted: boolean; upvotesCount: number }>(
-        `/api/board/posts/${postId}/comments/${commentId}/vote`,
-        { method: 'POST' }
-      )
+    voteComment(postId: string, commentId: string): Promise<{ voted: boolean; upvotesCount: number }> {
+      return apiFetch<{ voted: boolean; upvotesCount: number }>(`/api/board/posts/${postId}/comments/${commentId}/vote`, { method: 'POST' });
     },
   },
 
   donors: {
     list(): Promise<Array<{ id: string; donorName: string; message: string | null; amount: number | null; isAnonymous: boolean; createdAt: string }>> {
-      return apiFetch('/api/donors')
+      return apiFetch('/api/donors');
     },
     thank(data: { donorName?: string; message?: string; amount?: number; isAnonymous?: boolean; paymentId?: string }): Promise<void> {
-      return apiFetch('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) })
+      return apiFetch('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) });
     },
   },
 
   fundraiser: {
     getStatus(): Promise<FundraiserStatus> {
-      return apiFetch<FundraiserStatus>('/api/fundraiser')
+      return apiFetch<FundraiserStatus>('/api/fundraiser');
     },
     contribute(data: { amount: number; paymentId?: string; donorName?: string }): Promise<void> {
       return apiFetch<void>('/api/fundraiser/contribute', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
   },
 
@@ -328,102 +309,90 @@ export const api = {
       return apiFetch<{ token: string }>('/api/admin/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
-      })
+      });
     },
 
     getStats(): Promise<AdminStats> {
-      return apiFetch<AdminStats>('/api/admin/stats')
+      return apiFetch<AdminStats>('/api/admin/stats');
     },
 
     getPendingContributions(): Promise<Resource[]> {
-      return apiFetch<Resource[]>('/api/admin/contributions/pending')
+      return apiFetch<Resource[]>('/api/admin/contributions/pending');
     },
 
     approveContribution(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/contributions/${id}/approve`, {
-        method: 'POST',
-      })
+      return apiFetch<void>(`/api/admin/contributions/${id}/approve`, { method: 'POST' });
     },
 
     rejectContribution(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/contributions/${id}/reject`, {
-        method: 'POST',
-      })
+      return apiFetch<void>(`/api/admin/contributions/${id}/reject`, { method: 'POST' });
     },
 
     getRequests(): Promise<MaterialRequest[]> {
-      return apiFetch<MaterialRequest[]>('/api/admin/requests')
+      return apiFetch<MaterialRequest[]>('/api/admin/requests');
     },
 
     fulfillRequest(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/requests/${id}/fulfill`, {
-        method: 'POST',
-      })
+      return apiFetch<void>(`/api/admin/requests/${id}/fulfill`, { method: 'POST' });
     },
 
-    requestUploadUrl(
-      filename: string,
-      contentType: string
-    ): Promise<{ uploadUrl: string; fileUrl: string }> {
-      return apiFetch<{ uploadUrl: string; fileUrl: string }>(
-        '/api/admin/resources/upload-url',
-        {
-          method: 'POST',
-          body: JSON.stringify({ filename, contentType }),
-        }
-      )
+    requestUploadUrl(filename: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
+      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/admin/resources/upload-url', {
+        method: 'POST',
+        body: JSON.stringify({ filename, contentType }),
+      });
     },
 
     createResource(data: CreateResourcePayload): Promise<Resource> {
       return apiFetch<Resource>('/api/admin/resources', {
         method: 'POST',
         body: JSON.stringify(data),
-      })
+      });
     },
 
     getModerationPosts(status?: string): Promise<BoardModerationPost[]> {
-      const q = status ? `?status=${status}` : ''
-      return apiFetch<BoardModerationPost[]>(`/api/admin/moderation/posts${q}`)
+      const q = status ? `?status=${status}` : '';
+      return apiFetch<BoardModerationPost[]>(`/api/admin/moderation/posts${q}`);
     },
 
     setPostStatus(id: string, status: 'ACTIVE' | 'REMOVED'): Promise<void> {
       return apiFetch<void>(`/api/admin/moderation/posts/${id}/status`, {
         method: 'PATCH',
         body: JSON.stringify({ status }),
-      })
+      });
     },
 
     getModerationComments(status?: string): Promise<BoardModerationComment[]> {
-      const q = status ? `?status=${status}` : ''
-      return apiFetch<BoardModerationComment[]>(`/api/admin/moderation/comments${q}`)
+      const q = status ? `?status=${status}` : '';
+      return apiFetch<BoardModerationComment[]>(`/api/admin/moderation/comments${q}`);
     },
 
     setCommentStatus(id: string, status: 'ACTIVE' | 'REMOVED'): Promise<void> {
       return apiFetch<void>(`/api/admin/moderation/comments/${id}/status`, {
         method: 'PATCH',
         body: JSON.stringify({ status }),
-      })
+      });
     },
 
     getBoardStats(): Promise<BoardStats> {
-      return apiFetch<BoardStats>('/api/admin/moderation/board-stats')
+      return apiFetch<BoardStats>('/api/admin/moderation/board-stats');
     },
 
     getUsers(page = 1): Promise<AdminUsersPage> {
-      return apiFetch<AdminUsersPage>(`/api/admin/users?page=${page}&limit=50`)
+      return apiFetch<AdminUsersPage>(`/api/admin/users?page=${page}&limit=50`);
     },
 
     banUser(id: string, reason?: string): Promise<void> {
       return apiFetch<void>(`/api/admin/users/${id}/ban`, {
         method: 'PATCH',
         body: JSON.stringify({ reason }),
-      })
+      });
     },
 
     unbanUser(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/users/${id}/unban`, { method: 'PATCH' })
+      return apiFetch<void>(`/api/admin/users/${id}/unban`, { method: 'PATCH' });
     },
   },
-}
+};
 
 export { ApiError }
