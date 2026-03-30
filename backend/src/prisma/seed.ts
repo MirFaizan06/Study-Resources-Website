@@ -184,7 +184,8 @@ async function main(): Promise<void> {
   console.log('Created subjects.');
 
   // ─── Resource generation helper ────────────────────────────────
-  const s3Base = 'https://noteswebsite-assets.s3.ap-south-1.amazonaws.com';
+  // Replace with your actual R2 public URL (R2_PUBLIC_URL env var) before seeding in production
+  const s3Base = process.env.R2_PUBLIC_URL ?? 'https://assets.noteshubkashmir.in';
 
   function makeResources(
     subjectId: string,

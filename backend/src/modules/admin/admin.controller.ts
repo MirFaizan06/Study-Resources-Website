@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { prisma } from '../../db/prisma';
 import { AppError } from '../../middleware/errorHandler';
 import { generateToken } from '../../middleware/auth';
-import { generateUploadPresignedUrl } from '../../utils/s3Presign';
+import { generateUploadPresignedUrl } from '../../utils/r2Presign';
 import {
   getDashboardStats,
   getPendingContributions,

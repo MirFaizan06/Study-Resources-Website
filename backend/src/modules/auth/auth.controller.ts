@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 import path from 'path';
 import { AppError } from '../../middleware/errorHandler';
-import { generateUploadPresignedUrl } from '../../utils/s3Presign';
+import { generateUploadPresignedUrl } from '../../utils/r2Presign';
 import {
   RegisterSchema,
   LoginSchema,

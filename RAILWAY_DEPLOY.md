@@ -40,10 +40,11 @@ Set these in Railway → your service → **Variables** tab.
 | `JWT_SECRET` | 32+ random chars | Generate with: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
 | `PORT` | `3001` | Railway exposes this automatically; set it explicitly to avoid surprises |
 | `NODE_ENV` | `production` | Critical — controls error detail level and logging |
-| `AWS_REGION` | `ap-south-1` | Mumbai region (closest to Kashmir) |
-| `AWS_ACCESS_KEY_ID` | from AWS IAM | |
-| `AWS_SECRET_ACCESS_KEY` | from AWS IAM | |
-| `S3_BUCKET_NAME` | `noteshub-kashmir-resources` | Your S3 bucket name |
+| `R2_ACCOUNT_ID` | Cloudflare Account ID | Found in Cloudflare dashboard → R2 overview |
+| `R2_ACCESS_KEY_ID` | R2 API token key | Create in Cloudflare → R2 → Manage R2 API Tokens |
+| `R2_SECRET_ACCESS_KEY` | R2 API token secret | Shown only once at creation — save it |
+| `R2_BUCKET_NAME` | `noteshub-kashmir` | Your R2 bucket name |
+| `R2_PUBLIC_URL` | `https://assets.noteshubkashmir.in` | R2 public domain (custom or r2.dev). See `docs/CLOUDFLARE_R2_SETUP.md` |
 | `ALLOWED_ORIGINS` | `https://your-site.netlify.app` | Your Netlify URL, no trailing slash. Comma-separate multiple origins. |
 
 ### Optional but strongly recommended
@@ -162,55 +163,18 @@ Then redeploy the Netlify frontend (`npm run build` or push to main).
 
 ---
 
-## 8. S3 Bucket Configuration
+## 8. Cloudflare R2 Configuration
 
-### Bucket Policy (allow public read for PDFs)
+Storage has moved from AWS S3 to Cloudflare R2 (zero egress fees, generous free tier).
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::noteshub-kashmir-resources/*"
-    }
-  ]
-}
-```
+**See the full setup guide:** [`docs/CLOUDFLARE_R2_SETUP.md`](docs/CLOUDFLARE_R2_SETUP.md)
 
-### CORS Configuration (allow presigned URL uploads from Netlify)
-
-```json
-[
-  {
-    "AllowedHeaders": ["*"],
-    "AllowedMethods": ["GET", "PUT", "POST"],
-    "AllowedOrigins": ["https://your-site.netlify.app"],
-    "ExposeHeaders": ["ETag"]
-  }
-]
-```
-
-### IAM User Permissions (minimum required)
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:DeleteObject"
-      ],
-      "Resource": "arn:aws:s3:::noteshub-kashmir-resources/*"
-    }
-  ]
-}
-```
+Quick summary:
+1. Create an R2 bucket at [cloudflare.com](https://cloudflare.com) → R2
+2. Enable public access (custom domain or r2.dev subdomain)
+3. Create an R2 API token with **Object Read & Write** permission
+4. Set CORS on the bucket to allow your Netlify domain
+5. Add the 5 R2 env vars to Railway (see Section 3 above)
 
 ---
 

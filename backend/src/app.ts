@@ -33,7 +33,7 @@ app.use(
         objectSrc: ["'none'"],
       },
     },
-    crossOriginEmbedderPolicy: false, // required for S3 presigned redirects
+    crossOriginEmbedderPolicy: false, // required for R2 presigned upload redirects
   })
 );
 // gzip responses — reduces bandwidth ~70% for JSON APIs
