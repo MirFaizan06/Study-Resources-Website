@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import crypto from 'crypto'
 import { prisma } from '../../db/prisma'
-import { generalLimiter } from '../../middleware/rateLimit'
+import { generalLimiter, paymentLimiter } from '../../middleware/rateLimit'
 import { cache, TTL } from '../../utils/cache'
 import { env } from '../../config/env'
 
@@ -71,7 +71,7 @@ router.get('/', generalLimiter, async (_req, res, next) => {
 })
 
 // POST /api/fundraiser/contribute — log a verified Razorpay payment
-router.post('/contribute', generalLimiter, async (req, res, next) => {
+router.post('/contribute', paymentLimiter, async (req, res, next) => {
   try {
     const {
       amount,

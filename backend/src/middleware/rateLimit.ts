@@ -60,3 +60,29 @@ export const authLimiter = rateLimit({
   },
   skipSuccessfulRequests: true,
 });
+
+/** Tighter limiter for payment/donation write endpoints — 5 per hour per IP */
+export const paymentLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many payment submissions. Please try again later.',
+    code: 'RATE_LIMIT_EXCEEDED',
+  },
+});
+
+/** Limiter for comment creation — 20 per hour per IP */
+export const commentLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many comments. Please slow down.',
+    code: 'RATE_LIMIT_EXCEEDED',
+  },
+});

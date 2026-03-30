@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import crypto from 'crypto'
 import { listDonors, createDonation } from './donors.service'
-import { generalLimiter } from '../../middleware/rateLimit'
+import { generalLimiter, paymentLimiter } from '../../middleware/rateLimit'
 import { cache, TTL } from '../../utils/cache'
 import { env } from '../../config/env'
 
@@ -49,7 +49,7 @@ router.get('/', generalLimiter, async (_req, res, next) => {
 })
 
 // POST /api/donors/thank — log a donation after Razorpay redirect
-router.post('/thank', generalLimiter, async (req, res, next) => {
+router.post('/thank', paymentLimiter, async (req, res, next) => {
   try {
     const {
       donorName,
