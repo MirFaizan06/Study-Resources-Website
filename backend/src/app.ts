@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
 import { generalLimiter } from './middleware/rateLimit';
 import { errorHandler } from './middleware/errorHandler';
 
@@ -15,6 +17,27 @@ import donorsRouter from './modules/donors/donors.router';
 import fundraiserRouter from './modules/fundraiser/fundraiser.router';
 
 const app = express();
+
+// ─── Security & Compression ───────────────────────────────────────────────────
+// helmet sets ~15 security headers (X-Frame-Options, CSP, HSTS, etc.)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'"],
+        frameSrc: ["'none'"],
+        objectSrc: ["'none'"],
+      },
+    },
+    crossOriginEmbedderPolicy: false, // required for S3 presigned redirects
+  })
+);
+// gzip responses — reduces bandwidth ~70% for JSON APIs
+app.use(compression());
 
 // ─── Global Middleware ────────────────────────────────────────────────────────
 app.use(

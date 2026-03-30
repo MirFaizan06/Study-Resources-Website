@@ -1,7 +1,14 @@
 import { PostCategory, Prisma } from '@prisma/client';
+import sanitizeHtml from 'sanitize-html';
 import { prisma } from '../../db/prisma';
 import { AppError } from '../../middleware/errorHandler';
+import { cache, TTL } from '../../utils/cache';
 import type { CreatePost, ListPosts, CreateComment } from './board.schema';
+
+// ─── Text sanitisation ────────────────────────────────────────────────────────
+// Strip ALL HTML tags — board posts are plain text, not rich content.
+const sanitizeText = (input: string): string =>
+  sanitizeHtml(input, { allowedTags: [], allowedAttributes: {} }).trim();
 
 // ─── Safe author shape ────────────────────────────────────────────────────────
 const authorSelect = {
@@ -39,10 +46,13 @@ export async function listPosts(
     ...(category !== 'ALL' && { category: category as PostCategory }),
   };
 
-  // For 'hot': fetch recent 200 posts, sort in JS, then paginate
-  // For 'new'/'top': use DB ordering + cursor pagination
+  // For 'hot': fetch recent 200 posts, sort in JS, then paginate.
+  // The sorted array is cached for 30s since it's CPU-heavy and rarely changes.
   if (sort === 'hot') {
-    const posts = await prisma.concernPost.findMany({
+    const hotCacheKey = `board:hot:${category}`;
+
+    // Use a concrete query to derive the type
+    const hotQuery = async () => prisma.concernPost.findMany({
       where: { ...where, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } },
       take: 200,
       orderBy: { createdAt: 'desc' },
@@ -51,12 +61,19 @@ export async function listPosts(
         _count: { select: { comments: { where: { status: 'ACTIVE' } } } },
       },
     });
+    type HotPost = Awaited<ReturnType<typeof hotQuery>>[number];
+    type ScoredPost = HotPost & { _score: number };
 
-    const scored = posts
-      .map((p) => ({ ...p, _score: hotScore(p.upvotesCount, p.createdAt) }))
-      .sort((a, b) => b._score - a._score);
+    let scored = cache.get<ScoredPost[]>(hotCacheKey);
 
-    // Manual cursor pagination on sorted array
+    if (!scored) {
+      const posts = await hotQuery();
+      scored = posts
+        .map((p) => ({ ...p, _score: hotScore(p.upvotesCount, p.createdAt) }))
+        .sort((a, b) => b._score - a._score);
+      cache.set(hotCacheKey, scored, TTL.BOARD_HOT);
+    }
+
     const cursorIdx = cursor ? scored.findIndex((p) => p.id === cursor) : -1;
     const start = cursorIdx >= 0 ? cursorIdx + 1 : 0;
     const page = scored.slice(start, start + limit);
@@ -185,9 +202,9 @@ export async function createPost(data: CreatePost, authorId: string) {
 
   const post = await prisma.concernPost.create({
     data: {
-      title: data.title,
-      description: data.description ?? null,
-      imageUrl: data.imageUrl,
+      title: sanitizeText(data.title),
+      description: data.description ? sanitizeText(data.description) : null,
+      imageUrl: data.imageUrl ?? null,
       category: data.category as PostCategory,
       status: 'PENDING_REVIEW',
       authorId,
@@ -277,7 +294,7 @@ export async function addComment(
   }
 
   return prisma.concernComment.create({
-    data: { content: data.content, postId, authorId },
+    data: { content: sanitizeText(data.content), postId, authorId },
     include: { author: { select: authorSelect } },
   });
 }

@@ -12,6 +12,10 @@ const envSchema = z.object({
   AWS_SECRET_ACCESS_KEY: z.string().min(1, 'AWS_SECRET_ACCESS_KEY is required'),
   S3_BUCKET_NAME: z.string().min(1, 'S3_BUCKET_NAME is required'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  /** Razorpay key secret — used to verify payment signatures. Set this in Railway env vars. */
+  RAZORPAY_KEY_SECRET: z.string().optional(),
+  /** Comma-separated allowed CORS origins for production */
+  ALLOWED_ORIGINS: z.string().optional(),
 });
 
 const _parsed = envSchema.safeParse(process.env);
