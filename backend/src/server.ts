@@ -2,13 +2,21 @@ import { env } from './config/env';
 import app from './app';
 import { prisma } from './db/prisma';
 
-const PORT = env.PORT;
-
 // ─── Start Server ─────────────────────────────────────────────────────────────
-const server = app.listen(PORT, () => {
-  console.log(`[server] NotesWebsite API running on port ${PORT}`);
-  console.log(`[server] Environment: ${env.NODE_ENV}`);
-  console.log(`[server] Health: http://localhost:${PORT}/health`);
+const PORT = env.PORT;
+const HOST = '0.0.0.0';
+
+// Capture the domain: Use Railway's provided domain, otherwise fallback to localhost
+const domain = process.env.RAILWAY_PUBLIC_DOMAIN || `localhost:${PORT}`;
+
+// Ensure the protocol is correct (Railway uses HTTPS by default for public domains)
+const protocol = process.env.RAILWAY_PUBLIC_DOMAIN ? 'https' : 'http';
+
+const server = app.listen(PORT, HOST, () => {
+  console.log(`\n🚀 [server] NotesWebsite API is live!`);
+  console.log(`🌍 [server] Environment: ${env.NODE_ENV}`);
+  console.log(`🔗 [server] Health Check: ${protocol}://${domain}/health`);
+  console.log(`📡 [server] Listening on: ${HOST}:${PORT}\n`);
 });
 
 // ─── Graceful Shutdown ────────────────────────────────────────────────────────
