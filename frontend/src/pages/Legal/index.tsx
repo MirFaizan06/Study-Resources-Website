@@ -104,8 +104,8 @@ export default function LegalPage(): React.ReactElement {
 
           <p className={styles.contactNote}>
             Questions? Email us at{' '}
-            <a href="mailto:hello@noteshubkashmir.in" className={styles.emailLink}>
-              hello@noteshubkashmir.in
+            <a href="mailto:hello@unit.in" className={styles.emailLink}>
+              hello@unit.in
             </a>
           </p>
         </main>

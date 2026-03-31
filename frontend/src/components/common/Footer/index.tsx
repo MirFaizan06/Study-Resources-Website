@@ -4,7 +4,7 @@ import { BookOpen, Heart, Instagram, Linkedin, Mail, ExternalLink, Globe, Tag } 
 import { useLocale } from '@/hooks/useLocale'
 import styles from './Footer.module.scss'
 
-const APP_VERSION = 'v0.0.7 Beta'
+const APP_VERSION = 'v0.0.9'
 
 export function Footer(): React.ReactElement {
   const { t, locale } = useLocale()
@@ -20,7 +20,7 @@ export function Footer(): React.ReactElement {
           <div className={styles.brand}>
             <Link to={`/${locale}/`} className={styles.logo}>
               <BookOpen size={22} className={styles.logoIcon} aria-hidden="true" />
-              <span className={styles.logoText}>NotesHub Kashmir</span>
+              <span className={styles.logoText}>U.N.I.T.</span>
             </Link>
             <p className={styles.tagline}>{t.common.footer.tagline}</p>
 
@@ -32,7 +32,7 @@ export function Footer(): React.ReactElement {
                 <p className={styles.donateDesc}>{t.common.footer.donateDesc}</p>
               </div>
               <a
-                href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'}
+                href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/U.N.I.T.-kasmir'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.donateBtn}
@@ -92,7 +92,7 @@ export function Footer(): React.ReactElement {
               </li>
               <li>
                 <a
-                  href="mailto:hello@noteshubkashmir.in"
+                  href="mailto:hello@unit.in"
                   className={styles.link}
                 >
                   {t.common.footer.links.contact}
@@ -167,7 +167,7 @@ export function Footer(): React.ReactElement {
                 </a>
               </li>
               <li>
-                <a href="mailto:hello@noteshubkashmir.in" className={styles.link}>
+                <a href="mailto:hello@unit.in" className={styles.link}>
                   <Mail size={14} aria-hidden="true" />
                   Email Us
                 </a>

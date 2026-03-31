@@ -231,7 +231,7 @@ export default function About(): React.ReactElement {
             </h2>
             <p className={styles.donateDescription}>{t.about.donate.description}</p>
             <a
-              href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'}
+              href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/U.N.I.T.-kasmir'}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.donateBtn}

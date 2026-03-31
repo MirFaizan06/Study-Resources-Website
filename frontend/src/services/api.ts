@@ -100,6 +100,10 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
     result.success === true &&
     'data' in result
   ) {
+    if ('nextCursor' in result || 'items' in result) {
+      result.items = result.items || result.data;
+      return result as T;
+    }
     return result.data as T;
   }
 

@@ -22,7 +22,7 @@ export default function AIPage(): React.ReactElement {
     api.fundraiser.getStatus().then(setFundraiser).catch(() => null)
   }, [])
 
-  const razorpayLink = import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'
+  const razorpayLink = import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/U.N.I.T.-kasmir'
 
   return (
     <div className={styles.page}>

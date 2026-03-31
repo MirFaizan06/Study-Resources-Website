@@ -277,7 +277,7 @@ export default function Home(): React.ReactElement {
                 Request Notes
               </Link>
               <a
-                href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/noteshub-kasmir'}
+                href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/U.N.I.T.-kasmir'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.ctaDonate}

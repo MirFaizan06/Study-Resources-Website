@@ -14,7 +14,7 @@ export default function LoginPage(): React.ReactElement {
   const navigate = useNavigate()
   const location = useLocation()
 
-  useHead({ title: t.board.auth.loginTitle + ' — NotesHub Kashmir', description: '' })
+  useHead({ title: t.board.auth.loginTitle + ' — U.N.I.T.', description: '' })
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -50,7 +50,7 @@ export default function LoginPage(): React.ReactElement {
           <div className={styles.logoMark}>
             <BookOpen size={20} aria-hidden="true" />
           </div>
-          <span className={styles.logoText}>NotesHub</span>
+          <span className={styles.logoText}>U.N.I.T.</span>
         </div>
 
         <h1 className={styles.title}>{t.board.auth.loginTitle}</h1>

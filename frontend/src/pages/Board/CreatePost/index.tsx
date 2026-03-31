@@ -27,7 +27,7 @@ export default function CreatePostPage(): React.ReactElement {
   const { user, acceptBoardTos } = useAuth()
   const navigate = useNavigate()
 
-  useHead({ title: t.board.createPost + ' — NotesHub Kashmir', description: '' })
+  useHead({ title: t.board.createPost + ' — U.N.I.T.', description: '' })
 
   // Redirect if not logged in
   if (!user) {

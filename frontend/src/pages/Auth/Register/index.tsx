@@ -16,7 +16,7 @@ export default function RegisterPage(): React.ReactElement {
   const { register } = useAuth()
   const navigate = useNavigate()
 
-  useHead({ title: t.board.auth.registerTitle + ' — NotesHub Kashmir', description: '' })
+  useHead({ title: t.board.auth.registerTitle + ' — U.N.I.T.', description: '' })
 
   const [form, setForm] = useState({
     name: '',
@@ -84,7 +84,7 @@ export default function RegisterPage(): React.ReactElement {
           <div className={styles.logoMark}>
             <BookOpen size={20} aria-hidden="true" />
           </div>
-          <span className={styles.logoText}>NotesHub</span>
+          <span className={styles.logoText}>U.N.I.T.</span>
         </div>
 
         <h1 className={styles.title}>{t.board.auth.registerTitle}</h1>

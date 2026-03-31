@@ -35,18 +35,9 @@ const LOCALE_LABELS: Record<LocaleCode, { native: string; english: string }> = {
 }
 
 const THEME_META: Record<Theme, { label: string; swatch: string }> = {
-  orange:        { label: 'Warm',         swatch: '#ea580c' },
-  'orange-dark': { label: 'Warm Dark',    swatch: '#7a2e08' },
-  teal:          { label: 'Teal',         swatch: '#0d9488' },
-  'teal-dark':   { label: 'Teal Dark',    swatch: '#061a18' },
-  rose:          { label: 'Rose',         swatch: '#e11d48' },
-  'rose-dark':   { label: 'Rose Dark',    swatch: '#1a0009' },
-  indigo:        { label: 'Indigo',       swatch: '#4f46e5' },
-  'indigo-dark': { label: 'Indigo Dark',  swatch: '#0d0b2e' },
-  emerald:       { label: 'Emerald',      swatch: '#059669' },
-  'emerald-dark':{ label: 'Emerald Dark', swatch: '#061a12' },
-  light:         { label: 'Light',        swatch: '#2563eb' },
-  dark:          { label: 'Dark',         swatch: '#0f172a' },
+  orange:         { label: 'Warm',         swatch: '#ea580c' },
+  'rose-dark':    { label: 'Dark Rose',    swatch: '#1a0009' },
+  'discord-dark': { label: 'Discord',      swatch: '#313338' },
 }
 
 export function Navbar(): React.ReactElement {
@@ -105,7 +96,7 @@ export function Navbar(): React.ReactElement {
   const navLinks = [
     { href: `/${locale}/`, label: t.nav.home },
     { href: `/${locale}/resources`, label: t.nav.browse },
-    { href: `/${locale}/board`, label: t.nav.board },
+    { href: `/${locale}/board`, label: <>{t.nav.board} <sup style={{ fontSize: '0.65rem', color: 'var(--primary)', marginLeft: '2px', fontWeight: 'bold' }}>coming soon</sup></> as unknown as string },
     { href: `/${locale}/ai`, label: t.nav.ai },
     { href: `/${locale}/contribute`, label: t.nav.contribute },
     { href: `/${locale}/request`, label: t.nav.request },
@@ -128,12 +119,14 @@ export function Navbar(): React.ReactElement {
         <div className={styles.inner}>
 
           {/* ─── Logo ─────────────────────────────────────────────────────── */}
-          <Link to={`/${locale}/`} className={styles.logo} aria-label="NotesHub Kashmir – Home">
+          <Link to={`/${locale}/`} className={styles.logo} aria-label="U.N.I.T. – Home">
             <div className={styles.logoMark} aria-hidden="true">
               <BookOpen size={16} />
             </div>
-            <span className={styles.logoText}>NotesHub</span>
-            <span className={styles.logoSub}>Kashmir</span>
+            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '6px' }}>
+              <span className={styles.logoText} style={{ fontSize: '1.2rem', lineHeight: '1.1' }}>U.N.I.T.</span>
+              <span className={styles.logoSub} style={{ fontSize: '0.6rem', marginTop: '1px', opacity: 0.8, letterSpacing: '0.5px' }}>University Notes & Issue Tracker</span>
+            </div>
           </Link>
 
           {/* ─── Desktop Links ────────────────────────────────────────────── */}
@@ -196,7 +189,7 @@ export function Navbar(): React.ReactElement {
                         <span className={styles.studyHubItemIcon}><GitBranch size={15} aria-hidden="true" /></span>
                         <span>
                           <span className={styles.studyHubItemTitle}>Changelog</span>
-                          <span className={styles.studyHubItemDesc}>What's new · v0.0.7 Beta</span>
+                          <span className={styles.studyHubItemDesc}>What's new · v0.0.9</span>
                         </span>
                       </Link>
                     </motion.div>

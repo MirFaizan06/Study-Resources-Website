@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import styles from './BoardTutorial.module.scss'
 
 const STORAGE_KEY = 'board_tutorial_seen'
-const DONATION_URL = 'https://rzp.io/l/noteshub-kasmir'
+const DONATION_URL = 'https://rzp.io/l/U.N.I.T.-kasmir'
 
 // ─── Step icons ──────────────────────────────────────────────────────────────
 const GUEST_ICONS = [MessageCircleWarning, TrendingUp, Camera, Heart]

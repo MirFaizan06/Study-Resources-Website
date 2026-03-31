@@ -44,7 +44,7 @@ export default function SupportersPage(): React.ReactElement {
 
   const DONATION_URL =
     (import.meta.env.VITE_RAZORPAY_LINK as string | undefined) ??
-    'https://rzp.io/l/noteshub-kasmir'
+    'https://rzp.io/l/U.N.I.T.-kasmir'
 
   return (
     <div className={styles.page}>

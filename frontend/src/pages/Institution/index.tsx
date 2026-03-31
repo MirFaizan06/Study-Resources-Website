@@ -19,8 +19,8 @@ export default function Institution(): React.ReactElement {
 
   useHead({
     title: institution
-      ? `${institution.name} - NotesHub Kashmir`
-      : 'Institution - NotesHub Kashmir',
+      ? `${institution.name} - U.N.I.T.`
+      : 'Institution - U.N.I.T.',
     description: institution
       ? `Browse programs and study materials for ${institution.name}. Find notes, past papers, and syllabi.`
       : 'Browse institution resources.',

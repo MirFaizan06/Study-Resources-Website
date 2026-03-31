@@ -51,7 +51,7 @@ export function useHead({
     setMetaTag('og:title', title, true)
     setMetaTag('og:description', description, true)
     setMetaTag('og:type', ogType, true)
-    setMetaTag('og:site_name', 'NotesHub Kashmir', true)
+    setMetaTag('og:site_name', 'U.N.I.T.', true)
 
     if (ogImage) {
       setMetaTag('og:image', ogImage, true)

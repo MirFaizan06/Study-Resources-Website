@@ -54,18 +54,22 @@
 
 // ─── Card base ────────────────────────────────────────────────────────────────
 @mixin card-base {
-  background-color: var(--bg-card);
-  border-radius: $radius-xl;
+  background-color: color-mix(in srgb, var(--bg-card) 80%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: $radius-2xl;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   padding: $space-6;
-  transition: box-shadow $transition-base, transform $transition-base;
+  transition: box-shadow $transition-slow, transform $transition-spring, border-color $transition-slow, background-color $transition-slow;
 }
 
 @mixin card-hover {
   &:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px) scale(1.01);
+    border-color: color-mix(in srgb, var(--primary) 30%, var(--border-color));
+    background-color: color-mix(in srgb, var(--bg-card) 95%, transparent);
   }
 }
 

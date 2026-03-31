@@ -12,8 +12,13 @@
     <link rel="shortcut icon" href="/website_icon.ico" />
     <link rel="apple-touch-icon" href="/website_icon.ico" />
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Default SEO (overridden per-page via useHead hook) -->
-    <title>NotesHub Kashmir - Free Study Materials for Kashmir University Students</title>
+    <title>U.N.I.T. - Free Study Materials for Kashmir University Students</title>
     <meta
       name="description"
       content="Download free notes, past papers, syllabi, and AI-powered guess papers for Kashmir University, Cluster University, and more. Empowering Kashmir's students."
@@ -24,26 +29,26 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://noteshubkashmir.in/" />
-    <meta property="og:title" content="NotesHub Kashmir - Free Academic Resources" />
+    <meta property="og:url" content="https://unit.in/" />
+    <meta property="og:title" content="U.N.I.T. - Free Academic Resources" />
     <meta property="og:description" content="Download free notes, past papers, syllabi and AI-powered guess papers for Kashmir universities." />
     <meta property="og:image" content="/images/og-home.png" />
-    <meta property="og:site_name" content="NotesHub Kashmir" />
+    <meta property="og:site_name" content="U.N.I.T." />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="NotesHub Kashmir - Free Study Materials" />
+    <meta name="twitter:title" content="U.N.I.T. - Free Study Materials" />
     <meta name="twitter:description" content="Free notes, past papers, and syllabi for Kashmir University students." />
     <meta name="twitter:image" content="/images/og-home.png" />
 
     <!-- Apple PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="NotesHub Kashmir" />
+    <meta name="apple-mobile-web-app-title" content="U.N.I.T." />
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://noteshubkashmir.in/" />
+    <link rel="canonical" href="https://unit.in/" />
 
     <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
     <!-- Uncomment when you have a GA4 property set up -->
@@ -72,9 +77,9 @@
       {
         "@context": "https://schema.org",
         "@type": "EducationalOrganization",
-        "name": "NotesHub Kashmir",
+        "name": "U.N.I.T.",
         "description": "Free educational resources for Kashmiri university students",
-        "url": "https://noteshubkashmir.in"
+        "url": "https://unit.in"
       }
     </script>
 
@@ -82,9 +87,9 @@
     <script>
       ;(function () {
         try {
-          var valid = ['light','dark','orange','orange-dark','teal','teal-dark','rose','rose-dark','indigo','indigo-dark','emerald','emerald-dark']
+          var valid = ['orange', 'rose-dark', 'discord-dark']
           var stored = localStorage.getItem('theme')
-          var preferred = (stored && valid.indexOf(stored) !== -1) ? stored : 'orange'
+          var preferred = (stored && valid.indexOf(stored) !== -1) ? stored : 'discord-dark'
           document.documentElement.setAttribute('data-theme', preferred)
         } catch (e) {}
       })()

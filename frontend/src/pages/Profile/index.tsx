@@ -16,7 +16,7 @@ export default function ProfilePage(): React.ReactElement {
   const { user, refreshUser, logout } = useAuth()
   const navigate = useNavigate()
 
-  useHead({ title: t.board.profile.title + ' — NotesHub Kashmir', description: '' })
+  useHead({ title: t.board.profile.title + ' — U.N.I.T.', description: '' })
 
   if (!user) {
     navigate(`/${locale}/login`, { replace: true })

@@ -41,7 +41,7 @@ export default function PostDetailPage(): React.ReactElement {
   const [commentError, setCommentError] = useState('')
 
   useHead({
-    title: post ? post.title + ' — NotesHub Board' : 'Post — NotesHub Kashmir',
+    title: post ? post.title + ' — U.N.I.T. Board' : 'Post — U.N.I.T.',
     description: post?.description ?? '',
   })
 

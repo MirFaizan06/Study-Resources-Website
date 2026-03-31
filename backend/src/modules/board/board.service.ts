@@ -206,7 +206,7 @@ export async function createPost(data: CreatePost, authorId: string) {
       description: data.description ? sanitizeText(data.description) : null,
       imageUrl: data.imageUrl ?? null,
       category: data.category as PostCategory,
-      status: 'PENDING_REVIEW',
+      status: 'ACTIVE',
       authorId,
     },
     include: {
@@ -214,6 +214,8 @@ export async function createPost(data: CreatePost, authorId: string) {
       _count: { select: { comments: true } },
     },
   });
+
+  cache.delByPrefix('board:hot:');
 
   return { ...post, author: maskAuthor(post.author) };
 }

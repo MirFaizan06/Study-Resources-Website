@@ -111,7 +111,7 @@ export function AdminLayout(): React.ReactElement {
         <div className={styles.sidebarHeader}>
           <Link to={`/${locale}/`} className={styles.sidebarLogo}>
             <BookOpen size={20} aria-hidden="true" />
-            <span>NotesHub</span>
+            <span>U.N.I.T.</span>
           </Link>
           <button
             className={styles.sidebarClose}

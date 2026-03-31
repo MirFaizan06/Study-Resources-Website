@@ -3,18 +3,9 @@
 // vite.config.ts additionalData into every SCSS file, so no @use needed here.
 
 // CSS Custom Properties (themes)
-@import 'themes/light';
-@import 'themes/dark';
 @import 'themes/orange';
-@import 'themes/orange-dark';
-@import 'themes/teal';
-@import 'themes/teal-dark';
-@import 'themes/rose';
 @import 'themes/rose-dark';
-@import 'themes/indigo';
-@import 'themes/indigo-dark';
-@import 'themes/emerald';
-@import 'themes/emerald-dark';
+@import 'themes/discord-dark';
 
 // Base reset + typography
 @import 'base/reset';

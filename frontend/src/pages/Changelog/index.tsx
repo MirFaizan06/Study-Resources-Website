@@ -94,6 +94,25 @@ const CHANGELOG: ChangelogEntry[] = [
       'Version badge in footer',
     ],
   },
+  {
+    version: 'v0.0.8',
+    date: 'April 2026',
+    name: 'Bug Fixes & Theme Purge',
+    type: 'patch',
+    note: 'Fixed board post visibility issue, removed unused themes, added Discord Dark theme, and improved cache invalidation.',
+  },
+  {
+    version: 'v0.0.9',
+    date: 'April 2026',
+    name: 'U.N.I.T. Rebranding & UI/UX Rewamp',
+    type: 'major',
+    features: [
+      'Full Rebranding: NotesHub Kashmir is now U.N.I.T.',
+      'Board renamed to Node system',
+      'Modern glassmorphism UI/UX design and softer shadows',
+      'New typography setup with Inter & Outfit',
+    ],
+  },
 ]
 
 export default function Changelog(): React.ReactElement {

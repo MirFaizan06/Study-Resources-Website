@@ -80,7 +80,7 @@ export default function Resources(): React.ReactElement {
     : 'Browse Resources'
 
   useHead({
-    title: `${pageTitle} - NotesHub Kashmir`,
+    title: `${pageTitle} - U.N.I.T.`,
     description: `Browse ${pageTitle} - Notes, past papers, syllabi and more.`,
   })
 

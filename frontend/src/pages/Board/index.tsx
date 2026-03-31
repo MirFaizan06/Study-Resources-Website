@@ -122,7 +122,7 @@ export default function BoardPage(): React.ReactElement {
   const navigate = useNavigate()
 
   useHead({
-    title: t.board.title + ' — NotesHub Kashmir',
+    title: t.board.title + ' — U.N.I.T.',
     description: t.board.subtitle,
   })
 
@@ -196,9 +196,25 @@ export default function BoardPage(): React.ReactElement {
     { value: 'new', icon: <Clock size={15} />, label: t.board.sortNew },
     { value: 'top', icon: <Star size={15} />, label: t.board.sortTop },
   ]
+  const DEPLOYED = false
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={{ position: 'relative' }}>
+      {!DEPLOYED && (
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundColor: 'var(--bg-overlay, rgba(0,0,0,0.8))',
+          backdropFilter: 'blur(4px)',
+          zIndex: 50,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20vh',
+          color: 'var(--text-primary)',
+          textAlign: 'center'
+        }}>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontWeight: 600 }}>Coming soon</h2>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)' }}>This component is still under development.</p>
+        </div>
+      )}
+
       <BoardTutorial locale={locale} />
 
       {/* ─── Hero banner ─────────────────────────────────────────────────────── */}

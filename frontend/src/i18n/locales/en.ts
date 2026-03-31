@@ -2,7 +2,7 @@ const en = {
   nav: {
     home: 'Home',
     browse: 'Resources',
-    board: 'Board',
+    board: 'Node',
     ai: 'AI',
     contribute: 'Contribute',
     request: 'Request',
@@ -185,11 +185,11 @@ const en = {
     },
   },
   about: {
-    title: 'About NotesHub Kashmir',
+    title: 'About U.N.I.T.',
     subtitle:
       'A free educational platform built for the students of Kashmir.',
     description:
-      'NotesHub Kashmir is a community-driven platform dedicated to making quality study materials accessible to every student in Kashmir — regardless of their background or internet access.',
+      'U.N.I.T. is a community-driven platform dedicated to making quality study materials accessible to every student in Kashmir — regardless of their background or internet access.',
     mission: 'Our Mission',
     missionText:
       'To bridge the educational resource gap for students in Kashmir by providing free, curated, and up-to-date academic materials including notes, past papers, syllabi, and AI-powered guess papers.',
@@ -222,12 +222,12 @@ const en = {
     team: {
       title: 'Built by Hachi wa Studios',
       description:
-        'We are a small indie studio passionate about building tools that make a real difference. NotesHub Kashmir is our contribution to the students of the Valley.',
+        'We are a small indie studio passionate about building tools that make a real difference. U.N.I.T. is our contribution to the students of the Valley.',
     },
     donate: {
       title: 'Support the Platform',
       description:
-        'NotesHub Kashmir is completely free. If it has helped you, consider making a small donation to help cover server and maintenance costs.',
+        'U.N.I.T. is completely free. If it has helped you, consider making a small donation to help cover server and maintenance costs.',
       button: 'Donate to Keep It Free',
     },
     imageAlt: 'Our team working',
@@ -241,18 +241,18 @@ By our second and third semesters, the frustration had built past the point of j
 
 So we decided to build it ourselves. Not because there was money in it. Not for recognition. But because the problem was real, the solution was buildable, and no one else was doing it.
 
-That is how NotesHub Kashmir came to exist. The three of us started working on it, and today we are still here — continuously building, expanding, adding more institutions, more resources, and soon AI tools designed specifically for Kashmir students.
+That is how U.N.I.T. came to exist. The three of us started working on it, and today we are still here — continuously building, expanding, adding more institutions, more resources, and soon AI tools designed specifically for Kashmir students.
 
 This platform is yours. It exists for you, because of students like you who were just as frustrated as we were. If it has helped you even once, please consider supporting us. Running a server costs real money, and we are doing this without any funding or institutional backing. Even a small contribution keeps this alive for the next student who needs it.`,
     },
     developers: {
       title: 'Meet the Team',
-      subtitle: 'The three people behind NotesHub Kashmir.',
+      subtitle: 'The three people behind U.N.I.T..',
       people: [
         {
           name: 'Faizan Mir',
           role: 'Programmer & Developer',
-          bio: 'Lead developer of NotesHub Kashmir. Built the full-stack architecture, backend APIs, and frontend React application.',
+          bio: 'Lead developer of U.N.I.T.. Built the full-stack architecture, backend APIs, and frontend React application.',
           portfolioUrl: '',
         },
         {
@@ -280,11 +280,11 @@ This platform is yours. It exists for you, because of students like you who were
     tos: [
       {
         heading: '1. Acceptance of Terms',
-        body: 'By accessing or using NotesHub Kashmir ("the Platform"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the Platform.',
+        body: 'By accessing or using U.N.I.T. ("the Platform"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the Platform.',
       },
       {
         heading: '2. Description of Service',
-        body: 'NotesHub Kashmir provides free access to academic resources including notes, past papers, syllabi, and AI-generated guess papers for university and college students in Kashmir. We also host a community Student Concerns Board.',
+        body: 'U.N.I.T. provides free access to academic resources including notes, past papers, syllabi, and AI-generated guess papers for university and college students in Kashmir. We also host a community Student Concerns Board.',
       },
       {
         heading: '3. User Accounts',
@@ -296,11 +296,11 @@ This platform is yours. It exists for you, because of students like you who were
       },
       {
         heading: '5. Content Ownership & Copyright',
-        body: 'Resources uploaded to the platform remain the intellectual property of their original authors. By contributing, you grant NotesHub Kashmir a non-exclusive licence to host and distribute the material. AI-generated guess papers are clearly labelled and are provided as study aids only — not official exam predictions.',
+        body: 'Resources uploaded to the platform remain the intellectual property of their original authors. By contributing, you grant U.N.I.T. a non-exclusive licence to host and distribute the material. AI-generated guess papers are clearly labelled and are provided as study aids only — not official exam predictions.',
       },
       {
         heading: '6. Student Concerns Board — Important',
-        body: 'The Student Concerns Board exists to raise genuine, constructive campus issues. By posting, you agree that your content is truthful, relevant, and non-defamatory. NotesHub Kashmir strictly prohibits: illegal content of any kind, posts that target individuals with harassment or threats, fake or fabricated complaints, spam, political propaganda, and content that is wholly irrelevant to campus life. Violations may result in (a) immediate post removal, (b) a temporary or permanent account ban, (c) an IP-level ban from the platform, or (d) in the most serious cases — where the content may constitute a criminal offence under applicable Indian law — referral to the appropriate legal authorities. We do not take these measures lightly, but we will not hesitate to act when necessary to protect the integrity of the platform and the people it serves. All posts go through an admin approval stage before being publicly visible.',
+        body: 'The Student Concerns Board exists to raise genuine, constructive campus issues. By posting, you agree that your content is truthful, relevant, and non-defamatory. U.N.I.T. strictly prohibits: illegal content of any kind, posts that target individuals with harassment or threats, fake or fabricated complaints, spam, political propaganda, and content that is wholly irrelevant to campus life. Violations may result in (a) immediate post removal, (b) a temporary or permanent account ban, (c) an IP-level ban from the platform, or (d) in the most serious cases — where the content may constitute a criminal offence under applicable Indian law — referral to the appropriate legal authorities. We do not take these measures lightly, but we will not hesitate to act when necessary to protect the integrity of the platform and the people it serves. All posts go through an admin approval stage before being publicly visible.',
       },
       {
         heading: '7. Donations',
@@ -312,7 +312,7 @@ This platform is yours. It exists for you, because of students like you who were
       },
       {
         heading: '9. Limitation of Liability',
-        body: 'NotesHub Kashmir and Hachi wa Studios shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Platform.',
+        body: 'U.N.I.T. and Hachi wa Studios shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Platform.',
       },
       {
         heading: '10. Modifications',
@@ -324,7 +324,7 @@ This platform is yours. It exists for you, because of students like you who were
       },
       {
         heading: '12. Contact',
-        body: 'For questions about these Terms, email us at hello@noteshubkashmir.in.',
+        body: 'For questions about these Terms, email us at hello@unit.in.',
       },
     ],
     privacyTitle: 'Privacy Policy',
@@ -356,7 +356,7 @@ This platform is yours. It exists for you, because of students like you who were
       },
       {
         heading: '7. Data Retention',
-        body: 'We retain account data as long as your account is active. You may request deletion of your account and associated data by emailing hello@noteshubkashmir.in.',
+        body: 'We retain account data as long as your account is active. You may request deletion of your account and associated data by emailing hello@unit.in.',
       },
       {
         heading: '8. Children\'s Privacy',
@@ -364,7 +364,7 @@ This platform is yours. It exists for you, because of students like you who were
       },
       {
         heading: '9. Your Rights',
-        body: 'You have the right to access, correct, or delete your personal data. Contact us at hello@noteshubkashmir.in for any data requests.',
+        body: 'You have the right to access, correct, or delete your personal data. Contact us at hello@unit.in for any data requests.',
       },
       {
         heading: '10. Changes to This Policy',
@@ -374,16 +374,16 @@ This platform is yours. It exists for you, because of students like you who were
   },
   supporters: {
     title: 'Our Supporters',
-    subtitle: 'Every donation, big or small, keeps NotesHub free for thousands of students.',
+    subtitle: 'Every donation, big or small, keeps U.N.I.T. free for thousands of students.',
     thankYouTitle: 'Thank you for your support!',
-    thankYouDesc: 'Your donation helps keep NotesHub Kashmir free for every student in the Valley. You\'re a hero.',
+    thankYouDesc: 'Your donation helps keep U.N.I.T. free for every student in the Valley. You\'re a hero.',
     noSupporters: 'Be the first to support this platform!',
     beFirst: 'Donate Now',
     donorCard: 'donated',
     anonymous: 'Anonymous Supporter',
     yourName: 'Your name can appear here too.',
     whyTitle: 'Why We Need Your Support',
-    whyDesc: 'NotesHub Kashmir is completely free — no paywalls, no subscriptions. But running a platform for thousands of students costs real money. Here\'s what your donation funds:',
+    whyDesc: 'U.N.I.T. is completely free — no paywalls, no subscriptions. But running a platform for thousands of students costs real money. Here\'s what your donation funds:',
     reasons: [
       { icon: 'Server', title: 'Server Hosting', desc: 'Railway backend and MySQL database hosting fees paid monthly to keep the platform online 24/7.' },
       { icon: 'Cloud', title: 'File Storage', desc: 'Amazon S3 costs for storing thousands of PDFs, images, and student-uploaded resources securely.' },
@@ -394,9 +394,9 @@ This platform is yours. It exists for you, because of students like you who were
     backToHome: 'Back to Home',
   },
   donatePopup: {
-    eyebrow: 'Keep NotesHub Free',
+    eyebrow: 'Keep U.N.I.T. Free',
     title: 'We run on donations',
-    desc: 'NotesHub Kashmir is 100% free. Server fees, file storage, and our planned AI features all cost real money. If we\'ve helped you study, please consider a small donation — even ₹50 makes a difference.',
+    desc: 'U.N.I.T. is 100% free. Server fees, file storage, and our planned AI features all cost real money. If we\'ve helped you study, please consider a small donation — even ₹50 makes a difference.',
     reasons: [
       'Monthly server & hosting fees',
       'Amazon S3 storage for 1000s of PDFs',
@@ -449,7 +449,7 @@ This platform is yours. It exists for you, because of students like you who were
       loginTitle: 'Sign in',
       loginSubtitle: 'Access the Student Concerns Board.',
       registerTitle: 'Create Account',
-      registerSubtitle: 'Join NotesHub and participate in the Student Concerns Board.',
+      registerSubtitle: 'Join U.N.I.T. and participate in the Student Concerns Board.',
       email: 'Email',
       password: 'Password',
       fullName: 'Full Name',
@@ -497,14 +497,14 @@ This platform is yours. It exists for you, because of students like you who were
       authStep3Title: 'Vote & Discuss',
       authStep3Desc: 'Upvote issues you care about and leave a comment to share your experience. The most-upvoted concerns get the most visibility.',
       authStep4Title: 'Help Us Stay Free',
-      authStep4Desc: "NotesHub is 100% free and built by students, for students. Our servers aren't free though — if this platform has helped you, even a small donation keeps the lights on and helps us grow.",
+      authStep4Desc: "U.N.I.T. is 100% free and built by students, for students. Our servers aren't free though — if this platform has helped you, even a small donation keeps the lights on and helps us grow.",
       authCta: 'Start Exploring',
       authDonate: 'Donate',
     },
   },
   boardTos: {
     title: 'Before you post — please read',
-    body: 'The Student Concerns Board is a space for real, constructive campus issues. Before you can post, you must agree to the following:\n\n• Your post must be about a genuine campus issue — academic, infrastructure, administration, or similar.\n• Do not post anything illegal, defamatory, fake, harassing, or off-topic.\n• Violations can result in your post being removed, your account being banned, an IP ban, or in serious cases, legal action under applicable Indian law.\n• All posts are reviewed by our team before going public.\n\nNotesHub Kashmir takes the integrity of this board seriously. We built it as a tool for positive change — help us keep it that way.',
+    body: 'The Student Concerns Board is a space for real, constructive campus issues. Before you can post, you must agree to the following:\n\n• Your post must be about a genuine campus issue — academic, infrastructure, administration, or similar.\n• Do not post anything illegal, defamatory, fake, harassing, or off-topic.\n• Violations can result in your post being removed, your account being banned, an IP ban, or in serious cases, legal action under applicable Indian law.\n• All posts are reviewed by our team before going public.\n\nU.N.I.T. takes the integrity of this board seriously. We built it as a tool for positive change — help us keep it that way.',
     agree: 'I have read and I agree to the Board Terms',
     readFull: 'Read full Terms of Service',
     proceed: 'Continue to Post',
@@ -563,7 +563,7 @@ This platform is yours. It exists for you, because of students like you who were
       title: 'Admin Login',
       subtitle: 'Sign in to manage resources and contributions.',
       email: 'Email Address',
-      emailPlaceholder: 'admin@noteshub.in',
+      emailPlaceholder: 'admin@U.N.I.T..in',
       password: 'Password',
       passwordPlaceholder: 'Enter your password',
       submit: 'Sign In',
@@ -748,7 +748,7 @@ This platform is yours. It exists for you, because of students like you who were
       donate: 'Support Us',
       donateDesc: 'Help keep this platform free.',
       donateButton: 'Donate',
-      copyright: '© 2026 NotesHub Kashmir. All rights reserved.',
+      copyright: '© 2026 U.N.I.T.. All rights reserved.',
     },
     tryAgain: 'Try Again',
     shareTitle: 'Share this resource',
@@ -757,47 +757,47 @@ This platform is yours. It exists for you, because of students like you who were
   seo: {
     home: {
       title:
-        'NotesHub Kashmir - Free Study Materials for University Students',
+        'U.N.I.T. - Free Study Materials for University Students',
       description:
         'Download free notes, past papers, syllabi, and AI-powered guess papers for Kashmir University, Cluster University, and more. Empowering Kashmir students.',
-      ogTitle: 'NotesHub Kashmir - Free Academic Resources',
+      ogTitle: 'U.N.I.T. - Free Academic Resources',
     },
     browse: {
-      title: 'Browse Resources - NotesHub Kashmir',
+      title: 'Browse Resources - U.N.I.T.',
       description:
         'Explore study materials by university, program, and subject. Find notes, PYQs, syllabi for Kashmir universities.',
     },
     contribute: {
-      title: 'Contribute Resources - NotesHub Kashmir',
+      title: 'Contribute Resources - U.N.I.T.',
       description:
         'Share your notes and study materials with fellow students. Upload and contribute to the growing resource library.',
     },
     request: {
-      title: 'Request Study Materials - NotesHub Kashmir',
+      title: 'Request Study Materials - U.N.I.T.',
       description:
         "Can't find your notes? Submit a request and we'll source it for you.",
     },
     about: {
-      title: 'About NotesHub Kashmir',
+      title: 'About U.N.I.T.',
       description:
         'Learn about our mission to empower Kashmir students with free, quality academic resources.',
     },
     ai: {
-      title: 'AI Tools — Coming Soon | NotesHub Kashmir',
+      title: 'AI Tools — Coming Soon | U.N.I.T.',
       description:
         'AI-powered guess paper generator and mock examiner for Kashmir University students. Coming soon.',
     },
     admin: {
-      title: 'Admin Dashboard - NotesHub Kashmir',
+      title: 'Admin Dashboard - U.N.I.T.',
       description: 'Manage resources, contributions, and student requests.',
     },
     legal: {
-      title: 'Legal — Terms of Service & Privacy Policy | NotesHub Kashmir',
-      description: 'Read our Terms of Service and Privacy Policy for NotesHub Kashmir.',
+      title: 'Legal — Terms of Service & Privacy Policy | U.N.I.T.',
+      description: 'Read our Terms of Service and Privacy Policy for U.N.I.T..',
     },
     supporters: {
-      title: 'Our Supporters — NotesHub Kashmir',
-      description: 'See the amazing people who donate to keep NotesHub Kashmir free for students.',
+      title: 'Our Supporters — U.N.I.T.',
+      description: 'See the amazing people who donate to keep U.N.I.T. free for students.',
     },
   },
   institutionTypes: {
