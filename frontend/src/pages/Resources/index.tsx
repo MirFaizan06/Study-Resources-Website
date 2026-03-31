@@ -125,9 +125,9 @@ export default function Resources(): React.ReactElement {
         const result = await api.resources.getAll(params)
 
         if (isFirstLoad) {
-          setResources(result.data)
+          setResources(result.items)
         } else {
-          setResources((prev) => [...prev, ...result.data])
+          setResources((prev) => [...prev, ...result.items])
         }
         setNextCursor(result.nextCursor)
       } catch (err) {

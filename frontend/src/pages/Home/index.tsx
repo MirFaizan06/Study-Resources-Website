@@ -183,8 +183,8 @@ export default function Home(): React.ReactElement {
       api.resources.getAll({ sort: 'popular', limit: 6 }),
     ])
       .then(([recent, popular]) => {
-        setRecentResources(recent.data)
-        setPopularResources(popular.data)
+        setRecentResources(recent.items || [])
+      setPopularResources(popular.items || [])
       })
       .catch(console.error)
       .finally(() => setLoadingResources(false))

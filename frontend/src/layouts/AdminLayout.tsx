@@ -46,6 +46,21 @@ export function AdminLayout(): React.ReactElement {
       icon: <CheckCircle size={18} />,
     },
     {
+      href: `/${locale}/admin/institutions`,
+      label: ((t.admin.sidebar as any).institutions as string) || 'Institutions',
+      icon: <BookOpen size={18} />,
+    },
+    {
+      href: `/${locale}/admin/programs`,
+      label: ((t.admin.sidebar as any).programs as string) || 'Programs',
+      icon: <LayoutDashboard size={18} />,
+    },
+    {
+      href: `/${locale}/admin/subjects`,
+      label: ((t.admin.sidebar as any).subjects as string) || 'Subjects',
+      icon: <Upload size={18} />,
+    },
+    {
       href: `/${locale}/admin/requests`,
       label: t.admin.sidebar.requests,
       icon: <MessageSquare size={18} />,

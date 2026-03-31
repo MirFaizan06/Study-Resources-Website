@@ -9,6 +9,9 @@ import type {
   PaginatedResult,
   ResourceQueryParams,
   CreateResourcePayload,
+  CreateInstitutionPayload,
+  CreateProgramPayload,
+  CreateSubjectPayload,
   ContributePayload,
   CreateRequestPayload,
   AuthResponse,
@@ -26,6 +29,10 @@ import type {
   BoardStats,
   FundraiserStatus,
   AdminUsersPage,
+  Donor,
+  FundraiserContribution,
+  UploadUrlResponse,
+  AdminLoginResponse,
 } from '@/types'
 
 
@@ -140,15 +147,15 @@ export const api = {
     },
 
     download(id: string): Promise<{ fileUrl: string }> {
-      return apiFetch<{ fileUrl: string }>(`/api/resources/${id}/download`, {
+      return apiFetch<{ fileUrl: string; title?: string }>(`/api/resources/${id}/download`, {
         method: 'POST',
       });
     },
 
-    requestUploadUrl(filename: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
-      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/resources/upload-url', {
+    requestUploadUrl(fileName: string, contentType: string): Promise<UploadUrlResponse> {
+      return apiFetch<UploadUrlResponse>('/api/resources/upload-url', {
         method: 'POST',
-        body: JSON.stringify({ filename, contentType }),
+        body: JSON.stringify({ fileName, contentType }),
       });
     },
 
@@ -161,8 +168,8 @@ export const api = {
   },
 
   requests: {
-    create(data: CreateRequestPayload): Promise<void> {
-      return apiFetch<void>('/api/requests', {
+    create(data: CreateRequestPayload): Promise<MaterialRequest> {
+      return apiFetch<MaterialRequest>('/api/requests', {
         method: 'POST',
         body: JSON.stringify(data),
       });
@@ -176,8 +183,8 @@ export const api = {
   },
 
   contribute: {
-    submit(data: ContributePayload): Promise<void> {
-      return apiFetch<void>('/api/contribute', {
+    submit(data: ContributePayload): Promise<Pick<Resource, 'id' | 'title' | 'type'>> {
+      return apiFetch<Pick<Resource, 'id' | 'title' | 'type'>>('/api/contribute', {
         method: 'POST',
         body: JSON.stringify(data),
       });
@@ -210,8 +217,8 @@ export const api = {
       });
     },
 
-    requestProfilePicUrl(fileName: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
-      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/auth/profile-pic-url', {
+    requestProfilePicUrl(fileName: string, contentType: string): Promise<UploadUrlResponse> {
+      return apiFetch<UploadUrlResponse>('/api/auth/profile-pic-url', {
         method: 'POST',
         body: JSON.stringify({ fileName, contentType }),
       });
@@ -246,8 +253,8 @@ export const api = {
       return apiFetch<ConcernPostDetail>(`/api/board/posts/${id}`);
     },
 
-    requestImageUrl(fileName: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
-      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/board/posts/image-url', {
+    requestImageUrl(fileName: string, contentType: string): Promise<UploadUrlResponse> {
+      return apiFetch<UploadUrlResponse>('/api/board/posts/image-url', {
         method: 'POST',
         body: JSON.stringify({ fileName, contentType }),
       });
@@ -285,11 +292,11 @@ export const api = {
   },
 
   donors: {
-    list(): Promise<Array<{ id: string; donorName: string; message: string | null; amount: number | null; isAnonymous: boolean; createdAt: string }>> {
-      return apiFetch('/api/donors');
+    list(): Promise<Donor[]> {
+      return apiFetch<Donor[]>('/api/donors');
     },
-    thank(data: { donorName?: string; message?: string; amount?: number; isAnonymous?: boolean; paymentId?: string }): Promise<void> {
-      return apiFetch('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) });
+    thank(data: { donorName?: string; message?: string; amount?: number; isAnonymous?: boolean; paymentId?: string }): Promise<Donor> {
+      return apiFetch<Donor>('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) });
     },
   },
 
@@ -297,8 +304,8 @@ export const api = {
     getStatus(): Promise<FundraiserStatus> {
       return apiFetch<FundraiserStatus>('/api/fundraiser');
     },
-    contribute(data: { amount: number; paymentId?: string; donorName?: string }): Promise<void> {
-      return apiFetch<void>('/api/fundraiser/contribute', {
+    contribute(data: { amount: number; paymentId?: string; donorName?: string }): Promise<FundraiserContribution> {
+      return apiFetch<FundraiserContribution>('/api/fundraiser/contribute', {
         method: 'POST',
         body: JSON.stringify(data),
       });
@@ -306,8 +313,8 @@ export const api = {
   },
 
   admin: {
-    login(email: string, password: string): Promise<{ token: string }> {
-      return apiFetch<{ token: string }>('/api/admin/login', {
+    login(email: string, password: string): Promise<AdminLoginResponse> {
+      return apiFetch<AdminLoginResponse>('/api/admin/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
@@ -321,31 +328,55 @@ export const api = {
       return apiFetch<Resource[]>('/api/admin/contributions/pending');
     },
 
-    approveContribution(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/contributions/${id}/approve`, { method: 'POST' });
+    approveContribution(id: string): Promise<Resource> {
+      return apiFetch<Resource>(`/api/admin/contributions/${id}/approve`, { method: 'PATCH' });
     },
 
-    rejectContribution(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/contributions/${id}/reject`, { method: 'POST' });
+    rejectContribution(id: string): Promise<{ message?: string }> {
+      return apiFetch<{ message?: string }>(`/api/admin/contributions/${id}`, { method: 'DELETE' });
     },
 
     getRequests(): Promise<MaterialRequest[]> {
       return apiFetch<MaterialRequest[]>('/api/admin/requests');
     },
 
-    fulfillRequest(id: string): Promise<void> {
-      return apiFetch<void>(`/api/admin/requests/${id}/fulfill`, { method: 'POST' });
+    fulfillRequest(id: string): Promise<MaterialRequest> {
+      return apiFetch<MaterialRequest>(`/api/admin/requests/${id}/fulfill`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: 'FULFILLED' }),
+      });
     },
 
-    requestUploadUrl(filename: string, contentType: string): Promise<{ uploadUrl: string; fileUrl: string }> {
-      return apiFetch<{ uploadUrl: string; fileUrl: string }>('/api/admin/resources/upload-url', {
+    requestUploadUrl(fileName: string, contentType: string): Promise<UploadUrlResponse> {
+      return apiFetch<UploadUrlResponse>('/api/admin/resources/upload-url', {
         method: 'POST',
-        body: JSON.stringify({ filename, contentType }),
+        body: JSON.stringify({ fileName, contentType }),
       });
     },
 
     createResource(data: CreateResourcePayload): Promise<Resource> {
       return apiFetch<Resource>('/api/admin/resources', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    createInstitution(data: CreateInstitutionPayload): Promise<Institution> {
+      return apiFetch<Institution>('/api/admin/institutions', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    createProgram(data: CreateProgramPayload): Promise<Program> {
+      return apiFetch<Program>('/api/admin/programs', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    createSubject(data: CreateSubjectPayload): Promise<Subject> {
+      return apiFetch<Subject>('/api/admin/subjects', {
         method: 'POST',
         body: JSON.stringify(data),
       });

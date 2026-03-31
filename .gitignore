@@ -6,6 +6,8 @@ dist/
 *.log
 .prisma/
 coverage/
+.github/
+errors.json
 
 # Ignore all markdown and text files except README.md
 *.md

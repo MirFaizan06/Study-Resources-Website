@@ -25,6 +25,9 @@ const AdminRequests = lazy(() => import('@/pages/admin/Requests'))
 const AdminUpload = lazy(() => import('@/pages/admin/Upload'))
 const AdminModeration = lazy(() => import('@/pages/admin/Moderation'))
 const AdminUsers = lazy(() => import('@/pages/admin/Users'))
+const AdminInstitutions = lazy(() => import('@/pages/admin/Institutions'))
+const AdminPrograms = lazy(() => import('@/pages/admin/Programs'))
+const AdminSubjects = lazy(() => import('@/pages/admin/Subjects'))
 
 const BoardPage = lazy(() => import('@/pages/Board'))
 const PostDetailPage = lazy(() => import('@/pages/Board/PostDetail'))
@@ -164,6 +167,30 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<PageLoader />}>
                 <AdminContributions />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'institutions',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminInstitutions />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'programs',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminPrograms />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'subjects',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminSubjects />
               </Suspense>
             ),
           },

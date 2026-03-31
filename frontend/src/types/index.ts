@@ -54,8 +54,13 @@ export interface MaterialRequest {
   createdAt: string
 }
 
+/**
+ * UPDATED: Matches your backend which sends 'items' instead of 'data'.
+ * Includes 'success' because apiFetch returns the whole object for these routes.
+ */
 export interface PaginatedResult<T> {
-  data: T[]
+  success?: boolean
+  items: T[]
   nextCursor: string | null
   total?: number
 }
@@ -119,6 +124,24 @@ export interface CreateRequestPayload {
   studentName: string
   requestedMaterial: string
   contactEmail?: string
+}
+
+export interface CreateInstitutionPayload {
+  name: string
+  type: InstitutionType
+  logoUrl?: string
+}
+
+export interface CreateProgramPayload {
+  name: string
+  institutionId: string
+}
+
+export interface CreateSubjectPayload {
+  name: string
+  programId: string
+  semester: number
+  category?: SubjectCategory
 }
 
 // ─── Concerns Board ───────────────────────────────────────────────────────────
@@ -205,6 +228,23 @@ export interface FundraiserStatus {
   percentFunded: number
 }
 
+export interface Donor {
+  id: string
+  donorName: string
+  message: string | null
+  amount: number | null
+  isAnonymous: boolean
+  createdAt: string
+}
+
+export interface FundraiserContribution {
+  id: string
+  amount: number
+  paymentId: string | null
+  donorName: string | null
+  createdAt: string
+}
+
 export interface AdminUserEntry {
   id: string
   email: string
@@ -267,4 +307,20 @@ export interface BoardStats {
   totalPosts: number
   totalComments: number
   removedPosts: number
+}
+
+export interface UploadUrlResponse {
+  uploadUrl: string
+  fileUrl: string
+  key?: string
+}
+
+export interface AdminLoginResponse {
+  token: string
+  user: {
+    id: string
+    email: string
+    name: string
+    role: string
+  }
 }

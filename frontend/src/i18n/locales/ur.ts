@@ -360,6 +360,7 @@ const ur: Locale = {
       fullNamePlaceholder: 'Your full name',
       university: 'University',
       universityPlaceholder: 'e.g. Kashmir University',
+      selectUniversity: 'Select university',
       college: 'College / Department',
       collegePlaceholder: 'e.g. Department of Computer Sciences',
       semester: 'Semester',

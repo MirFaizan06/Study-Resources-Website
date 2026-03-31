@@ -1,0 +1,22 @@
+.page {
+  @include flex-column;
+  gap: $space-6;
+}
+
+.pageHeader { @include flex-between; gap: $space-4; }
+.pageTitle { font-size: $font-size-3xl; font-weight: $font-weight-bold; color: var(--text-primary); margin: 0 0 $space-1; }
+.pageSubtitle { font-size: $font-size-base; color: var(--text-muted); margin: 0; }
+.form { display:flex; flex-direction:column; gap:$space-3 }
+.field { display:flex; flex-direction:column; gap:$space-2 }
+.label { font-size:$font-size-xs; color:var(--text-muted) }
+.input { padding:$space-3; border:1px solid var(--border-color); border-radius:$radius-md; background:var(--bg-card) }
+.tableWrap { overflow-x:auto; border:1px solid var(--border-color); border-radius:$radius-xl; background-color:var(--bg-card) }
+.table { width:100%; border-collapse:collapse }
+.th { padding:$space-3 $space-5; font-size:$font-size-xs; color:var(--text-muted); text-align:left; border-bottom:1px solid var(--border-color) }
+.td { padding:$space-4 $space-5 }
+.skeletonTable { border:1px solid var(--border-color); border-radius:$radius-xl }
+.skeletonRow { height:56px; @include skeleton }
+.emptyState { @include flex-column-center; padding:$space-12 $space-6; text-align:center }
+.emptyTitle { font-size:$font-size-xl; color:var(--text-primary); margin:0 }
+.emptySubtitle { color:var(--text-muted); margin:0 }
+.toast { position:fixed; bottom:$space-6; right:$space-6; background-color:var(--text-primary); color:var(--bg-primary); padding:$space-3 $space-5; border-radius:$radius-lg }

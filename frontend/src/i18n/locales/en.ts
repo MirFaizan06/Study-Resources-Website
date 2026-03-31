@@ -456,6 +456,7 @@ This platform is yours. It exists for you, because of students like you who were
       fullNamePlaceholder: 'Your full name',
       university: 'University',
       universityPlaceholder: 'e.g. Kashmir University',
+      selectUniversity: 'Select university',
       college: 'College / Department',
       collegePlaceholder: 'e.g. Department of Computer Sciences',
       semester: 'Semester',

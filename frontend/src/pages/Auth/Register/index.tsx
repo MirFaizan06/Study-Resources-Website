@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { UserPlus, Eye, EyeOff, BookOpen } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { useAuth } from '@/contexts/AuthContext'
-import { ApiError } from '@/services/api'
+import { ApiError, api } from '@/services/api'
+import type { Institution } from '@/types'
 import styles from './Register.module.scss'
 
 const SEMESTERS = Array.from({ length: 10 }, (_, i) => i + 1)
@@ -25,12 +26,33 @@ export default function RegisterPage(): React.ReactElement {
     college: '',
     semester: 1,
   })
+  const [institutions, setInstitutions] = useState<Institution[]>([])
+  const [loadingInstitutions, setLoadingInstitutions] = useState(true)
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [field]: field === 'semester' ? Number(e.target.value) : e.target.value }))
+
+  useEffect(() => {
+    let mounted = true
+    api.institutions
+      .getAll()
+      .then((list) => {
+        if (!mounted) return
+        setInstitutions(list)
+      })
+      .catch(() => {
+        // ignore
+      })
+      .finally(() => {
+        if (mounted) setLoadingInstitutions(false)
+      })
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -126,15 +148,33 @@ export default function RegisterPage(): React.ReactElement {
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor="reg-university">{t.board.auth.university}</label>
-            <input
-              id="reg-university"
-              type="text"
-              className={styles.input}
-              value={form.university}
-              onChange={set('university')}
-              placeholder={t.board.auth.universityPlaceholder}
-              required
-            />
+            {institutions.length > 0 ? (
+              <select
+                id="reg-university"
+                className={styles.input}
+                value={form.university}
+                onChange={set('university')}
+                required
+              >
+                <option value="">{t.board.auth.selectUniversity || 'Select university'}</option>
+                {institutions.map((inst) => (
+                  <option key={inst.id} value={inst.name}>
+                    {inst.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                id="reg-university"
+                type="text"
+                className={styles.input}
+                value={form.university}
+                onChange={set('university')}
+                placeholder={t.board.auth.universityPlaceholder}
+                required
+                disabled={loadingInstitutions}
+              />
+            )}
           </div>
 
           <div className={styles.row}>
