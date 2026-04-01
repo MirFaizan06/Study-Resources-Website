@@ -1,29 +1,53 @@
-// ─── Header shell ─────────────────────────────────────────────────────────────
+
+// ─── Header Shell ─────────────────────────────────────────────────────────────
 .header {
   position: sticky;
   top: 0;
+  left: 0;
+  width: 100%;
+  height: $navbar-height;
   z-index: $z-sticky;
-  background-color: var(--navbar-bg);
-  border-bottom: 1px solid transparent;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition: border-color $transition-fast, box-shadow $transition-fast;
-}
+  transition: all $transition-base;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 $space-4;
 
-.scrolled {
-  border-bottom-color: var(--navbar-border);
-  box-shadow: var(--navbar-shadow);
+  &.scrolled {
+    background-color: transparent;
+    height: calc($navbar-height - 10px);
+    
+    .inner {
+      background-color: var(--navbar-bg);
+      backdrop-filter: blur($glass-blur);
+      -webkit-backdrop-filter: blur($glass-blur);
+      border: 1px solid var(--navbar-border);
+      box-shadow: var(--navbar-shadow);
+      border-radius: $radius-2xl;
+      height: 100%;
+      padding: 0 $space-6;
+      margin-top: $space-2;
+    }
+  }
 }
 
 .nav {
-  @include container;
+  width: 100%;
+  max-width: $container-max;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .inner {
   display: flex;
   align-items: center;
-  height: $navbar-height;
-  gap: $space-2;
+  width: 100%;
+  height: 100%;
+  transition: all $transition-base;
+  gap: $space-4;
+  padding: 0 $space-2;
 }
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
@@ -32,10 +56,10 @@
   align-items: center;
   gap: $space-2;
   text-decoration: none;
-  flex-shrink: 0;
-  margin-right: $space-2;
+  transition: transform $transition-fast;
 
   &:hover {
+    transform: translateY(-1px);
     text-decoration: none;
   }
 }
@@ -44,42 +68,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: $radius-lg;
-  background: var(--primary);
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
+  box-shadow: 0 4px 12px rgba(var(--primary), 0.3);
   flex-shrink: 0;
 }
 
 .logoText {
-  font-size: $font-size-base;
-  font-weight: $font-weight-bold;
+  font-family: $font-family-heading;
+  font-size: 1.25rem;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .logoSub {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
+  font-size: 10px;
+  font-weight: $font-weight-semibold;
   color: var(--text-muted);
-  display: none;
-  padding: 2px $space-2;
-  background-color: var(--bg-secondary);
-  border-radius: $radius-full;
-
-  @include respond-to(sm) {
-    display: inline;
-  }
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
 }
 
-// ─── Desktop Nav Links ────────────────────────────────────────────────────────
+// ─── Desktop Links ────────────────────────────────────────────────────────────
 .links {
   display: none;
   align-items: center;
-  gap: 2px;
+  gap: $space-1;
   list-style: none;
-  flex: 1;
+  margin-left: $space-4;
 
   @include respond-to(lg) {
     display: flex;
@@ -89,66 +114,61 @@
 .link {
   position: relative;
   font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   color: var(--text-secondary);
-  padding: $space-2 $space-3;
-  border-radius: $radius-lg;
-  transition: color $transition-fast, background-color $transition-fast;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  transition: all $transition-fast;
   text-decoration: none;
   white-space: nowrap;
 
   &:hover {
     color: var(--text-primary);
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-surface);
     text-decoration: none;
   }
 }
 
 .linkActive {
   color: var(--primary);
-  font-weight: $font-weight-semibold;
+  background-color: var(--primary-lighter);
 
   &:hover {
-    color: var(--primary);
-    background-color: var(--primary-light);
+    background-color: var(--primary-lighter);
+    color: var(--primary-dark);
   }
 }
 
-
-.linkDot {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: $radius-full;
-  background-color: var(--primary);
-}
-
-// ─── Actions row ──────────────────────────────────────────────────────────────
+// ─── Actions Row ──────────────────────────────────────────────────────────────
 .actions {
   display: flex;
   align-items: center;
-  gap: $space-1;
+  gap: $space-2;
   margin-left: auto;
 }
 
 .iconBtn {
   @include flex-center;
-  width: 34px;
-  height: 34px;
-  border-radius: $radius-lg;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
   color: var(--text-secondary);
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: color $transition-fast, background-color $transition-fast;
+  transition: all $transition-fast;
   flex-shrink: 0;
 
   &:hover {
     color: var(--text-primary);
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-surface);
+    border-color: var(--border-color);
+  }
+
+  &.iconBtnActive {
+    color: var(--primary);
+    background-color: var(--primary-lighter);
+    border-color: var(--primary-light);
   }
 
   &:focus-visible {
@@ -156,26 +176,21 @@
   }
 }
 
-.iconBtnActive {
-  color: var(--primary);
-  background-color: var(--primary-light);
-}
-
-// ─── Chip button (language / theme trigger) ───────────────────────────────────
+// ─── Chip Button ──────────────────────────────────────────────────────────────
 .chipBtn {
   display: none;
   align-items: center;
-  gap: $space-1;
-  height: 32px;
-  padding: 0 $space-3;
+  gap: $space-2;
+  height: 38px;
+  padding: 0 $space-4;
   border-radius: $radius-full;
   border: 1px solid var(--border-color);
-  background: transparent;
+  background: var(--bg-primary);
   color: var(--text-secondary);
   font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-bold;
   cursor: pointer;
-  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+  transition: all $transition-fast;
   white-space: nowrap;
 
   @include respond-to(md) {
@@ -186,392 +201,143 @@
     background-color: var(--bg-secondary);
     border-color: var(--border-strong);
     color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+
+  &.chipBtnActive {
+    background-color: var(--primary-lighter);
+    border-color: var(--primary);
+    color: var(--primary);
   }
 }
 
-.chipBtnActive {
-  background-color: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.chipBtnLabel {
-  max-width: 64px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.chevron {
-  transition: transform $transition-fast;
-  flex-shrink: 0;
-}
-
-.chevronOpen {
-  transform: rotate(180deg);
-}
-
 .themeSwatchInline {
-  width: 10px;
-  height: 10px;
-  border-radius: $radius-full;
-  flex-shrink: 0;
-  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.15);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--border-color);
 }
 
-// ─── Dropdown shell ───────────────────────────────────────────────────────────
+// ─── Dropdowns ───────────────────────────────────────────────────────────────
 .dropdownWrap {
   position: relative;
 }
 
 .dropdown {
   position: absolute;
-  top: calc(100% + $space-2);
+  top: calc(100% + $space-3);
   right: 0;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: $radius-xl;
-  box-shadow: var(--shadow-lg);
-  min-width: 200px;
+  border-radius: $radius-lg;
+  box-shadow: var(--shadow-xl);
+  min-width: 220px;
   z-index: $z-dropdown;
-  padding: $space-1;
-  overflow: hidden;
+  padding: $space-2;
+  backdrop-filter: blur($glass-blur);
+  transform-origin: top right;
 }
 
 .dropdownTheme {
-  min-width: 240px;
+  min-width: 280px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2px;
+  gap: $space-1;
 }
 
-// ─── Language dropdown items ──────────────────────────────────────────────────
 .dropdownItem {
   display: flex;
   align-items: center;
-  gap: $space-2;
+  gap: $space-3;
   width: 100%;
   padding: $space-2 $space-3;
-  border-radius: $radius-lg;
+  border-radius: $radius-md;
   font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
   color: var(--text-secondary);
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: background-color $transition-fast, color $transition-fast;
+  transition: all $transition-fast;
   text-align: left;
 
   &:hover {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
+    transform: translateX(2px);
   }
-}
 
-.dropdownItemActive {
-  background-color: var(--primary-light);
-  color: var(--primary);
-
-  &:hover {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
+  &.dropdownItemActive {
+    background-color: var(--primary-lighter);
+    color: var(--primary);
   }
 }
 
 .itemNative {
-  font-weight: $font-weight-semibold;
   flex: 1;
 }
 
 .itemEn {
-  font-size: $font-size-xs;
+  font-size: 10px;
   color: var(--text-muted);
+  opacity: 0.8;
 }
 
-.itemCheck {
-  color: var(--primary);
-  flex-shrink: 0;
-}
-
-// ─── Theme dropdown items ─────────────────────────────────────────────────────
+// ─── Theme Item ──────────────────────────────────────────────────────────────
 .themeItem {
   display: flex;
   align-items: center;
-  gap: $space-2;
-  padding: $space-2 $space-3;
-  border-radius: $radius-lg;
+  gap: $space-3;
+  padding: $space-3;
+  border-radius: $radius-md;
   font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-bold;
   color: var(--text-secondary);
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color $transition-fast, color $transition-fast;
-  text-align: left;
+  transition: all $transition-fast;
   width: 100%;
 
   &:hover {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
+    border-color: var(--border-color);
   }
-}
 
-.themeItemActive {
-  background-color: var(--primary-light);
-  color: var(--primary);
+  &.themeItemActive {
+    background-color: var(--primary-lighter);
+    border-color: var(--primary-light);
+    color: var(--primary);
+  }
 }
 
 .themeSwatch {
-  width: 14px;
-  height: 14px;
-  border-radius: $radius-full;
-  flex-shrink: 0;
-  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.12);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--border-color);
 }
 
-.themeLabel {
-  flex: 1;
-  white-space: nowrap;
-}
-
-// ─── Hamburger ────────────────────────────────────────────────────────────────
-.hamburger {
-  @include respond-to(lg) {
-    display: none;
-  }
-}
-
-// ─── Search Bar ───────────────────────────────────────────────────────────────
-.searchBar {
-  overflow: hidden;
-  border-top: 1px solid var(--border-color);
-}
-
-.searchInner {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  padding: $space-3 0;
-}
-
-.searchIcon {
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.searchInput {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: var(--text-primary);
-  font-size: $font-size-base;
-  outline: none;
-
-  &::placeholder {
-    color: var(--input-placeholder);
-  }
-
-  &::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-  }
-}
-
-.searchClear {
-  @include flex-center;
-  width: 24px;
-  height: 24px;
-  border-radius: $radius-full;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-  }
-}
-
-// ─── Mobile Menu ──────────────────────────────────────────────────────────────
-.mobileMenu {
-  border-top: 1px solid var(--border-color);
-  background-color: var(--bg-card);
-  padding: $space-3 $space-3 $space-5;
-  display: flex;
-  flex-direction: column;
-  gap: $space-3;
-
-  @include respond-to(lg) {
-    display: none;
-  }
-}
-
-.mobileSearch {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  padding: $space-2 $space-3;
-  background-color: var(--bg-secondary);
-  border-radius: $radius-xl;
-  border: 1px solid var(--border-color);
-}
-
-.mobileSearchInput {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: var(--text-primary);
-  font-size: $font-size-sm;
-  outline: none;
-
-  &::placeholder {
-    color: var(--input-placeholder);
-  }
-}
-
-.mobileLinks {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  list-style: none;
-}
-
-.mobileLink {
-  display: flex;
-  align-items: center;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: var(--text-secondary);
-  padding: $space-3 $space-3;
-  border-radius: $radius-md;
-  transition: color $transition-fast, background-color $transition-fast;
-  text-decoration: none;
-
-  &:hover {
-    color: var(--text-primary);
-    background-color: var(--bg-secondary);
-    text-decoration: none;
-  }
-}
-
-.mobileLinkActive {
-  color: var(--primary);
-  background-color: var(--primary-light);
-  font-weight: $font-weight-semibold;
-}
-
-
-// ─── Mobile pref sections ─────────────────────────────────────────────────────
-.mobilePrefSection {
-  display: flex;
-  flex-direction: column;
-  gap: $space-2;
-}
-
-.mobilePrefLabel {
-  display: flex;
-  align-items: center;
-  gap: $space-1;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.mobileChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-1;
-}
-
-.mobileChip {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  padding: $space-1 $space-3;
-  border-radius: $radius-full;
-  background-color: var(--bg-secondary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  transition: background-color $transition-fast, color $transition-fast;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary);
-  }
-}
-
-.mobileChipActive {
-  background-color: var(--primary-light);
-  color: var(--primary);
-  border-color: var(--primary-light);
-}
-
-// ─── Mobile theme grid ────────────────────────────────────────────────────────
-.mobileThemeGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: $space-2;
-
-  @include respond-to(sm) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.mobileThemeBtn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-1;
-  padding: $space-2;
-  border-radius: $radius-lg;
-  background-color: var(--bg-secondary);
-  border: 1.5px solid var(--border-color);
-  cursor: pointer;
-  transition: background-color $transition-fast, border-color $transition-fast;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  color: var(--text-secondary);
-
-  &:hover {
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary);
-  }
-}
-
-.mobileThemeBtnActive {
-  border-color: var(--primary);
-  background-color: var(--primary-light);
-  color: var(--primary);
-}
-
-.mobileThemeSwatch {
-  width: 18px;
-  height: 18px;
-  border-radius: $radius-full;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12);
-  flex-shrink: 0;
-}
-
-// ─── User menu ────────────────────────────────────────────────────────────────
+// ─── User Menu ────────────────────────────────────────────────────────────────
 .userBtn {
-  width: 32px;
-  height: 32px;
+  @include flex-center;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: 2px solid var(--border-color);
   cursor: pointer;
-  background: var(--bg-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: var(--bg-primary);
   overflow: hidden;
-  transition: border-color $transition-fast;
+  transition: all $transition-base;
   padding: 0;
 
   &:hover, &.userBtnActive {
     border-color: var(--primary);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -582,185 +348,272 @@
 }
 
 .userAvatarFallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: var(--text-muted);
 }
 
 .userDropdown {
-  right: 0;
-  left: auto;
-  min-width: 200px;
+  min-width: 240px;
+  padding: $space-2;
+}
+
+.userMenuHeader {
+  padding: $space-3 $space-3;
 }
 
 .userMenuName {
-  padding: $space-3 $space-4 2px;
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
+  line-height: 1.2;
 }
 
 .userMenuEmail {
-  padding: 0 $space-4 $space-2;
-  font-size: $font-size-xs;
+  font-size: 11px;
   color: var(--text-muted);
+  word-break: break-all;
 }
 
 .userMenuDivider {
   height: 1px;
   background: var(--border-color);
-  margin: $space-1 0;
+  margin: $space-1 $space-3;
+  opacity: 0.5;
 }
 
 .userMenuItem {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-  width: 100%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  padding: $space-2 $space-4;
-  font-size: $font-size-sm;
-  color: var(--text-secondary);
-  transition: background $transition-fast, color $transition-fast;
-
-  &:hover {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-  }
+  @extend .dropdownItem;
+  padding: $space-3 $space-3;
 }
 
 .userMenuLogout {
-  color: #dc2626;
-
+  color: var(--danger);
+  
   &:hover {
-    background: rgba(239, 68, 68, 0.08);
-    color: #dc2626;
+    background-color: var(--danger-light);
+    color: var(--danger-dark);
   }
 }
 
+// ─── Sign In Button ───────────────────────────────────────────────────────────
 .signInBtn {
   display: none;
   align-items: center;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  padding: $space-2 $space-3;
-  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  padding: $space-2 $space-6;
+  border-radius: $radius-full;
   text-decoration: none;
-  white-space: nowrap;
-  transition: background $transition-fast;
+  transition: all $transition-base;
+  box-shadow: 0 4px 12px rgba(var(--primary), 0.2);
 
-  @include respond-to(md) { display: inline-flex; }
+  @include respond-to(md) {
+    display: inline-flex;
+  }
 
   &:hover {
     background: var(--primary-dark);
-    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(var(--primary), 0.3);
     color: #fff;
+    text-decoration: none;
   }
 }
 
-// ─── Study Hub dropdown ────────────────────────────────────────────────────────
+// ─── Study Hub ───────────────────────────────────────────────────────────────
 .studyHubBtn {
-  display: inline-flex;
+  display: flex !important;
   align-items: center;
   gap: $space-1;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
 }
 
 .studyHubDropdown {
-  min-width: 220px;
+  min-width: 260px;
   padding: $space-2;
 }
 
 .studyHubItem {
   display: flex;
-  align-items: flex-start;
-  gap: $space-3;
-  padding: $space-3 $space-3;
+  gap: $space-4;
+  padding: $space-3;
   border-radius: $radius-md;
   text-decoration: none;
-  color: var(--text-primary);
-  transition: background $transition-fast;
+  transition: all $transition-fast;
 
   &:hover {
-    background: var(--bg-secondary);
+    background-color: var(--bg-surface);
     text-decoration: none;
-    color: var(--text-primary);
+    transform: translateX(4px);
+    
+    .studyHubItemIcon {
+      background-color: var(--primary);
+      color: #fff;
+      transform: scale(1.1);
+    }
   }
 }
 
-.studyHubItemMuted {
-  .studyHubItemTitle { color: var(--text-secondary); }
-  .studyHubItemDesc { color: var(--text-muted, var(--text-secondary)); }
-}
-
 .studyHubItemIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
+  @include flex-center;
+  width: 36px;
+  height: 36px;
   border-radius: $radius-md;
-  background: var(--primary-light);
+  background-color: var(--primary-lighter);
   color: var(--primary);
   flex-shrink: 0;
-  margin-top: 1px;
+  transition: all $transition-fast;
 }
 
 .studyHubItemTitle {
   display: block;
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
-  line-height: 1.3;
 }
 
 .studyHubItemDesc {
   display: block;
-  font-size: $font-size-xs;
+  font-size: 11px;
   color: var(--text-secondary);
-  margin-top: 1px;
+  line-height: 1.4;
+  margin-top: 2px;
 }
 
-.studyHubDivider {
-  height: 1px;
-  background: var(--border-color);
-  margin: $space-2 $space-3;
-}
-
-// ─── Mobile Study Hub group ────────────────────────────────────────────────────
-.mobileStudyHubGroup {
-  list-style: none;
-  padding-top: $space-3;
-  margin-top: $space-1;
+// ─── Search Bar ───────────────────────────────────────────────────────────────
+.searchBar {
+  width: 100%;
+  background: var(--bg-card);
   border-top: 1px solid var(--border-color);
+  padding: $space-2 0;
+  margin-top: $space-2;
+  border-radius: 0 0 $radius-lg $radius-lg;
 }
 
-.mobileStudyHubLabel {
+.searchInner {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 0 $space-4;
+  height: 48px;
+  background: var(--bg-secondary);
+  border-radius: $radius-full;
+  margin: 0 $space-2;
+  border: 1px solid var(--border-color);
+  transition: all $transition-fast;
+
+  &:focus-within {
+    background: var(--bg-primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-lighter);
+  }
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  outline: none;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+// ─── Mobile Menu ──────────────────────────────────────────────────────────────
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: $space-4;
+  right: $space-4;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  box-shadow: var(--shadow-2xl);
+  padding: $space-4;
+  margin-top: $space-2;
+  max-height: calc(100vh - $navbar-height - $space-8);
+  overflow-y: auto;
+  z-index: $z-modal;
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.mobileLink {
+  padding: $space-3 $space-4;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+  }
+
+  &.mobileLinkActive {
+    background-color: var(--primary-lighter);
+    color: var(--primary);
+  }
+}
+
+.mobilePrefSection {
+  margin-top: $space-6;
+  border-top: 1px solid var(--border-color);
+  padding-top: $space-4;
+}
+
+.mobilePrefLabel {
   display: flex;
   align-items: center;
   gap: $space-2;
   font-size: 10px;
-  font-weight: $font-weight-semibold;
-  color: var(--text-muted, var(--text-secondary));
+  font-weight: $font-weight-extrabold;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  padding: 0 $space-3 $space-2;
-  margin: 0;
+  letter-spacing: 0.1em;
+  margin-bottom: $space-3;
 }
 
-.mobileStudyHubLinks {
-  display: flex;
+.mobileThemeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-2;
+}
+
+.mobileThemeBtn {
+  @include flex-center;
   flex-direction: column;
-  gap: 2px;
+  gap: $space-2;
+  padding: $space-3;
+  border-radius: $radius-md;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &.mobileThemeBtnActive {
+    background-color: var(--primary-lighter);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+// ─── Hamburger ───────────────────────────────────────────────────────────────
+.hamburger {
+  @include respond-to(lg) {
+    display: none;
+  }
 }

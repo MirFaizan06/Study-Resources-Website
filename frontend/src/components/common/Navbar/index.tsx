@@ -189,7 +189,7 @@ export function Navbar(): React.ReactElement {
                         <span className={styles.studyHubItemIcon}><GitBranch size={15} aria-hidden="true" /></span>
                         <span>
                           <span className={styles.studyHubItemTitle}>Changelog</span>
-                          <span className={styles.studyHubItemDesc}>What's new · v0.0.9</span>
+                          <span className={styles.studyHubItemDesc}>What's new · v0.0.8</span>
                         </span>
                       </Link>
                     </motion.div>

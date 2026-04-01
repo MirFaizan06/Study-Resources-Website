@@ -1,10 +1,11 @@
 [data-theme='discord-dark'] {
-  // Backgrounds — Discord dark mode tones
+  // Backgrounds — Deep Discord aesthetic
   --bg-primary: #313338;
   --bg-secondary: #2b2d31;
   --bg-tertiary: #1e1f22;
+  --bg-surface: #383a40;
   --bg-card: #2b2d31;
-  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(0, 0, 0, 0.75);
 
   // Text
   --text-primary: #f2f3f5;
@@ -15,66 +16,67 @@
   // Borders
   --border-color: #3f4147;
   --border-strong: #1e1f22;
+  --border-light: rgba(255, 255, 255, 0.05);
 
   // Shadows
-  --shadow-color: rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -1px rgba(0, 0, 0, 0.25);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 15px rgba(88, 101, 242, 0.3);
 
-  // Brand — Discord Blurple
-  --primary: #5865F2;
-  --primary-dark: #4752C4;
+  // Brand — Discord Blurple Precision
+  --primary: #5865f2;
+  --primary-dark: #4752c4;
   --primary-light: #7289da;
-  --primary-lighter: #2f3136;
+  --primary-lighter: rgba(88, 101, 242, 0.1);
 
-  --secondary: #4b5563;
-  --secondary-dark: #374151;
-  --secondary-light: #2c2f33;
+  --secondary: #4e5058;
+  --secondary-dark: #404249;
+  --secondary-light: #6d6f78;
 
   --accent: #23a559;
   --accent-dark: #1e8f4c;
-  --accent-light: #182a20;
+  --accent-light: #2dc770;
 
   --danger: #da373c;
   --danger-dark: #c93035;
-  --danger-light: #3a1c1d;
+  --danger-glow: 0 0 15px rgba(218, 55, 60, 0.3);
 
   --warning: #f0b232;
-  --warning-light: #3a2e1b;
+  --warning-glow: 0 0 15px rgba(240, 178, 50, 0.3);
 
-  --orange: #f26522;
-  --orange-light: #3a1e16;
+  --success: #23a559;
+  --success-glow: 0 0 15px rgba(35, 165, 89, 0.3);
 
-  // Navbar
-  --navbar-bg: rgba(43, 45, 49, 0.92);
-  --navbar-border: rgba(30, 31, 34, 0.8);
-  --navbar-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+  // Component Specific
+  --navbar-bg: rgba(30, 31, 34, 0.85);
+  --navbar-border: rgba(255, 255, 255, 0.05);
+  --navbar-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
-  // Input
+  --sidebar-bg: #2b2d31;
+  --sidebar-border: #1e1f22;
+
   --input-bg: #1e1f22;
   --input-border: #1e1f22;
-  --input-border-focus: #5865F2;
-  --input-placeholder: #949ba4;
+  --input-focus-border: #5865f2;
+  --input-focus-shadow: 0 0 0 3px rgba(88, 101, 242, 0.2);
 
-  // Badge backgrounds
-  --badge-blue-bg: rgba(88, 101, 242, 0.2);
+  --card-bg: #2b2d31;
+  --card-border: rgba(255, 255, 255, 0.05);
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+
+  // Glassmorphism (Dark)
+  --glass-bg: rgba(43, 45, 49, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 16px;
+
+  // Badge Palette
+  --badge-blue-bg: rgba(88, 101, 242, 0.15);
   --badge-blue-text: #949cf7;
-  --badge-orange-bg: rgba(242, 101, 34, 0.2);
-  --badge-orange-text: #f9a07b;
-  --badge-green-bg: rgba(35, 165, 89, 0.2);
+  --badge-green-bg: rgba(35, 165, 89, 0.15);
   --badge-green-text: #a1ebb8;
-  --badge-purple-bg: rgba(114, 137, 218, 0.2);
-  --badge-purple-text: #b6c5f7;
-  --badge-red-bg: rgba(218, 55, 60, 0.2);
+  --badge-red-bg: rgba(218, 55, 60, 0.15);
   --badge-red-text: #f59b9e;
-  --badge-default-bg: #2b2d31;
-  --badge-default-text: #dbdee1;
-
-  // Footer
-  --footer-bg: #111214;
-  --footer-text: #949ba4;
-  --footer-heading: #f2f3f5;
-  --footer-border: #1e1f22;
+  --badge-yellow-bg: rgba(240, 178, 50, 0.15);
+  --badge-yellow-text: #f9d38a;
+  --badge-gray-bg: rgba(148, 155, 164, 0.15);
+  --badge-gray-text: #dbdee1;
 }

@@ -1,41 +1,48 @@
+
 .footer {
-  background-color: var(--footer-bg);
-  color: var(--footer-text);
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  padding-top: $space-20;
   margin-top: auto;
 }
 
 .inner {
   @include container;
-  padding-top: $space-16;
-  padding-bottom: $space-8;
+  padding-bottom: $space-12;
 }
 
 .top {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-10;
+  grid-template-columns: repeat(1, 1fr);
+  gap: $space-12;
+  margin-bottom: $space-16;
 
   @include respond-to(md) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr;
   }
 
   @include respond-to(lg) {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: $space-12;
+    grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr;
   }
 }
 
 // ─── Brand ────────────────────────────────────────────────────────────────────
 .brand {
-  @include flex-column;
-  gap: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
 }
 
 .logo {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: $space-2;
+  gap: $space-3;
   text-decoration: none;
+  font-family: $font-family-heading;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 
   &:hover {
     text-decoration: none;
@@ -44,147 +51,174 @@
 
 .logoIcon {
   color: var(--primary);
+  filter: drop-shadow(0 2px 8px rgba(var(--primary), 0.3));
 }
 
 .logoText {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  color: var(--footer-heading);
+  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .tagline {
   font-size: $font-size-sm;
-  color: var(--footer-text);
-  line-height: $line-height-relaxed;
-  max-width: 280px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 320px;
+  font-weight: $font-weight-medium;
 }
 
-// ─── Donate box ───────────────────────────────────────────────────────────────
+// ─── Support Callout ──────────────────────────────────────────────────────────
 .donateBox {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: $space-4;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  transition: all $transition-base;
+
+  &:hover {
+    border-color: var(--danger-light);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.donateContent {
+  display: flex;
   gap: $space-3;
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: $radius-xl;
-  padding: $space-4;
-  flex-wrap: wrap;
 }
 
 .heartIcon {
-  color: #f43f5e;
+  color: var(--danger);
   flex-shrink: 0;
   margin-top: 2px;
 }
 
+.donateText {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
 .donateTitle {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: var(--footer-heading);
-  margin-bottom: $space-1;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
 }
 
 .donateDesc {
   font-size: $font-size-xs;
-  color: var(--footer-text);
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .donateBtn {
   display: inline-flex;
   align-items: center;
-  gap: $space-1;
-  background-color: #f43f5e;
-  color: #ffffff;
+  justify-content: center;
+  gap: $space-2;
+  background-color: var(--danger);
+  color: #fff;
   font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  padding: $space-2 $space-3;
-  border-radius: $radius-lg;
+  font-weight: $font-weight-bold;
+  padding: $space-3 $space-5;
+  border-radius: $radius-xl;
   text-decoration: none;
-  white-space: nowrap;
-  transition: background-color $transition-fast;
-  margin-top: $space-2;
+  transition: all $transition-fast;
 
   &:hover {
-    background-color: #e11d48;
+    background-color: var(--danger-dark);
     text-decoration: none;
+    color: #fff;
+    transform: scale(1.02);
   }
 }
 
-// ─── Link columns ─────────────────────────────────────────────────────────────
+// ─── Links ────────────────────────────────────────────────────────────────────
 .linksCol {
-  @include flex-column;
-  gap: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
 }
 
 .colTitle {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: var(--footer-heading);
-  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-muted);
   text-transform: uppercase;
-  font-size: $font-size-xs;
+  letter-spacing: 0.15em;
 }
 
 .linkList {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-3;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .link {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-2;
   font-size: $font-size-sm;
-  color: var(--footer-text);
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: color $transition-fast;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-fast;
 
   &:hover {
-    color: var(--footer-heading);
+    color: var(--primary);
+    transform: translateX(4px);
     text-decoration: none;
   }
 }
 
-// ─── Bottom bar ───────────────────────────────────────────────────────────────
+// ─── Bottom Bar ───────────────────────────────────────────────────────────────
 .bottom {
-  @include flex-between;
-  flex-wrap: wrap;
-  gap: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
   padding-top: $space-8;
-  margin-top: $space-12;
-  border-top: 1px solid var(--footer-border);
+  border-top: 1px solid var(--border-color);
+  align-items: center;
+  text-align: center;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
 .copyright {
   font-size: $font-size-sm;
-  color: var(--footer-text);
-}
-
-.credit {
-  font-size: $font-size-sm;
-  color: var(--footer-text);
+  color: var(--text-muted);
   font-weight: $font-weight-medium;
 }
 
-.versionBadge {
-  display: inline-flex;
+.credit {
+  display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: $font-weight-semibold;
-  color: var(--primary);
-  background: var(--primary-light);
-  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
-  border-radius: 999px;
-  padding: 2px 8px;
-  text-decoration: none;
-  transition: opacity $transition-fast;
+  gap: $space-4;
+}
+
+.versionBadge {
   font-family: $font-family-mono;
-  letter-spacing: 0.02em;
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+  color: var(--primary);
+  background-color: var(--primary-lighter);
+  padding: 2px $space-3;
+  border-radius: $radius-full;
+  border: 1px solid var(--primary-light);
+  text-decoration: none;
 
   &:hover {
-    opacity: 0.8;
+    background-color: var(--primary);
+    color: #fff;
     text-decoration: none;
   }
 }

@@ -1,254 +1,250 @@
+
 .page {
-  padding-block: $space-8 $space-16;
+  padding-block: $space-12 $space-24;
+  background-color: var(--bg-primary);
 }
 
 .container {
   @include container;
-  @include flex-column;
-  gap: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
 }
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 .pageHeader {
-  @include flex-between;
-  flex-wrap: wrap;
-  gap: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
 }
 
 .pageTitle {
-  font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
-  font-weight: $font-weight-bold;
+  font-family: $font-family-heading;
+  font-size: clamp(2rem, 5vw, $font-size-4xl);
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  margin: 0 0 $space-1;
+  letter-spacing: -0.03em;
+  margin: 0;
 }
 
 .pageSubtitle {
-  font-size: $font-size-base;
-  color: var(--text-muted);
-  margin: 0;
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+  font-weight: $font-weight-medium;
+  max-width: 600px;
 }
 
 // ─── Filter bar ───────────────────────────────────────────────────────────────
 .filterBar {
   display: flex;
   align-items: center;
-  gap: $space-3;
+  gap: $space-6;
   flex-wrap: wrap;
-  padding: $space-4;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: $radius-xl;
+  padding: $space-5 $space-6;
+  background: var(--glass-bg);
+  backdrop-filter: blur($glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: $radius-2xl;
+  box-shadow: var(--shadow-lg);
+  position: sticky;
+  top: calc($navbar-height + $space-4);
+  z-index: $z-sticky;
 }
 
 .searchWrap {
   flex: 1;
-  min-width: 200px;
+  min-width: 250px;
 }
 
 .typeTabs {
   display: flex;
-  gap: $space-1;
-  flex-wrap: wrap;
+  gap: $space-2;
+  background-color: var(--bg-surface);
+  padding: $space-1;
+  border-radius: $radius-full;
+  border: 1px solid var(--border-color);
 }
 
 .typeTab {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  padding: $space-2 $space-3;
-  border-radius: $radius-lg;
+  font-size: 11px;
+  font-weight: $font-weight-extrabold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: $space-2 $space-5;
+  border-radius: $radius-full;
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: background-color $transition-fast, color $transition-fast;
+  transition: all $transition-fast;
   white-space: nowrap;
 
   &:hover {
-    background-color: var(--bg-card);
     color: var(--text-primary);
   }
 }
 
 .typeTabActive {
-  background-color: var(--primary);
-  color: #ffffff;
-
-  &:hover {
-    background-color: var(--primary-dark);
-    color: #ffffff;
-  }
+  background-color: var(--bg-card);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
 }
 
 .sortWrap {
   display: flex;
   align-items: center;
-  gap: $space-2;
+  gap: $space-3;
   position: relative;
-  color: var(--text-muted);
 }
 
 .sortSelect {
   appearance: none;
-  background-color: var(--bg-card);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: $radius-lg;
+  border-radius: $radius-xl;
   color: var(--text-primary);
   font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  padding: $space-2 $space-8 $space-2 $space-3;
+  font-weight: $font-weight-bold;
+  padding: $space-2 $space-10 $space-2 $space-4;
   cursor: pointer;
-  transition: border-color $transition-fast;
+  transition: all $transition-fast;
 
   &:focus {
     border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(var(--primary), 0.1);
     outline: none;
   }
 }
 
 .selectChevron {
   position: absolute;
-  right: $space-3;
+  right: $space-4;
   pointer-events: none;
   color: var(--text-muted);
 }
 
-// ─── Resources grid ───────────────────────────────────────────────────────────
+// ─── Resources Grid ───────────────────────────────────────────────────────────
 .resourcesGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-4;
-
-  @include respond-to(md) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include respond-to(xl) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $space-8;
 }
 
-// ─── Subjects / Semester view ─────────────────────────────────────────────────
+// ─── Subjects / Semester View ─────────────────────────────────────────────────
 .semesterSection {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding-top: $space-6;
+}
+
+.semesterHeader {
+  display: flex;
+  align-items: center;
   gap: $space-4;
 }
 
 .semesterTitle {
-  font-size: $font-size-xl;
-  font-weight: $font-weight-semibold;
+  font-family: $font-family-heading;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
   margin: 0;
-  padding-bottom: $space-3;
-  border-bottom: 2px solid var(--primary);
-  display: inline-block;
+  white-space: nowrap;
+}
+
+.semesterDivider {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--border-strong), transparent);
 }
 
 .subjectsGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-3;
-
-  @include respond-to(sm) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include respond-to(lg) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-4;
 }
 
 .subjectCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  padding: $space-5 $space-6;
   display: flex;
   align-items: center;
-  gap: $space-3;
-  padding: $space-4 $space-5;
-  background-color: var(--bg-card);
-  border: 1.5px solid var(--border-color);
-  border-radius: $radius-xl;
+  gap: $space-4;
   text-decoration: none;
-  transition: box-shadow $transition-base, transform $transition-base, border-color $transition-fast;
+  transition: all $transition-base;
 
   &:hover {
+    border-color: var(--primary-light);
+    transform: translateX(6px);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-    border-color: var(--primary);
     text-decoration: none;
+
+    .subjectIcon {
+      color: var(--primary);
+    }
   }
 }
 
-.subjectBadges {
-  display: flex;
-  gap: $space-1;
-  flex-wrap: wrap;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
 .subjectIcon {
-  color: var(--primary);
+  color: var(--text-muted);
+  transition: color $transition-fast;
   flex-shrink: 0;
 }
 
 .subjectName {
   flex: 1;
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
   @include truncate;
 }
 
-// ─── Empty state ──────────────────────────────────────────────────────────────
+.subjectBadges {
+  display: flex;
+  gap: $space-1;
+}
+
+// ─── Empty State ──────────────────────────────────────────────────────────────
 .emptyState {
   @include flex-column-center;
-  gap: $space-4;
-  padding: $space-20 $space-8;
+  gap: $space-6;
+  padding: $space-24 $space-8;
   text-align: center;
 }
 
-.emptyImg {
-  width: 100%;
-  max-width: 220px;
-  height: auto;
-  max-height: 160px;
-  object-fit: contain;
-  object-position: center;
-  opacity: 0.85;
-}
-
 .emptyIcon {
-  color: var(--text-muted);
-  opacity: 0.4;
+  color: var(--primary-light);
+  opacity: 0.5;
 }
 
 .emptyTitle {
-  font-size: $font-size-xl;
-  font-weight: $font-weight-semibold;
+  font-family: $font-family-heading;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  margin: 0;
 }
 
 .emptySubtitle {
   font-size: $font-size-base;
-  color: var(--text-muted);
-  max-width: 360px;
-  margin: 0;
-}
-
-.emptyMessage {
-  color: var(--text-muted);
-  text-align: center;
-  padding: $space-12;
+  color: var(--text-secondary);
+  max-width: 400px;
 }
 
 // ─── Load more ────────────────────────────────────────────────────────────────
 .loadMoreWrap {
   @include flex-center;
-  padding-top: $space-4;
+  padding-top: $space-12;
 }
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 .skeletonCard {
-  height: 180px;
-  border-radius: $radius-xl;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  height: 240px;
   @include skeleton;
 }

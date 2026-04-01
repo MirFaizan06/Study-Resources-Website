@@ -1,45 +1,51 @@
 // ─── Headings ─────────────────────────────────────────────────────────────────
 h1 {
+  font-family: $font-family-heading;
   font-size: clamp($font-size-3xl, 5vw, $font-size-5xl);
   font-weight: $font-weight-extrabold;
   line-height: $line-height-tight;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.04em;
   color: var(--text-primary);
 }
 
 h2 {
+  font-family: $font-family-heading;
   font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   line-height: $line-height-tight;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
 }
 
 h3 {
+  font-family: $font-family-heading;
   font-size: clamp($font-size-xl, 3vw, $font-size-3xl);
   font-weight: $font-weight-bold;
   line-height: $line-height-snug;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
 h4 {
+  font-family: $font-family-heading;
   font-size: $font-size-xl;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   line-height: $line-height-snug;
   color: var(--text-primary);
 }
 
 h5 {
+  font-family: $font-family-heading;
   font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   line-height: $line-height-normal;
   color: var(--text-primary);
 }
 
 h6 {
+  font-family: $font-family-heading;
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   line-height: $line-height-normal;
   color: var(--text-secondary);
 }
@@ -48,6 +54,7 @@ h6 {
 p {
   line-height: $line-height-relaxed;
   color: var(--text-secondary);
+  font-weight: $font-weight-medium;
 
   & + & {
     margin-top: $space-4;
@@ -58,23 +65,25 @@ p {
 a {
   color: var(--primary);
   text-decoration: none;
-  transition: color $transition-fast;
+  transition: all $transition-fast;
 
   &:hover {
     color: var(--primary-dark);
-    text-decoration: underline;
+    text-decoration: none;
+    opacity: 0.85;
   }
 }
 
 // ─── Code ─────────────────────────────────────────────────────────────────────
 code {
   font-family: $font-family-mono;
-  font-size: 0.875em;
+  font-size: 0.9em;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: $radius-sm;
+  border-radius: $radius-md;
   padding: 0.1em 0.4em;
-  color: var(--secondary);
+  color: var(--primary);
+  font-weight: $font-weight-bold;
 }
 
 pre {
@@ -82,8 +91,8 @@ pre {
   font-size: $font-size-sm;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: $radius-lg;
-  padding: $space-4;
+  border-radius: $radius-xl;
+  padding: $space-5;
   overflow-x: auto;
   @include custom-scrollbar;
 
@@ -93,36 +102,40 @@ pre {
     padding: 0;
     color: inherit;
     font-size: inherit;
+    font-weight: $font-weight-normal;
   }
 }
 
 // ─── Blockquote ───────────────────────────────────────────────────────────────
 blockquote {
   border-left: 4px solid var(--primary);
-  padding-left: $space-4;
-  margin: $space-6 0;
+  padding-left: $space-5;
+  margin: $space-8 0;
   color: var(--text-secondary);
   font-style: italic;
+  font-size: $font-size-lg;
 }
 
 // ─── Strong / Em ──────────────────────────────────────────────────────────────
 strong {
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
 }
 
 em {
   font-style: italic;
+  color: var(--text-primary);
 }
 
 // ─── Small ────────────────────────────────────────────────────────────────────
 small {
   font-size: $font-size-sm;
   color: var(--text-muted);
+  font-weight: $font-weight-medium;
 }
 
 // ─── Selection ────────────────────────────────────────────────────────────────
 ::selection {
-  background-color: var(--primary-light);
-  color: var(--primary-dark);
+  background-color: var(--primary);
+  color: #fff;
 }

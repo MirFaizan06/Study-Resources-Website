@@ -1,88 +1,123 @@
+
 .card {
-  @include card-base;
-  @include flex-column;
-  gap: $space-3;
-  cursor: default;
-  transition: box-shadow $transition-base, transform $transition-base;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  transition: all $transition-base;
+  position: relative;
+  overflow: hidden;
 
   &:hover {
-    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+
+    .title {
+      color: var(--primary);
+    }
+    
+    .downloadBtn {
+      transform: scale(1.05);
+      background-color: var(--primary);
+      color: #fff;
+    }
   }
 }
 
 .header {
-  @include flex-between;
-  gap: $space-2;
+  display: flex;
+  justify-content: space-between;
   align-items: flex-start;
+  gap: $space-4;
 }
 
 .badges {
   display: flex;
   flex-wrap: wrap;
-  gap: $space-1;
+  gap: $space-2;
 }
 
 .badgeInner {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: $space-1;
 }
 
 .shareBtn {
   @include flex-center;
-  width: 30px;
-  height: 30px;
-  border-radius: $radius-md;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-lg;
+  background-color: var(--bg-surface);
   color: var(--text-muted);
-  background: transparent;
-  transition: background-color $transition-fast, color $transition-fast;
-  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+  transition: all $transition-fast;
   position: relative;
+  flex-shrink: 0;
 
   &:hover {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    background-color: var(--primary-lighter);
+    color: var(--primary);
+    border-color: var(--primary-light);
   }
 }
 
 .copyTooltip {
   position: absolute;
-  bottom: calc(100% + 4px);
+  bottom: calc(100% + 8px);
   right: 0;
   background-color: var(--text-primary);
   color: var(--bg-primary);
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  padding: $space-1 $space-2;
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+  padding: $space-1 $space-3;
   border-radius: $radius-md;
   white-space: nowrap;
   pointer-events: none;
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 12px;
+    border: 4px solid transparent;
+    border-top-color: var(--text-primary);
+  }
 }
 
 .title {
+  font-family: $font-family-heading;
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
-  line-height: $line-height-snug;
-  @include line-clamp(2);
+  line-height: 1.4;
   margin: 0;
+  transition: color $transition-fast;
+  @include line-clamp(2);
 }
 
 .aiDisclaimer {
   display: flex;
   align-items: flex-start;
-  gap: $space-1;
-  font-size: $font-size-xs;
+  gap: $space-2;
+  font-size: 11px;
   color: var(--danger);
   background-color: var(--danger-light);
-  padding: $space-2 $space-3;
-  border-radius: $radius-md;
-  border-left: 3px solid var(--danger);
-  line-height: $line-height-snug;
+  padding: $space-3;
+  border-radius: $radius-lg;
+  line-height: 1.4;
+  border: 1px dashed var(--danger);
 
   svg {
     flex-shrink: 0;
     margin-top: 1px;
+    color: var(--danger);
   }
 }
 
@@ -97,81 +132,80 @@
   display: flex;
   align-items: center;
   gap: $space-1;
-  font-size: $font-size-xs;
+  font-size: 11px;
+  font-weight: $font-weight-semibold;
   color: var(--text-muted);
-}
-
-.semester {
-  color: var(--text-muted);
+  
+  svg {
+    color: var(--primary);
+    opacity: 0.7;
+  }
 }
 
 .metaDot {
-  width: 4px;
-  height: 4px;
-  border-radius: $radius-full;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
   background-color: var(--border-strong);
 }
 
 .footer {
-  @include flex-between;
-  gap: $space-3;
-  padding-top: $space-3;
-  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
   margin-top: auto;
+  padding-top: $space-4;
+  border-top: 1px solid var(--border-color);
 }
 
 .stats {
   display: flex;
   align-items: center;
-  gap: $space-1;
-  font-size: $font-size-xs;
-  color: var(--text-muted);
-  flex-wrap: wrap;
-}
-
-.statsLabel {
-  @include respond-below(sm) {
-    display: none;
-  }
+  gap: $space-3;
+  font-size: 11px;
+  font-weight: $font-weight-bold;
+  color: var(--text-secondary);
 }
 
 .date {
-  &::before {
-    content: '·';
-    margin: 0 $space-1;
-  }
+  color: var(--text-muted);
+  font-weight: $font-weight-medium;
 }
 
 .downloadBtn {
-  @include button-base;
-  background-color: var(--primary);
-  color: #ffffff;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  padding: $space-2 $space-3;
+  @include flex-center;
+  gap: $space-2;
+  padding: $space-2 $space-4;
+  background-color: var(--bg-surface);
+  color: var(--primary);
+  border: 1.5px solid var(--primary-light);
   border-radius: $radius-lg;
-  gap: $space-1;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: all $transition-base;
+  text-decoration: none;
 
   &:hover:not(:disabled) {
-    background-color: var(--primary-dark);
+    background-color: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
   }
 
   &:disabled {
-    opacity: 0.7;
-    cursor: wait;
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
 .downloadingSpinner {
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #ffffff;
-  border-radius: $radius-full;
-  animation: spin 0.7s linear infinite;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {

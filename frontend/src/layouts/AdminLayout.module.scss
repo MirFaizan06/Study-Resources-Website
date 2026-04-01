@@ -1,82 +1,70 @@
+
 .shell {
   display: flex;
   min-height: 100vh;
-  background-color: var(--bg-secondary);
-}
-
-// ─── Overlay (mobile) ─────────────────────────────────────────────────────────
-.overlay {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg-overlay);
-  z-index: $z-overlay;
-
-  @include respond-to(lg) {
-    display: none;
-  }
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 .sidebar {
-  width: $sidebar-width;
-  background-color: var(--bg-card);
-  border-right: 1px solid var(--border-color);
-  @include flex-column;
-  flex-shrink: 0;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-  z-index: $z-modal;
+  bottom: 0;
+  width: $sidebar-width;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  z-index: $z-sticky;
+  transition: transform $transition-base, width $transition-base;
   transform: translateX(-100%);
-  transition: transform $transition-base;
-  @include custom-scrollbar;
-  overflow-y: auto;
 
   @include respond-to(lg) {
+    transform: translateX(0);
     position: sticky;
-    transform: none;
-    z-index: $z-base;
+  }
+
+  &.sidebarOpen {
+    transform: translateX(0);
   }
 }
 
-.sidebarOpen {
-  transform: translateX(0);
-}
-
 .sidebarHeader {
-  @include flex-between;
-  padding: $space-5 $space-5;
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
+  height: $navbar-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-6;
+  border-bottom: 1px solid var(--sidebar-border);
 }
 
 .sidebarLogo {
   display: flex;
   align-items: center;
-  gap: $space-2;
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  color: var(--text-primary);
+  gap: $space-3;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: $font-weight-extrabold;
   text-decoration: none;
+  font-family: $font-family-heading;
 
-  svg {
-    color: var(--primary);
+  &:hover {
+    text-decoration: none;
+    color: var(--primary-dark);
   }
 }
 
 .sidebarClose {
   @include flex-center;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-lg;
-  color: var(--text-muted);
-  background: transparent;
-
-  &:hover {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-  }
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  border: none;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
 
   @include respond-to(lg) {
     display: none;
@@ -85,12 +73,14 @@
 
 .sidebarNav {
   flex: 1;
-  padding: $space-4;
+  padding: $space-4 $space-3;
+  overflow-y: auto;
 
   ul {
-    @include flex-column;
-    gap: $space-1;
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
   }
 }
 
@@ -100,78 +90,78 @@
   gap: $space-3;
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
   color: var(--text-secondary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
   text-decoration: none;
-  transition: background-color $transition-fast, color $transition-fast;
+  transition: all $transition-fast;
 
   &:hover {
-    background-color: var(--bg-secondary);
     color: var(--text-primary);
+    background-color: var(--bg-surface);
     text-decoration: none;
+    transform: translateX(4px);
   }
 }
 
 .navItemActive {
-  background-color: var(--primary-light);
-  color: var(--primary);
+  background-color: var(--primary-lighter) !important;
+  color: var(--primary) !important;
+  position: relative;
 
-  &:hover {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
+    background-color: var(--primary);
+    border-radius: 0 $radius-full $radius-full 0;
   }
 }
 
 .navIcon {
   @include flex-center;
   flex-shrink: 0;
+  opacity: 0.8;
 }
 
 .sidebarFooter {
   padding: $space-4;
-  border-top: 1px solid var(--border-color);
-  flex-shrink: 0;
+  border-top: 1px solid var(--sidebar-border);
 }
 
 .logoutBtn {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
+  @extend .navItem;
   width: 100%;
-  padding: $space-3 $space-4;
-  border-radius: $radius-lg;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: var(--danger);
-  background: transparent;
   border: none;
+  background: transparent;
   cursor: pointer;
-  transition: background-color $transition-fast;
+  color: var(--danger);
 
   &:hover {
     background-color: var(--danger-light);
+    color: var(--danger-dark);
   }
 }
 
 // ─── Main Content ─────────────────────────────────────────────────────────────
 .main {
   flex: 1;
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-
-  @include respond-to(lg) {
-    margin-left: 0;
-  }
 }
 
 .topBar {
-  @include flex-between;
   height: $navbar-height;
-  padding: 0 $space-6;
-  background-color: var(--bg-card);
-  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
   gap: $space-4;
+  padding: 0 $space-6;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: $z-raised;
@@ -183,31 +173,40 @@
 
 .menuBtn {
   @include flex-center;
-  width: 36px;
-  height: 36px;
-  border-radius: $radius-lg;
-  color: var(--text-secondary);
-  background: transparent;
-
-  &:hover {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-  }
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-md;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
 }
 
 .topBarTitle {
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
-  color: var(--text-primary);
+  font-weight: $font-weight-bold;
 }
 
 .content {
   flex: 1;
   padding: $space-6;
-  max-width: 1200px;
   width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
 
   @include respond-to(md) {
     padding: $space-8;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+  z-index: $z-overlay;
+
+  @include respond-to(lg) {
+    display: none;
   }
 }

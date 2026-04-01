@@ -1,80 +1,84 @@
 [data-theme='rose-dark'] {
-  // Backgrounds — deep dark rose/crimson
-  --bg-primary: #1a0009;
-  --bg-secondary: #220010;
-  --bg-tertiary: #2d0016;
-  --bg-card: #2d0016;
-  --bg-overlay: rgba(0, 0, 0, 0.7);
+  // Backgrounds — Midnight Rose (Deep & Luxurious)
+  --bg-primary: #0a0104;
+  --bg-secondary: #0f0207;
+  --bg-tertiary: #16040b;
+  --bg-surface: #220612;
+  --bg-card: #0f0207;
+  --bg-overlay: rgba(0, 0, 0, 0.85);
 
   // Text
-  --text-primary: #ffe4e6;
-  --text-secondary: #fda4af;
-  --text-muted: #c06080;
-  --text-inverse: #1a0009;
+  --text-primary: #fff1f2;
+  --text-secondary: #fb7185;
+  --text-muted: #9f1239;
+  --text-inverse: #0a0104;
 
   // Borders
-  --border-color: #4a0020;
-  --border-strong: #6b1230;
+  --border-color: #31081a;
+  --border-strong: #4c0519;
+  --border-light: rgba(251, 113, 133, 0.05);
 
   // Shadows
-  --shadow-color: rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -1px rgba(0, 0, 0, 0.25);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 15px rgba(251, 113, 133, 0.2);
 
-  // Brand — bright rose on dark bg
+  // Brand — Neon Rose
   --primary: #fb7185;
-  --primary-dark: #f43f5e;
-  --primary-light: #4a0020;
-  --primary-lighter: #2d0016;
+  --primary-dark: #e11d48;
+  --primary-light: #fda4af;
+  --primary-lighter: rgba(251, 113, 133, 0.1);
 
-  --secondary: #f472b6;
-  --secondary-dark: #ec4899;
-  --secondary-light: #3d0030;
+  --secondary: #d946ef;
+  --secondary-dark: #a21caf;
+  --secondary-light: #f5d0fe;
 
-  --accent: #a78bfa;
-  --accent-dark: #8b5cf6;
-  --accent-light: #2e1f5e;
+  --accent: #2dd4bf;
+  --accent-dark: #0d9488;
+  --accent-light: #99f6e4;
 
-  --danger: #f87171;
-  --danger-dark: #ef4444;
-  --danger-light: #3b1515;
+  --danger: #ff4d4d;
+  --danger-dark: #e60000;
+  --danger-glow: 0 0 15px rgba(255, 77, 77, 0.2);
 
   --warning: #fbbf24;
-  --warning-light: #3b2a00;
+  --warning-glow: 0 0 15px rgba(251, 191, 36, 0.2);
 
-  --orange: #fb923c;
-  --orange-light: #3b1900;
+  --success: #2dd4bf;
+  --success-glow: 0 0 15px rgba(45, 212, 191, 0.2);
 
-  // Navbar
-  --navbar-bg: rgba(26, 0, 9, 0.92);
-  --navbar-border: rgba(74, 0, 32, 0.8);
-  --navbar-shadow: 0 1px 20px rgba(0, 0, 0, 0.4);
+  // Component Specific
+  --navbar-bg: rgba(10, 1, 4, 0.85);
+  --navbar-border: rgba(251, 113, 133, 0.1);
+  --navbar-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 
-  // Input
-  --input-bg: #2d0016;
-  --input-border: #6b1230;
-  --input-border-focus: #fb7185;
-  --input-placeholder: #c06080;
+  --sidebar-bg: #0f0207;
+  --sidebar-border: #31081a;
 
-  // Badge backgrounds
-  --badge-blue-bg: #1e3a5f;
+  --input-bg: #16040b;
+  --input-border: #31081a;
+  --input-focus-border: #fb7185;
+  --input-focus-shadow: 0 0 0 3px rgba(251, 113, 133, 0.2);
+
+  --card-bg: #0f0207;
+  --card-border: rgba(251, 113, 133, 0.1);
+  --card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
+
+  // Glassmorphism (Deep Rose)
+  --glass-bg: rgba(15, 2, 7, 0.7);
+  --glass-border: rgba(251, 113, 133, 0.1);
+  --glass-blur: 16px;
+
+  // Badge Palette
+  --badge-blue-bg: rgba(30, 58, 138, 0.3);
   --badge-blue-text: #93c5fd;
-  --badge-orange-bg: #3b1900;
-  --badge-orange-text: #fb923c;
-  --badge-green-bg: #0f2a1a;
+  --badge-orange-bg: rgba(124, 45, 18, 0.3);
+  --badge-orange-text: #fdba74;
+  --badge-green-bg: rgba(6, 78, 59, 0.3);
   --badge-green-text: #6ee7b7;
-  --badge-purple-bg: #2e1f5e;
-  --badge-purple-text: #a78bfa;
-  --badge-red-bg: #4a0020;
+  --badge-red-bg: rgba(159, 18, 57, 0.3);
   --badge-red-text: #fb7185;
-  --badge-default-bg: #2d0016;
-  --badge-default-text: #fda4af;
-
-  // Footer
-  --footer-bg: #0d0005;
-  --footer-text: #c06080;
-  --footer-heading: #ffe4e6;
-  --footer-border: #220010;
+  --badge-yellow-bg: rgba(120, 53, 15, 0.3);
+  --badge-yellow-text: #fcd34d;
+  --badge-gray-bg: rgba(31, 41, 55, 0.3);
+  --badge-gray-text: #e5e7eb;
 }

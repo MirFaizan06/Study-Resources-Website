@@ -1,98 +1,109 @@
+
 .page {
-  @include flex-column;
-  gap: $space-8;
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
 }
 
 .pageHeader {
-  @include flex-column;
-  gap: $space-1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
 }
 
 .pageTitle {
+  font-family: $font-family-heading;
   font-size: $font-size-3xl;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .pageSubtitle {
   font-size: $font-size-base;
-  color: var(--text-muted);
-  margin: 0;
+  color: var(--text-secondary);
+  font-weight: $font-weight-medium;
 }
 
 .sectionTitle {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
+  font-family: $font-family-heading;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
-  margin: 0 0 $space-5;
+  margin-bottom: $space-6;
 }
 
 // ─── Stats grid ───────────────────────────────────────────────────────────────
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $space-4;
-
-  @include respond-to(md) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @include respond-to(xl) {
-    grid-template-columns: repeat(5, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-6;
 }
 
 .statCard {
-  @include card-base;
-  @include flex-column;
-  gap: $space-3;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
   position: relative;
   overflow: hidden;
-  padding: $space-5;
-  border-left: 4px solid var(--primary);
+  transition: all $transition-base;
 
-  &::before {
+  &:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  &::after {
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
-    width: 60%;
+    left: 0;
+    width: 4px;
     height: 100%;
-    background: linear-gradient(135deg, transparent 0%, var(--primary-lighter) 100%);
-    opacity: 0.3;
+    background-color: var(--primary);
   }
 }
 
-.color-blue { border-left-color: var(--primary); }
-.color-green { border-left-color: var(--accent); }
-.color-orange { border-left-color: var(--orange); }
-.color-purple { border-left-color: var(--secondary); }
-.color-default { border-left-color: var(--border-strong); }
+.color-blue::after { background-color: var(--primary); }
+.color-green::after { background-color: var(--success); }
+.color-orange::after { background-color: var(--warning); }
+.color-purple::after { background-color: var(--secondary); }
+.color-default::after { background-color: var(--border-strong); }
 
 .statIcon {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-lg;
+  background-color: var(--bg-surface);
   color: var(--primary);
-
-  .color-green & { color: var(--accent); }
-  .color-orange & { color: var(--orange); }
+  
+  .color-green & { color: var(--success); }
+  .color-orange & { color: var(--warning); }
   .color-purple & { color: var(--secondary); }
-  .color-default & { color: var(--text-muted); }
 }
 
 .statContent {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-1;
 }
 
 .statLabel {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
+  font-size: 10px;
+  font-weight: $font-weight-extrabold;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .statValue {
+  font-family: $font-family-heading;
   font-size: $font-size-3xl;
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
@@ -100,52 +111,46 @@
 }
 
 .statSkeleton {
-  display: inline-block;
-  width: 60px;
-  height: 32px;
-  border-radius: $radius-md;
   @include skeleton;
+  height: 32px;
+  width: 80px;
+  border-radius: $radius-md;
 }
 
 .statTrend {
   position: absolute;
-  bottom: $space-4;
-  right: $space-4;
-  color: var(--text-muted);
-  opacity: 0.3;
+  top: $space-6;
+  right: $space-6;
+  opacity: 0.15;
 }
 
-// ─── Quick actions ────────────────────────────────────────────────────────────
+// ─── Quick Actions ────────────────────────────────────────────────────────────
 .quickActions {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
 }
 
 .actionsGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-3;
-
-  @include respond-to(md) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $space-6;
 }
 
 .actionCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-2xl;
+  padding: $space-6;
   display: flex;
   align-items: center;
-  gap: $space-4;
-  padding: $space-5;
-  background-color: var(--bg-card);
-  border: 1.5px solid var(--border-color);
-  border-radius: $radius-xl;
+  gap: $space-5;
   text-decoration: none;
-  transition: box-shadow $transition-base, transform $transition-fast, border-color $transition-fast;
-  box-shadow: var(--shadow-sm);
+  transition: all $transition-base;
 
   &:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-    border-color: var(--primary);
+    border-color: var(--primary-light);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
     text-decoration: none;
 
     .actionArrow {
@@ -156,15 +161,16 @@
 }
 
 .actionIcon {
-  width: 48px;
-  height: 48px;
-  border-radius: $radius-xl;
   @include flex-center;
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-xl;
   flex-shrink: 0;
+  font-size: 24px;
 }
 
 .actionIconBlue {
-  background-color: var(--primary-light);
+  background-color: var(--primary-lighter);
   color: var(--primary);
 }
 
@@ -174,31 +180,31 @@
 }
 
 .actionIconGreen {
-  background-color: var(--accent-light);
-  color: var(--accent);
+  background-color: var(--success-light);
+  color: var(--success);
 }
 
 .actionInfo {
-  @include flex-column;
-  gap: $space-1;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
 }
 
 .actionTitle {
+  font-family: $font-family-heading;
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   color: var(--text-primary);
-  margin: 0;
 }
 
 .actionDesc {
   font-size: $font-size-sm;
-  color: var(--text-muted);
-  margin: 0;
+  color: var(--text-secondary);
+  font-weight: $font-weight-medium;
 }
 
 .actionArrow {
   color: var(--text-muted);
-  flex-shrink: 0;
-  transition: transform $transition-fast, color $transition-fast;
+  transition: all $transition-fast;
 }

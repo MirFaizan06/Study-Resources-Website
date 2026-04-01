@@ -1,80 +1,84 @@
 [data-theme='orange'] {
-  // Backgrounds — warm cream tones
-  --bg-primary: #fffbf7;
-  --bg-secondary: #fef7ee;
-  --bg-tertiary: #fdeedd;
-  --bg-card: #fffbf7;
-  --bg-overlay: rgba(28, 12, 0, 0.5);
+  // Backgrounds — Warm Premium Minimalist
+  --bg-primary: #ffffff;
+  --bg-secondary: #fffcf9;
+  --bg-tertiary: #fff8f2;
+  --bg-surface: #fef1e5;
+  --bg-card: #ffffff;
+  --bg-overlay: rgba(45, 23, 0, 0.4);
 
   // Text
-  --text-primary: #1c0d00;
-  --text-secondary: #6b4226;
-  --text-muted: #a07850;
+  --text-primary: #2d1810;
+  --text-secondary: #5c4033;
+  --text-muted: #8d7366;
   --text-inverse: #ffffff;
 
   // Borders
-  --border-color: #f5d8b8;
-  --border-strong: #e8b990;
+  --border-color: #f0e6df;
+  --border-strong: #e6d8cf;
+  --border-light: #f9f4f0;
 
-  // Shadows (warm tint)
-  --shadow-color: rgba(80, 30, 0, 0.1);
-  --shadow-sm: 0 1px 2px 0 rgba(80, 30, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(80, 30, 0, 0.08), 0 2px 4px -1px rgba(80, 30, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(80, 30, 0, 0.1), 0 4px 6px -2px rgba(80, 30, 0, 0.06);
-  --shadow-xl: 0 20px 25px -5px rgba(80, 30, 0, 0.12), 0 10px 10px -5px rgba(80, 30, 0, 0.06);
+  // Shadows (Warm & Soft)
+  --shadow-color: rgba(45, 23, 0, 0.08);
+  --shadow-glow: 0 0 15px rgba(234, 88, 12, 0.15);
 
-  // Brand — orange as primary
-  --primary: #ea580c;
-  --primary-dark: #c2410c;
+  // Brand — Sophisticated Orange
+  --primary: #f97316;
+  --primary-dark: #ea580c;
   --primary-light: #ffedd5;
-  --primary-lighter: #fff7ed;
+  --primary-lighter: rgba(249, 115, 22, 0.1);
 
   --secondary: #d97706;
   --secondary-dark: #b45309;
   --secondary-light: #fef3c7;
 
-  --accent: #059669;
-  --accent-dark: #047857;
+  --accent: #10b981;
+  --accent-dark: #059669;
   --accent-light: #d1fae5;
 
-  --danger: #dc2626;
-  --danger-dark: #b91c1c;
-  --danger-light: #fee2e2;
+  --danger: #ef4444;
+  --danger-dark: #dc2626;
+  --danger-glow: 0 0 15px rgba(239, 68, 68, 0.15);
 
-  --warning: #d97706;
-  --warning-light: #fef3c7;
+  --warning: #f59e0b;
+  --warning-glow: 0 0 15px rgba(245, 158, 11, 0.15);
 
-  --orange: #ea580c;
-  --orange-light: #ffedd5;
+  --success: #10b981;
+  --success-glow: 0 0 15px rgba(16, 185, 129, 0.15);
 
-  // Navbar
-  --navbar-bg: rgba(255, 251, 247, 0.88);
-  --navbar-border: rgba(245, 216, 184, 0.8);
-  --navbar-shadow: 0 1px 20px rgba(80, 30, 0, 0.1);
+  // Component Specific
+  --navbar-bg: rgba(255, 255, 255, 0.8);
+  --navbar-border: rgba(240, 230, 223, 0.6);
+  --navbar-shadow: 0 4px 20px rgba(45, 23, 0, 0.05);
 
-  // Input
-  --input-bg: #fffbf7;
-  --input-border: #e8b990;
-  --input-border-focus: #ea580c;
-  --input-placeholder: #a07850;
+  --sidebar-bg: #fffcf9;
+  --sidebar-border: #f0e6df;
 
-  // Badge backgrounds
-  --badge-blue-bg: #dbeafe;
+  --input-bg: #fffcf9;
+  --input-border: #e6d8cf;
+  --input-focus-border: #f97316;
+  --input-focus-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+
+  --card-bg: #ffffff;
+  --card-border: #f0e6df;
+  --card-shadow: 0 12px 24px -10px rgba(45, 23, 0, 0.1);
+
+  // Glassmorphism (Warm)
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-blur: 12px;
+
+  // Badge Palette
+  --badge-blue-bg: #eff6ff;
   --badge-blue-text: #1d4ed8;
-  --badge-orange-bg: #ffedd5;
+  --badge-orange-bg: #fff7ed;
   --badge-orange-text: #c2410c;
-  --badge-green-bg: #d1fae5;
-  --badge-green-text: #065f46;
-  --badge-purple-bg: #ede9fe;
-  --badge-purple-text: #5b21b6;
-  --badge-red-bg: #fee2e2;
-  --badge-red-text: #991b1b;
-  --badge-default-bg: #fef7ee;
-  --badge-default-text: #6b4226;
-
-  // Footer
-  --footer-bg: #1c0d00;
-  --footer-text: #a07850;
-  --footer-heading: #fef7ee;
-  --footer-border: #2d1500;
+  --badge-green-bg: #f0fdf4;
+  --badge-green-text: #15803d;
+  --badge-red-bg: #fef2f2;
+  --badge-red-text: #b91c1c;
+  --badge-yellow-bg: #fffbeb;
+  --badge-yellow-text: #b45309;
+  --badge-gray-bg: #f9fafb;
+  --badge-gray-text: #374151;
 }
