@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   ArrowRight,
   BookOpen,
   ChevronRight,
-  MessageSquare,
   GraduationCap,
   Download,
   Sparkles,
@@ -21,18 +20,38 @@ import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { ResourceCard } from '@/components/common/ResourceCard'
 import { Badge } from '@/components/ui/Badge'
-import { AdBanner } from '@/components/common/AdBanner'
 import type { Institution, Resource, InstitutionType, PlatformStats } from '@/types'
-import styles from './Home.module.scss'
+import styles from './Home.module.css'
 
 // ─── Hero Background Carousel ────────────────────────────────────────────────
 const HERO_BG_SLOTS = [1, 2, 3, 4, 5, 6, 7]
 const CAROUSEL_INTERVAL = 5000
 
+// In-memory image cache
+const imageCache: Record<string, boolean> = {};
+
 function HeroCarousel(): React.ReactElement {
   const [active, setActive] = useState(0)
-  const [available, setAvailable] = useState<Set<number>>(new Set())
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({})
   const failed = useRef<Set<number>>(new Set())
+
+  // Prefetch images on mount
+  useEffect(() => {
+    HERO_BG_SLOTS.forEach((n, i) => {
+      const src = `/images/hero/${n}.png`;
+      if (imageCache[src]) {
+        setLoaded(prev => ({ ...prev, [i]: true }));
+        return;
+      }
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        imageCache[src] = true;
+        setLoaded(prev => ({ ...prev, [i]: true }));
+      };
+      img.onerror = () => failed.current.add(i);
+    });
+  }, []);
 
   const advance = useCallback(() => {
     setActive((prev) => {
@@ -58,12 +77,9 @@ function HeroCarousel(): React.ReactElement {
           alt=""
           className={[
             styles.heroBgImg,
-            i === active && available.has(i) ? styles.heroBgImgActive : '',
+            i === active && loaded[i] ? styles.heroBgImgActive : '',
           ].join(' ')}
-          loading={i < 2 ? 'eager' : 'lazy'}
-          fetchPriority={i === 0 ? 'high' : 'low'}
-          onLoad={() => setAvailable((s) => new Set([...s, i]))}
-          onError={() => { failed.current.add(i) }}
+          loading="eager"
         />
       ))}
     </div>
@@ -71,10 +87,10 @@ function HeroCarousel(): React.ReactElement {
 }
 
 // ─── Typewriter ───────────────────────────────────────────────────────────────
-const TYPEWRITER_WORDS = ['Notes', 'Past Papers', 'Syllabi', 'Guess Papers', 'Study Materials']
+const TYPEWRITER_WORDS = ['Notes', 'Past Papers', 'Syllabi', 'Guess Papers']
 const TYPE_SPEED = 60
 const DELETE_SPEED = 35
-const PAUSE_MS = 1800
+const PAUSE_MS = 2000
 
 function Typewriter(): React.ReactElement {
   const [displayed, setDisplayed] = useState('')
@@ -140,31 +156,17 @@ function SkeletonCard(): React.ReactElement {
   )
 }
 
-const stagger = {
-  container: { hidden: {}, show: { transition: { staggerChildren: 0.08 } } },
-  item: {
-    hidden: { opacity: 0, y: 20 },
-    show:   { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } },
-  },
-}
 
-// ─── Home page ────────────────────────────────────────────────────────────────
 export default function Home(): React.ReactElement {
   const { t, locale } = useLocale()
   const [institutions, setInstitutions]       = useState<Institution[]>([])
   const [recentResources, setRecentResources] = useState<Resource[]>([])
-  const [popularResources, setPopularResources] = useState<Resource[]>([])
   const [loadingInstitutions, setLoadingInstitutions] = useState(true)
   const [loadingResources, setLoadingResources]       = useState(true)
   const [platformStats, setPlatformStats]     = useState<PlatformStats | null>(null)
 
   const universitySectionRef = useRef<HTMLElement>(null)
   const recentSectionRef     = useRef<HTMLElement>(null)
-  const popularSectionRef    = useRef<HTMLElement>(null)
-
-  const uniInView     = useInView(universitySectionRef, { once: true, margin: '-80px' })
-  const recentInView  = useInView(recentSectionRef,     { once: true, margin: '-80px' })
-  const popularInView = useInView(popularSectionRef,    { once: true, margin: '-80px' })
 
   useHead({
     title:       t.seo.home.title,
@@ -180,11 +182,9 @@ export default function Home(): React.ReactElement {
 
     Promise.all([
       api.resources.getAll({ sort: 'newest',  limit: 6 }),
-      api.resources.getAll({ sort: 'popular', limit: 6 }),
     ])
-      .then(([recent, popular]) => {
+      .then(([recent]) => {
         setRecentResources(recent.items || [])
-      setPopularResources(popular.items || [])
       })
       .catch(console.error)
       .finally(() => setLoadingResources(false))
@@ -202,31 +202,27 @@ export default function Home(): React.ReactElement {
       <section className={styles.hero} aria-label="Hero">
         <HeroCarousel />
 
-        {/* Dark scrim so images are vivid but text stays readable */}
         <div className={styles.heroScrim} aria-hidden="true" />
 
         <div className={styles.heroContent}>
           <div className={styles.heroInner}>
-            {/* Eyebrow */}
             <motion.div
               className={styles.heroBadge}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.05, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.55, delay: 0.05 }}
             >
               <span className={styles.heroBadgeDot} aria-hidden="true" />
-              Kashmir's Free Academic Hub
+              U.N.I.T. — University Notes &amp; Issue Tracker
             </motion.div>
 
-            {/* Headline */}
             <motion.h1
               className={styles.heroTitle}
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.6, delay: 0.15 }}
             >
-              Find Your
-              <br />
+              Academic Excellence Starts Here
               <Typewriter />
             </motion.h1>
 
@@ -234,10 +230,10 @@ export default function Home(): React.ReactElement {
               className={styles.heroSubtitle}
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.25, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.55, delay: 0.25 }}
             >
-              Free notes, past papers, syllabi and AI-powered guess papers for
-              Kashmir University, Cluster University and more — all in one place.
+              Access premium notes, verified past papers, and expert-crafted syllabi. 
+              Built by students, for students in Kashmir.
             </motion.p>
 
             {/* Feature pills */}
@@ -246,7 +242,7 @@ export default function Home(): React.ReactElement {
               aria-hidden="true"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.32, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.5, delay: 0.32 }}
             >
               {FEATURES.map((f) => (
                 <span key={f.label} className={styles.pill}>
@@ -261,20 +257,15 @@ export default function Home(): React.ReactElement {
               className={styles.heroCta}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               <Link to={`/${locale}/resources`} className={styles.ctaPrimary}>
-                <BookOpen size={17} aria-hidden="true" />
-                Browse Resources
-                <ArrowRight size={15} aria-hidden="true" />
+                <BookOpen size={17} />
+                Browse
               </Link>
               <Link to={`/${locale}/contribute`} className={styles.ctaGhost}>
-                <Upload size={16} aria-hidden="true" />
+                <Upload size={16} />
                 Contribute
-              </Link>
-              <Link to={`/${locale}/request`} className={styles.ctaGhost}>
-                <MessageSquare size={16} aria-hidden="true" />
-                Request Notes
               </Link>
               <a
                 href={import.meta.env.VITE_RAZORPAY_LINK ?? 'https://rzp.io/l/U.N.I.T.-kasmir'}
@@ -282,235 +273,125 @@ export default function Home(): React.ReactElement {
                 rel="noopener noreferrer"
                 className={styles.ctaDonate}
               >
-                <Heart size={15} aria-hidden="true" />
-                Support Us
+                <Heart size={15} />
+                Support Kashmir Hub
               </a>
             </motion.div>
 
-            {/* Live stats */}
-            <motion.div
-              className={styles.statsStrip}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            >
-              {[
-                { val: platformStats ? `${platformStats.totalResources.toLocaleString()}+` : '—', lbl: 'Resources' },
-                { val: platformStats ? fmtNum(platformStats.totalDownloads) : '—', lbl: 'Downloads' },
-                { val: platformStats ? `${platformStats.totalInstitutions}+` : '—', lbl: 'Universities' },
-                { val: platformStats ? `${platformStats.requestsFulfilled}+` : '—', lbl: 'Requests Met' },
-              ].map((s, i) => (
-                <React.Fragment key={s.lbl}>
-                  {i > 0 && <div className={styles.statDivider} aria-hidden="true" />}
-                  <div className={styles.statItem}>
-                    <span className={styles.statNum}>{s.val}</span>
-                    <span className={styles.statLbl}>{s.lbl}</span>
-                  </div>
-                </React.Fragment>
-              ))}
-            </motion.div>
+            {platformStats && (
+              <motion.div
+                className={styles.statsStrip}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <div className={styles.statItem}>
+                  <span className={styles.statNum}>{platformStats.totalResources.toLocaleString()}+</span>
+                  <span className={styles.statLbl}>Resources</span>
+                </div>
+                <div className={styles.statDivider} />
+                <div className={styles.statItem}>
+                  <span className={styles.statNum}>{fmtNum(platformStats.totalDownloads)}</span>
+                  <span className={styles.statLbl}>Downloads</span>
+                </div>
+                <div className={styles.statDivider} />
+                <div className={styles.statItem}>
+                  <span className={styles.statNum}>{platformStats.totalInstitutions}+</span>
+                  <span className={styles.statLbl}>Institutions</span>
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
 
-        {/* Scroll hint */}
-        <div className={styles.scrollHint} aria-hidden="true">
-          <motion.div
-            className={styles.scrollDot}
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
-          />
-        </div>
       </section>
 
       {/* ══════════════════════════════════════════════ BROWSE BY UNIVERSITY ══ */}
-      <section
-        className={styles.section}
-        ref={universitySectionRef}
-        aria-labelledby="universities-heading"
-      >
+      <section className={styles.section} ref={universitySectionRef}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionHeader}>
             <div>
-              <h2 id="universities-heading" className={styles.sectionTitle}>
-                {t.home.sections.universities}
-              </h2>
-              <p className={styles.sectionSubtitle}>Select your institution to get started</p>
+              <h2 className={styles.sectionTitle}>{t.home.sections.universities}</h2>
+              <p className={styles.sectionSubtitle}>Verified materials from across the valley</p>
             </div>
             <Link to={`/${locale}/resources`} className={styles.viewAllLink}>
-              {t.home.sections.browseAll} <ChevronRight size={14} aria-hidden="true" />
+              View All <ChevronRight size={14} />
             </Link>
           </div>
 
-          {loadingInstitutions ? (
-            <div className={styles.institutionsGrid}>
-              {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
-            </div>
-          ) : institutions.length === 0 ? (
-            <p className={styles.emptyMessage}>{t.home.noInstitutions}</p>
-          ) : (
-            <motion.div
-              className={styles.institutionsGrid}
-              variants={stagger.container}
-              initial="hidden"
-              animate={uniInView ? 'show' : 'hidden'}
-            >
-              {institutions.map((inst) => (
-                <motion.div key={inst.id} variants={stagger.item}>
-                  <Link to={`/${locale}/resources/${inst.slug}`} className={styles.institutionCard}>
-                    <div className={styles.instCardTop}>
-                      <div className={styles.instIcon}>
-                        {inst.logoUrl ? (
-                          <img src={inst.logoUrl} alt={`${inst.name} logo`} className={styles.instLogo} width="36" height="36" />
-                        ) : (
-                          <GraduationCap size={22} aria-hidden="true" />
-                        )}
-                      </div>
-                      <Badge variant={INSTITUTION_TYPE_VARIANT[inst.type]} size="sm">
-                        {inst.type}
-                      </Badge>
+          <div className={styles.institutionsGrid}>
+            {loadingInstitutions ? (
+              Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+            ) : (
+              institutions.map((inst) => (
+                <Link key={inst.id} to={`/${locale}/resources/${inst.slug}`} className={styles.institutionCard}>
+                  <div className={styles.instCardTop}>
+                    <div className={styles.instIcon}>
+                      {inst.logoUrl ? <img src={inst.logoUrl} alt="" className={styles.instLogo} /> : <GraduationCap size={22} />}
                     </div>
-                    <h3 className={styles.instName}>{inst.name}</h3>
-                    {inst.programs && (
-                      <p className={styles.instMeta}>{inst.programs.length} {t.home.sections.programs}</p>
-                    )}
-                    <span className={styles.instAction}>
-                      {t.home.institutionCard.browse}
-                      <ArrowRight size={13} aria-hidden="true" />
-                    </span>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
+                    <Badge variant={INSTITUTION_TYPE_VARIANT[inst.type]} size="sm">{inst.type}</Badge>
+                  </div>
+                  <h3 className={styles.instName}>{inst.name}</h3>
+                  <p className={styles.instMeta}>{inst.programs?.length ?? 0} {t.home.sections.programs}</p>
+                  <span className={styles.instAction}>Browse <ArrowRight size={13} /></span>
+                </Link>
+              ))
+            )}
+          </div>
         </div>
       </section>
 
-      {/* Ad Banner 1 */}
-      <div className={styles.adRow}>
-        <AdBanner slot="1234567890" format="auto" />
-      </div>
-
       {/* ══════════════════════════════════════════════════ RECENTLY ADDED ══ */}
-      <section
-        className={[styles.section, styles.sectionAlt].join(' ')}
-        ref={recentSectionRef}
-        aria-labelledby="recent-heading"
-      >
+      <section className={[styles.section, styles.sectionAlt].join(' ')} ref={recentSectionRef}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionHeader}>
             <div>
-              <div className={styles.sectionEyebrow}>
-                <Sparkles size={12} aria-hidden="true" /> New
-              </div>
-              <h2 id="recent-heading" className={styles.sectionTitle}>
-                {t.home.sections.recentlyAdded}
-              </h2>
-              <p className={styles.sectionSubtitle}>Latest study materials uploaded</p>
+              <div className={styles.sectionEyebrow}><Sparkles size={12} /> New</div>
+              <h2 className={styles.sectionTitle}>{t.home.sections.recentlyAdded}</h2>
+              <p className={styles.sectionSubtitle}>Freshly uploaded study materials</p>
             </div>
-            <Link to={`/${locale}/resources?sort=newest`} className={styles.viewAllLink}>
-              {t.home.sections.viewAll} <ChevronRight size={14} aria-hidden="true" />
-            </Link>
           </div>
           <div className={styles.resourcesGrid}>
             {loadingResources
               ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-              : recentResources.map((resource, i) => (
-                  <motion.div
-                    key={resource.id}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={recentInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.4, delay: i * 0.06 }}
-                  >
-                    <ResourceCard resource={resource} locale={locale} />
-                  </motion.div>
-                ))}
+              : recentResources.map((resource) => <ResourceCard key={resource.id} resource={resource} locale={locale} />)
+            }
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════ MOST DOWNLOADED ══ */}
-      <section
-        className={styles.section}
-        ref={popularSectionRef}
-        aria-labelledby="popular-heading"
-      >
-        <div className={styles.sectionInner}>
-          <div className={styles.sectionHeader}>
-            <div>
-              <div className={styles.sectionEyebrow}>
-                <TrendingUp size={12} aria-hidden="true" /> Popular
-              </div>
-              <h2 id="popular-heading" className={styles.sectionTitle}>
-                {t.home.sections.mostDownloaded}
-              </h2>
-              <p className={styles.sectionSubtitle}>Most downloaded by students this month</p>
-            </div>
-            <Link to={`/${locale}/resources?sort=popular`} className={styles.viewAllLink}>
-              {t.home.sections.viewAll} <ChevronRight size={14} aria-hidden="true" />
-            </Link>
-          </div>
-          <motion.div
-            className={styles.resourcesGrid}
-            variants={stagger.container}
-            initial="hidden"
-            animate={popularInView ? 'show' : 'hidden'}
-          >
-            {loadingResources
-              ? Array.from({ length: 6 }).map((_, i) => (
-                  <motion.div key={i} variants={stagger.item}><SkeletonCard /></motion.div>
-                ))
-              : popularResources.map((resource) => (
-                  <motion.div key={resource.id} variants={stagger.item}>
-                    <ResourceCard resource={resource} locale={locale} />
-                  </motion.div>
-                ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Ad Banner 2 */}
-      <div className={styles.adRow}>
-        <AdBanner slot="0987654321" format="auto" />
-      </div>
-
-      {/* ══════════════════════════════════════════════════════ BOARD PROMO ═ */}
-      <section className={[styles.section, styles.sectionAlt].join(' ')}>
+      {/* ══════════════════════════════════════════════════ NODE PROMO ══ */}
+      <section className={styles.section}>
         <div className={styles.sectionInner}>
           <div className={styles.boardPromo}>
             <div className={styles.boardPromoText}>
-              <span className={styles.sectionEyebrow}>
-                <TrendingUp size={12} aria-hidden="true" />
-                {t.home.sections.boardEyebrow}
-              </span>
-              <h2 className={styles.sectionTitle}>{t.home.sections.boardTitle}</h2>
-              <p className={styles.sectionSubtitle}>{t.home.sections.boardSubtitle}</p>
+              <span className={styles.sectionEyebrow}><TrendingUp size={12} /> The Node</span>
+              <h2 className={styles.sectionTitle}>Network for Open Discussions & Education</h2>
+              <p className={styles.sectionSubtitle}>
+                A dedicated community for students to share ideas, ask questions, and grow together. 
+                Experience a new way of academic collaboration.
+              </p>
             </div>
-            <Link to={`/${locale}/board`} className={styles.boardPromoBtn}>
-              {t.home.sections.boardCta}
-              <ArrowRight size={14} aria-hidden="true" />
+            <Link to={`/${locale}/node`} className={styles.boardPromoBtn}>
+              Join Node <ArrowRight size={14} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════ CTA BANNER ══ */}
-      <section className={styles.ctaBanner} aria-label="Request materials">
+      {/* CTA BANNER */}
+      <section className={styles.ctaBanner}>
         <div className={styles.ctaBannerInner}>
-          <div className={styles.ctaBannerIcon} aria-hidden="true">
-            <Download size={26} />
-          </div>
+          <div className={styles.ctaBannerIcon}><Download size={26} /></div>
           <div className={styles.ctaBannerText}>
-            <h2 className={styles.ctaBannerTitle}>{t.home.sections.ctaBanner}</h2>
-            <p className={styles.ctaBannerSub}>{t.home.sections.ctaBannerSub}</p>
+            <h2 className={styles.ctaBannerTitle}>Supporting Your Success</h2>
+            <p className={styles.ctaBannerSub}>Can't find what you need? Request specialized materials from our community.</p>
           </div>
           <Link to={`/${locale}/request`} className={styles.ctaBannerBtn}>
-            <MessageSquare size={16} aria-hidden="true" />
-            {t.home.sections.ctaBannerButton}
-            <ArrowRight size={14} aria-hidden="true" />
+            Request Materials <ArrowRight size={14} />
           </Link>
         </div>
       </section>
-
     </div>
   )
 }

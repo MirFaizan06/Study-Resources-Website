@@ -110,6 +110,23 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
   return result as T;
 }
 
+// ─── In-memory GET cache (session-lifetime, no persistence) ─────────────────
+const _cache = new Map<string, { data: unknown; expiresAt: number }>()
+
+async function cachedFetch<T>(path: string, ttlMs: number): Promise<T> {
+  const hit = _cache.get(path)
+  if (hit && Date.now() < hit.expiresAt) return hit.data as T
+  const data = await apiFetch<T>(path)
+  _cache.set(path, { data, expiresAt: Date.now() + ttlMs })
+  return data
+}
+
+function invalidateCache(prefix: string): void {
+  for (const key of _cache.keys()) {
+    if (key.startsWith(prefix)) _cache.delete(key)
+  }
+}
+
 function buildQueryString(params: Record<string, string | number | boolean | undefined>): string {
   const query = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -124,33 +141,34 @@ function buildQueryString(params: Record<string, string | number | boolean | und
 export const api = {
   institutions: {
     getAll(): Promise<Institution[]> {
-      return apiFetch<Institution[]>('/api/institutions');
+      return cachedFetch<Institution[]>('/api/institutions', 10 * 60_000); // 10 min
     },
 
     getBySlug(slug: string): Promise<Institution> {
-      return apiFetch<Institution>(`/api/institutions/${slug}`);
+      return cachedFetch<Institution>(`/api/institutions/${slug}`, 10 * 60_000);
     },
 
     getProgram(programId: string): Promise<Program> {
-      return apiFetch<Program>(`/api/institutions/programs/${programId}`);
+      return cachedFetch<Program>(`/api/institutions/programs/${programId}`, 10 * 60_000);
     },
 
     getSubject(subjectId: string): Promise<Subject> {
-      return apiFetch<Subject>(`/api/institutions/subjects/${subjectId}`);
+      return cachedFetch<Subject>(`/api/institutions/subjects/${subjectId}`, 10 * 60_000);
     },
   },
 
   resources: {
     getAll(params: ResourceQueryParams): Promise<PaginatedResult<Resource>> {
       const query = buildQueryString(params as Record<string, string | number | boolean | undefined>);
-      return apiFetch<PaginatedResult<Resource>>(`/api/resources${query}`);
+      return cachedFetch<PaginatedResult<Resource>>(`/api/resources${query}`, 2 * 60_000); // 2 min
     },
 
     getById(id: string): Promise<Resource> {
-      return apiFetch<Resource>(`/api/resources/${id}`);
+      return cachedFetch<Resource>(`/api/resources/${id}`, 5 * 60_000); // 5 min
     },
 
     download(id: string): Promise<{ fileUrl: string }> {
+      invalidateCache('/api/stats');
       return apiFetch<{ fileUrl: string; title?: string }>(`/api/resources/${id}/download`, {
         method: 'POST',
       });
@@ -164,6 +182,7 @@ export const api = {
     },
 
     create(data: CreateResourcePayload): Promise<Resource> {
+      invalidateCache('/api/resources');
       return apiFetch<Resource>('/api/resources', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -182,7 +201,7 @@ export const api = {
 
   stats: {
     get(): Promise<PlatformStats> {
-      return apiFetch<PlatformStats>('/api/stats');
+      return cachedFetch<PlatformStats>('/api/stats', 5 * 60_000); // 5 min
     },
   },
 
@@ -250,11 +269,11 @@ export const api = {
   board: {
     getPosts(params: { sort?: PostSort; category?: PostCategory | 'ALL'; cursor?: string; limit?: number }): Promise<BoardPage> {
       const query = buildQueryString(params as Record<string, string | number | boolean | undefined>);
-      return apiFetch<BoardPage>(`/api/board/posts${query}`);
+      return cachedFetch<BoardPage>(`/api/board/posts${query}`, 30_000); // 30 sec (dynamic)
     },
 
     getPost(id: string): Promise<ConcernPostDetail> {
-      return apiFetch<ConcernPostDetail>(`/api/board/posts/${id}`);
+      return cachedFetch<ConcernPostDetail>(`/api/board/posts/${id}`, 60_000); // 1 min
     },
 
     requestImageUrl(fileName: string, contentType: string): Promise<UploadUrlResponse> {
@@ -265,6 +284,7 @@ export const api = {
     },
 
     createPost(data: CreatePostPayload): Promise<ConcernPost> {
+      invalidateCache('/api/board/posts');
       return apiFetch<ConcernPost>('/api/board/posts', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -272,10 +292,12 @@ export const api = {
     },
 
     vote(postId: string): Promise<{ voted: boolean; upvotesCount: number }> {
+      invalidateCache(`/api/board/posts/${postId}`);
       return apiFetch<{ voted: boolean; upvotesCount: number }>(`/api/board/posts/${postId}/vote`, { method: 'POST' });
     },
 
     deletePost(postId: string): Promise<void> {
+      invalidateCache('/api/board/posts');
       return apiFetch<void>(`/api/board/posts/${postId}`, { method: 'DELETE' });
     },
 
@@ -297,7 +319,7 @@ export const api = {
 
   donors: {
     list(): Promise<Donor[]> {
-      return apiFetch<Donor[]>('/api/donors');
+      return cachedFetch<Donor[]>('/api/donors', 5 * 60_000); // 5 min
     },
     thank(data: { donorName?: string; message?: string; amount?: number; isAnonymous?: boolean; paymentId?: string }): Promise<Donor> {
       return apiFetch<Donor>('/api/donors/thank', { method: 'POST', body: JSON.stringify(data) });
@@ -306,7 +328,7 @@ export const api = {
 
   fundraiser: {
     getStatus(): Promise<FundraiserStatus> {
-      return apiFetch<FundraiserStatus>('/api/fundraiser');
+      return cachedFetch<FundraiserStatus>('/api/fundraiser', 5 * 60_000); // 5 min
     },
     contribute(data: { amount: number; paymentId?: string; donorName?: string }): Promise<FundraiserContribution> {
       return apiFetch<FundraiserContribution>('/api/fundraiser/contribute', {
@@ -366,6 +388,7 @@ export const api = {
     },
 
     createInstitution(data: CreateInstitutionPayload): Promise<Institution> {
+      invalidateCache('/api/institutions');
       return apiFetch<Institution>('/api/admin/institutions', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -373,6 +396,7 @@ export const api = {
     },
 
     createProgram(data: CreateProgramPayload): Promise<Program> {
+      invalidateCache('/api/institutions');
       return apiFetch<Program>('/api/admin/programs', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -380,6 +404,7 @@ export const api = {
     },
 
     createSubject(data: CreateSubjectPayload): Promise<Subject> {
+      invalidateCache('/api/institutions');
       return apiFetch<Subject>('/api/admin/subjects', {
         method: 'POST',
         body: JSON.stringify(data),

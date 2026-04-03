@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Download, BookOpen, Heart, ExternalLink, Code2 } from 'lucide-react'
+import { Search, Download, BookOpen, Heart, ExternalLink, Code2, CheckCircle2 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import type { PlatformStats } from '@/types'
-import styles from './About.module.scss'
+import styles from './About.module.css'
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Search: <Search size={28} />,
@@ -28,36 +28,65 @@ export default function About(): React.ReactElement {
 
   return (
     <div className={styles.page}>
-      {/* Hero */}
+      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
       <section className={styles.hero} aria-label="About hero">
         <div className={styles.heroInner}>
           <motion.div
-            className={styles.heroText}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
           >
+            <p className={styles.unitBadge}>U.N.I.T. — University Notes &amp; Issue Tracker</p>
             <h1 className={styles.heroTitle}>{t.about.title}</h1>
             <p className={styles.heroSubtitle}>{t.about.subtitle}</p>
-          </motion.div>
-          <motion.div
-            className={styles.heroIllustration}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <img
-              src="/images/about-illustration.png"
-              alt={t.about.imageAlt}
-              className={styles.heroImg}
-              width="480"
-              height="380"
-            />
           </motion.div>
         </div>
       </section>
 
       <div className={styles.container}>
+        {/* ─── Support Message (Floating Card) ──────────────────────────────── */}
+        <section className={styles.supportMessageContainer}>
+          <motion.div
+            className={styles.supportMessageCard}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className={styles.supportMainText}>
+              "This platform is yours. It exists for you. It exists because of you. 
+              Together, we are building Kashmir's most resilient academic network."
+            </p>
+          </motion.div>
+        </section>
+
+        {/* ─── The Node (Rebrand Info) ───────────────────────────────────────── */}
+        <section className={styles.nodeSection}>
+          <motion.div
+            className={styles.nodeCard}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className={styles.nodeBadge}>Platform Feature</div>
+            <h2 className={styles.nodeTitle}>The Node: Network for Open Discussions & Education</h2>
+            <p className={styles.nodeText}>
+              Formerly the Board, <strong>The Node</strong> is our dedicated space for collective intelligence. 
+              We believe that education isn't just about static notes—it's about the dynamic discussions that happen 
+              around them. 
+            </p>
+            <p className={styles.nodeText}>
+              From academic queries to campus concerns, The Node empowers you to speak, share, and solve. 
+              Join the conversation today and experience academic collaboration redesigned.
+            </p>
+            <div className={styles.nodeFeatures}>
+              <span className={styles.nodeFeature}><CheckCircle2 size={14} /> Open Discussion</span>
+              <span className={styles.nodeFeature}><CheckCircle2 size={14} /> Global Impact</span>
+              <span className={styles.nodeFeature}><CheckCircle2 size={14} /> Peer Support</span>
+            </div>
+          </motion.div>
+        </section>
         {/* Mission */}
         <section className={styles.missionSection} aria-labelledby="mission-heading">
           <motion.div
