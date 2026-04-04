@@ -210,8 +210,28 @@ export async function unbanUser(id: string) {
 
 // ─── Admin Management (Super Admin only) ─────────────────────────────────────
 
-const ADJECTIVES = ['swift', 'bright', 'calm', 'bold', 'keen', 'wise', 'pure', 'fair', 'warm', 'clear', 'lean', 'sharp', 'still', 'deep', 'noble'];
-const NOUNS = ['river', 'falcon', 'cedar', 'stone', 'brook', 'maple', 'ridge', 'grove', 'dawn', 'peak', 'cloud', 'ember', 'frost', 'gale', 'haven'];
+const ADJECTIVES = [
+  'scholarly', 'academic', 'diligent', 'curious', 'studious', 'learned', 'gifted', 'astute',
+  'earnest', 'thorough', 'ardent', 'devoted', 'focused', 'precise', 'critical', 'analytical',
+  'inquisitive', 'insightful', 'fluent', 'proficient', 'logical', 'methodical', 'rigorous',
+  'exemplary', 'dedicated', 'attentive', 'disciplined', 'perceptive', 'reflective', 'motivated',
+  'ambitious', 'industrious', 'tenacious', 'versatile', 'articulate', 'intellectual', 'inventive',
+  'resourceful', 'systematic', 'pragmatic', 'coherent', 'enlightened', 'visionary', 'literate',
+  'cerebral', 'erudite', 'discerning', 'rational', 'resolute', 'luminous', 'thoughtful',
+  'creative', 'capable', 'competent', 'patient', 'principled', 'incisive', 'meticulous',
+  'perspicacious', 'eloquent', 'distinguished', 'accomplished', 'cultivated', 'bookish',
+];
+const NOUNS = [
+  'scholar', 'thesis', 'lecture', 'campus', 'library', 'syllabus', 'chapter', 'faculty',
+  'mentor', 'textbook', 'journal', 'curriculum', 'notation', 'formula', 'theorem', 'module',
+  'portfolio', 'citation', 'archive', 'discourse', 'annotation', 'diagram', 'concept', 'theory',
+  'principle', 'inquiry', 'research', 'codex', 'compendium', 'lexicon', 'treatise', 'appendix',
+  'rubric', 'hypothesis', 'inference', 'experiment', 'analysis', 'synthesis', 'critique',
+  'perspective', 'paradigm', 'monograph', 'seminar', 'pedagogy', 'manuscript', 'notebook',
+  'academy', 'institute', 'seminar', 'degree', 'axiom', 'abstract', 'index', 'roster',
+  'register', 'catalogue', 'reference', 'volume', 'edition', 'outline', 'glossary', 'addendum',
+  'epistle', 'primer', 'anthology', 'chronicle', 'symposium', 'protocol', 'criterion',
+];
 
 function generateAdminEmail(): string {
   const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
