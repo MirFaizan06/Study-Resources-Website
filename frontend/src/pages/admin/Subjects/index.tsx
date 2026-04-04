@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { PlusCircle, RefreshCw } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
@@ -7,7 +7,7 @@ import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import type { Institution, Program, Subject, SubjectCategory } from '@/types'
-import styles from './Subjects.module.scss'
+import styles from './Subjects.module.css'
 
 const CATEGORIES = ['MAJOR', 'MINOR', 'MD', 'AEC', 'VAC', 'SEC']
 
@@ -23,6 +23,17 @@ export default function AdminSubjects(): React.ReactElement {
   const [form, setForm] = useState<{ name: string; semester: number; category?: SubjectCategory; programId: string }>({ name: '', semester: 1, category: 'MAJOR', programId: '' })
   const [creating, setCreating] = useState(false)
   const [toast, setToast] = useState('')
+  const [semesterFilter, setSemesterFilter] = useState<string>('')
+  const [categoryFilter, setCategoryFilter] = useState<string>('')
+
+  const filteredSubjects = useMemo(() => {
+    if (!programDetail?.subjects) return []
+    return programDetail.subjects.filter((s) => {
+      if (semesterFilter && String(s.semester) !== semesterFilter) return false
+      if (categoryFilter && (s.category ?? '') !== categoryFilter) return false
+      return true
+    })
+  }, [programDetail, semesterFilter, categoryFilter])
 
   useHead({ title: 'Subjects - Admin', description: 'Manage subjects' })
 
@@ -94,12 +105,30 @@ export default function AdminSubjects(): React.ReactElement {
           {institutions.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
         </select>
 
-        <select className={styles.input} value={selectedProgram} onChange={(e) => setSelectedProgram(e.target.value)} disabled={!selectedInstitution}>
+        <select className={styles.input} value={selectedProgram} onChange={(e) => { setSelectedProgram(e.target.value); setSemesterFilter(''); setCategoryFilter('') }} disabled={!selectedInstitution}>
           <option value="">Select program</option>
           {institutions.find((i) => i.id === selectedInstitution)?.programs?.map((p) => (
             <option key={p.id} value={p.id}>{p.name}</option>
           ))}
         </select>
+
+        {programDetail && (
+          <>
+            <select className={styles.input} value={semesterFilter} onChange={(e) => setSemesterFilter(e.target.value)} aria-label="Filter by semester">
+              <option value="">All Semesters</option>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((s) => (
+                <option key={s} value={String(s)}>Semester {s}</option>
+              ))}
+            </select>
+            <select className={styles.input} value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} aria-label="Filter by category">
+              <option value="">All Categories</option>
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+              {filteredSubjects.length} of {programDetail.subjects?.length ?? 0}
+            </span>
+          </>
+        )}
       </div>
 
       {programDetail ? (
@@ -113,7 +142,7 @@ export default function AdminSubjects(): React.ReactElement {
               </tr>
             </thead>
             <tbody>
-              {(programDetail.subjects || []).map((s: Subject) => (
+              {filteredSubjects.map((s: Subject) => (
                 <motion.tr key={s.id} className={styles.tr} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <td className={styles.td}>{s.name}</td>
                   <td className={styles.td}>{s.semester}</td>

@@ -6,7 +6,7 @@ import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { useAuth } from '@/contexts/AuthContext'
 import { ApiError } from '@/services/api'
-import styles from './Login.module.scss'
+import styles from './Login.module.css'
 
 export default function LoginPage(): React.ReactElement {
   const { t, locale } = useLocale()
@@ -22,7 +22,7 @@ export default function LoginPage(): React.ReactElement {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const from = (location.state as { from?: string })?.from ?? `/${locale}/board`
+  const from = (location.state as { from?: string })?.from ?? `/${locale}/node`
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

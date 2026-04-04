@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { PlusCircle, RefreshCw } from 'lucide-react'
+import { PlusCircle, RefreshCw, Search } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import type { Institution, Program } from '@/types'
-import styles from './Programs.module.scss'
+import styles from './Programs.module.css'
 
 export default function AdminPrograms(): React.ReactElement {
   useLocale()
@@ -18,6 +18,17 @@ export default function AdminPrograms(): React.ReactElement {
   const [form, setForm] = useState({ name: '', institutionId: '' })
   const [creating, setCreating] = useState(false)
   const [toast, setToast] = useState('')
+  const [search, setSearch] = useState('')
+  const [instFilter, setInstFilter] = useState('')
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    return programs.filter((p) => {
+      if (q && !p.name.toLowerCase().includes(q)) return false
+      if (instFilter && p.institutionId !== instFilter) return false
+      return true
+    })
+  }, [programs, search, instFilter])
 
   useHead({ title: 'Programs - Admin', description: 'Manage programs' })
 
@@ -78,14 +89,27 @@ export default function AdminPrograms(): React.ReactElement {
         </div>
       </div>
 
+      {/* Filters */}
+      <div className={styles.filters}>
+        <div className={styles.searchWrap}>
+          <Search size={14} className={styles.searchIcon} aria-hidden="true" />
+          <input className={styles.searchInput} type="text" placeholder="Search programs…" value={search} onChange={(e) => setSearch(e.target.value)} />
+        </div>
+        <select className={styles.filterSelect} value={instFilter} onChange={(e) => setInstFilter(e.target.value)} aria-label="Filter by institution">
+          <option value="">All Institutions</option>
+          {institutions.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
+        </select>
+        {!loading && <span className={styles.filterCount}>{filtered.length} of {programs.length}</span>}
+      </div>
+
       {loading ? (
         <div className={styles.skeletonTable}>{Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className={styles.skeletonRow} />
         ))}</div>
-      ) : programs.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className={styles.emptyState}>
-          <p className={styles.emptyTitle}>No programs found</p>
-          <p className={styles.emptySubtitle}>Add programs to your institutions.</p>
+          <p className={styles.emptyTitle}>{programs.length === 0 ? 'No programs found' : 'No programs match your filters.'}</p>
+          <p className={styles.emptySubtitle}>{programs.length === 0 ? 'Add programs to your institutions.' : 'Try clearing the search or institution filter.'}</p>
         </div>
       ) : (
         <div className={styles.tableWrap}>
@@ -97,7 +121,7 @@ export default function AdminPrograms(): React.ReactElement {
               </tr>
             </thead>
             <tbody>
-              {programs.map((p) => (
+              {filtered.map((p) => (
                 <motion.tr key={p.id} className={styles.tr} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <td className={styles.td}>{p.name}</td>
                   <td className={styles.td}>{(p as any).institution?.name ?? '—'}</td>

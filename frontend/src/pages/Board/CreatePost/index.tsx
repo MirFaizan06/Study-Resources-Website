@@ -31,7 +31,7 @@ export default function CreatePostPage(): React.ReactElement {
 
   // Redirect if not logged in
   if (!user) {
-    navigate(`/${locale}/login`, { state: { from: `/${locale}/board/create` }, replace: true })
+    navigate(`/${locale}/login`, { state: { from: `/${locale}/node/create` }, replace: true })
   }
 
   const [tosAgreed, setTosAgreed] = useState(false)
@@ -184,7 +184,7 @@ export default function CreatePostPage(): React.ReactElement {
                 </button>
                 <button
                   className={styles.tosDeclineBtn}
-                  onClick={() => navigate(`/${locale}/board`)}
+                  onClick={() => navigate(`/${locale}/node`)}
                 >
                   {t.boardTos.decline}
                 </button>
@@ -197,7 +197,7 @@ export default function CreatePostPage(): React.ReactElement {
       <div className={styles.inner}>
         <button
           className={styles.backBtn}
-          onClick={() => navigate(`/${locale}/board`)}
+          onClick={() => navigate(`/${locale}/node`)}
         >
           <ArrowLeft size={16} />
           {t.board.backToBoard}
@@ -213,14 +213,14 @@ export default function CreatePostPage(): React.ReactElement {
             <div className={styles.successIcon} aria-hidden="true">
               <CheckCircle2 size={40} />
             </div>
-            <h2 className={styles.successTitle}>{t.board.postSubmitted}</h2>
-            <p className={styles.successBody}>{t.board.postPendingReview}</p>
+            <h2 className={styles.successTitle}>Discussion Published!</h2>
+            <p className={styles.successBody}>Your contribution is now live on The Node. Join the conversation and gather peer feedback.</p>
             <button
               className={styles.submitBtn}
-              onClick={() => navigate(`/${locale}/board`)}
+              onClick={() => navigate(`/${locale}/node`)}
             >
               <ArrowLeft size={16} />
-              {t.board.backToBoard}
+              Back to The Node
             </button>
           </motion.div>
         ) : (

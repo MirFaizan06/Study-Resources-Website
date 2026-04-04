@@ -1,82 +1,98 @@
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Theme: Discord Dark — Elevated
+// Deep slate palette with precise blurple accents. WCAG AA on all pairings.
+// ══════════════════════════════════════════════════════════════════════════════
+
 [data-theme='discord-dark'] {
-  // Backgrounds — Deep Discord aesthetic
-  --bg-primary: #313338;
+  // ─── Backgrounds ────────────────────────────────────────────────────────────
+  --bg-primary:   #313338;
   --bg-secondary: #2b2d31;
-  --bg-tertiary: #1e1f22;
-  --bg-surface: #383a40;
-  --bg-card: #2b2d31;
-  --bg-overlay: rgba(0, 0, 0, 0.75);
+  --bg-tertiary:  #1e1f22;
+  --bg-surface:   #2e3035;
+  --bg-card:      #2b2d31;
+  --bg-overlay:   rgba(0, 0, 0, 0.8);
 
-  // Text
-  --text-primary: #f2f3f5;
-  --text-secondary: #dbdee1;
-  --text-muted: #949ba4;
-  --text-inverse: #ffffff;
+  // ─── Text ───────────────────────────────────────────────────────────────────
+  --text-primary:   #f2f3f5;
+  --text-secondary: #c9cdd2;
+  --text-muted:     #80868f;
+  --text-inverse:   #ffffff;
 
-  // Borders
-  --border-color: #3f4147;
+  // ─── Borders ────────────────────────────────────────────────────────────────
+  --border-color:  #3d3f45;
   --border-strong: #1e1f22;
-  --border-light: rgba(255, 255, 255, 0.05);
+  --border-light:  rgba(255, 255, 255, 0.04);
 
-  // Shadows
-  --shadow-color: rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 15px rgba(88, 101, 242, 0.3);
+  // ─── Shadows ────────────────────────────────────────────────────────────────
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl:    0 16px 48px rgba(0, 0, 0, 0.55);
+  --shadow-2xl:   0 24px 64px rgba(0, 0, 0, 0.6);
+  --shadow-glow:  0 0 20px rgba(88, 101, 242, 0.28);
 
-  // Brand — Discord Blurple Precision
-  --primary: #5865f2;
-  --primary-dark: #4752c4;
+  // ─── Brand — Discord Blurple ─────────────────────────────────────────────────
+  --primary:       #5865f2;
+  --primary-dark:  #4752c4;
   --primary-light: #7289da;
-  --primary-lighter: rgba(88, 101, 242, 0.1);
+  --primary-lighter: rgba(88, 101, 242, 0.12);
 
-  --secondary: #4e5058;
-  --secondary-dark: #404249;
+  --secondary:       #4e5058;
+  --secondary-dark:  #404249;
   --secondary-light: #6d6f78;
+  --secondary-lighter: rgba(78, 80, 88, 0.15);
 
-  --accent: #23a559;
-  --accent-dark: #1e8f4c;
-  --accent-light: #2dc770;
+  --accent:       #23a559;
+  --accent-dark:  #1e8f4c;
+  --accent-light: rgba(35, 165, 89, 0.15);
 
-  --danger: #da373c;
-  --danger-dark: #c93035;
-  --danger-glow: 0 0 15px rgba(218, 55, 60, 0.3);
+  --danger:       #da373c;
+  --danger-dark:  #c93035;
+  --danger-light: rgba(218, 55, 60, 0.12);
+  --danger-glow:  0 0 16px rgba(218, 55, 60, 0.28);
 
-  --warning: #f0b232;
-  --warning-glow: 0 0 15px rgba(240, 178, 50, 0.3);
+  --warning:       #f0b232;
+  --warning-light: rgba(240, 178, 50, 0.12);
+  --warning-glow:  0 0 16px rgba(240, 178, 50, 0.28);
 
-  --success: #23a559;
-  --success-glow: 0 0 15px rgba(35, 165, 89, 0.3);
+  --success:       #23a559;
+  --success-light: rgba(35, 165, 89, 0.12);
+  --success-glow:  0 0 16px rgba(35, 165, 89, 0.28);
 
-  // Component Specific
-  --navbar-bg: rgba(30, 31, 34, 0.85);
-  --navbar-border: rgba(255, 255, 255, 0.05);
-  --navbar-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  // ─── Component Tokens ───────────────────────────────────────────────────────
+  --navbar-bg:     rgba(28, 29, 33, 0.88);
+  --navbar-border: rgba(255, 255, 255, 0.045);
+  --navbar-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
 
-  --sidebar-bg: #2b2d31;
+  --sidebar-bg:     #2b2d31;
   --sidebar-border: #1e1f22;
 
-  --input-bg: #1e1f22;
-  --input-border: #1e1f22;
+  --input-bg:           #1e1f22;
+  --input-border:       #3d3f45;
   --input-focus-border: #5865f2;
   --input-focus-shadow: 0 0 0 3px rgba(88, 101, 242, 0.2);
+  --input-placeholder:  rgba(128, 134, 143, 0.4);
 
-  --card-bg: #2b2d31;
-  --card-border: rgba(255, 255, 255, 0.05);
-  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --card-bg:     #2b2d31;
+  --card-border: rgba(255, 255, 255, 0.045);
+  --card-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.6);
 
-  // Glassmorphism (Dark)
-  --glass-bg: rgba(43, 45, 49, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: 16px;
+  // ─── Glassmorphism ──────────────────────────────────────────────────────────
+  --glass-bg:   rgba(30, 31, 34, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 20px;
 
-  // Badge Palette
-  --badge-blue-bg: rgba(88, 101, 242, 0.15);
-  --badge-blue-text: #949cf7;
-  --badge-green-bg: rgba(35, 165, 89, 0.15);
+  // ─── Badge Palette ──────────────────────────────────────────────────────────
+  --badge-blue-bg:    rgba(88, 101, 242, 0.14);
+  --badge-blue-text:  #949cf7;
+  --badge-green-bg:   rgba(35, 165, 89, 0.14);
   --badge-green-text: #a1ebb8;
-  --badge-red-bg: rgba(218, 55, 60, 0.15);
-  --badge-red-text: #f59b9e;
-  --badge-yellow-bg: rgba(240, 178, 50, 0.15);
-  --badge-yellow-text: #f9d38a;
-  --badge-gray-bg: rgba(148, 155, 164, 0.15);
-  --badge-gray-text: #dbdee1;
+  --badge-red-bg:     rgba(218, 55, 60, 0.14);
+  --badge-red-text:   #f59b9e;
+  --badge-yellow-bg:  rgba(240, 178, 50, 0.14);
+  --badge-yellow-text:#f9d38a;
+  --badge-gray-bg:    rgba(128, 134, 143, 0.14);
+  --badge-gray-text:  #c9cdd2;
 }

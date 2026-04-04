@@ -5,7 +5,7 @@ import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import type { FundraiserStatus } from '@/types'
-import styles from './AI.module.scss'
+import styles from './AI.module.css'
 
 const FEATURE_ICONS = [Brain, FlaskConical, FileText, Sparkles]
 

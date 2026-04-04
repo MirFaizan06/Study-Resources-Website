@@ -1,6 +1,10 @@
-.page {
-  padding-block: $space-8 $space-16;
-}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Contribute Page — Premium Redesign
+// Elevated stepper progress, refined form card with glassmorphism, better sidebar.
+// ══════════════════════════════════════════════════════════════════════════════
+
+.page { padding-block: $space-10 $space-16; }
 
 .container {
   @include container;
@@ -13,32 +17,33 @@
     align-items: start;
   }
 
-  // Make header/stepper span full width
   > .pageHeader,
   > .stepper {
-    @include respond-to(lg) {
-      grid-column: 1 / -1;
-    }
+    @include respond-to(lg) { grid-column: 1 / -1; }
   }
 }
 
-// ─── Header ───────────────────────────────────────────────────────────────────
+// ─── Page Header ──────────────────────────────────────────────────────────────
 .pageHeader {
-  @include flex-column;
-  gap: $space-2;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
 }
 
 .pageTitle {
+  font-family: $font-family-heading;
   font-size: clamp($font-size-2xl, 4vw, $font-size-3xl);
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.04em;
 }
 
 .pageSubtitle {
-  font-size: $font-size-lg;
+  font-size: $font-size-base;
   color: var(--text-secondary);
   margin: 0;
+  font-weight: $font-weight-normal;
 }
 
 // ─── Stepper ──────────────────────────────────────────────────────────────────
@@ -47,8 +52,8 @@
   align-items: center;
   gap: $space-2;
   flex-wrap: wrap;
-  padding: $space-4 $space-6;
-  background-color: var(--bg-secondary);
+  padding: $space-4 $space-5;
+  background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: $radius-2xl;
 }
@@ -57,29 +62,31 @@
   display: flex;
   align-items: center;
   gap: $space-3;
-  opacity: 0.4;
-  transition: opacity $transition-fast;
+  opacity: 0.35;
+  transition: opacity 200ms ease;
 }
 
 .stepperActive,
-.stepperDone {
-  opacity: 1;
-}
+.stepperDone { opacity: 1; }
 
 .stepperNumber {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: $radius-full;
   background-color: var(--bg-tertiary);
   color: var(--text-muted);
-  @include flex-center;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-extrabold;
   flex-shrink: 0;
+  transition: background-color 200ms ease, color 200ms ease;
 
   .stepperActive & {
     background-color: var(--primary);
     color: #ffffff;
+    box-shadow: 0 0 0 3px var(--primary-lighter);
   }
 
   .stepperDone & {
@@ -89,7 +96,8 @@
 }
 
 .stepperText {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: 1px;
 }
 
@@ -97,6 +105,7 @@
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .stepperDesc {
@@ -104,40 +113,45 @@
   color: var(--text-muted);
   display: none;
 
-  @include respond-to(md) {
-    display: block;
-  }
+  @include respond-to(md) { display: block; }
 }
 
-.stepperArrow {
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
+.stepperArrow { color: var(--text-muted); flex-shrink: 0; }
 
-// ─── Form area ────────────────────────────────────────────────────────────────
+// ─── Form Area ────────────────────────────────────────────────────────────────
 .formArea {
-  @include card-base;
+  background-color: color-mix(in srgb, var(--bg-card) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: $radius-2xl;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+  padding: $space-8;
   overflow: hidden;
   min-height: 400px;
 }
 
 .formStep {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-5;
 }
 
 .stepTitle {
-  font-size: $font-size-xl;
-  font-weight: $font-weight-semibold;
+  font-family: $font-family-heading;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  margin: 0 0 $space-2;
-  padding-bottom: $space-4;
+  margin: 0 0 $space-1;
+  padding-bottom: $space-5;
   border-bottom: 1px solid var(--border-color);
+  letter-spacing: -0.02em;
 }
 
-// ─── Form fields ──────────────────────────────────────────────────────────────
+// ─── Form Fields ──────────────────────────────────────────────────────────────
 .fieldGroup {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-2;
 }
 
@@ -146,52 +160,59 @@
   grid-template-columns: 1fr;
   gap: $space-4;
 
-  @include respond-to(md) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  @include respond-to(md) { grid-template-columns: repeat(2, 1fr); }
 }
 
 .label {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-left: 2px;
 }
 
-.required {
-  color: var(--danger);
-}
+.required { color: var(--danger); }
 
 .input,
+.textarea,
 .select {
   width: 100%;
   padding: $space-3 $space-4;
-  background-color: var(--input-bg);
-  border: 1.5px solid var(--input-border);
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
   border-radius: $radius-lg;
   color: var(--text-primary);
-  font-size: $font-size-base;
-  transition: border-color $transition-fast, box-shadow $transition-fast;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  font-family: $font-family-body;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
   outline: none;
 
-  &::placeholder {
-    color: var(--input-placeholder);
-  }
+  &::placeholder { color: var(--text-muted); opacity: 0.45; font-weight: $font-weight-normal; }
 
   &:focus {
-    border-color: var(--input-border-focus);
-    box-shadow: 0 0 0 3px var(--primary-light);
+    border-color: var(--primary);
+    background-color: var(--bg-card);
+    box-shadow: 0 0 0 4px var(--primary-lighter);
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-tertiary);
   }
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: $line-height-relaxed;
 }
 
 .select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right $space-3 center;
   padding-right: $space-10;
@@ -201,16 +222,14 @@
 .inputError,
 .selectError {
   border-color: var(--danger);
-
-  &:focus {
-    box-shadow: 0 0 0 3px var(--danger-light);
-  }
+  &:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 12%, transparent); }
 }
 
 .fieldError {
   font-size: $font-size-xs;
   color: var(--danger);
   font-weight: $font-weight-medium;
+  padding-left: 2px;
 }
 
 .fieldHelp {
@@ -220,11 +239,7 @@
   font-size: $font-size-xs;
   color: var(--text-muted);
   line-height: $line-height-relaxed;
-
-  svg {
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+  svg { flex-shrink: 0; margin-top: 2px; }
 }
 
 // ─── Checkbox ─────────────────────────────────────────────────────────────────
@@ -236,6 +251,7 @@
   background-color: var(--bg-secondary);
   border-radius: $radius-lg;
   border: 1px solid var(--border-color);
+  cursor: pointer;
 }
 
 .checkbox {
@@ -253,6 +269,7 @@
   font-weight: $font-weight-semibold;
   color: var(--text-primary);
   cursor: pointer;
+  letter-spacing: -0.01em;
 }
 
 .checkboxHelp {
@@ -261,16 +278,17 @@
   margin: $space-1 0 0;
 }
 
-// ─── Step actions ─────────────────────────────────────────────────────────────
+// ─── Step Actions ─────────────────────────────────────────────────────────────
 .stepActions {
   display: flex;
   justify-content: flex-end;
   gap: $space-3;
-  padding-top: $space-4;
+  padding-top: $space-5;
   border-top: 1px solid var(--border-color);
+  margin-top: auto;
 }
 
-// ─── Review card ──────────────────────────────────────────────────────────────
+// ─── Review Card ──────────────────────────────────────────────────────────────
 .reviewCard {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -279,14 +297,14 @@
 }
 
 .reviewRow {
-  @include flex-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: $space-3 $space-5;
   gap: $space-4;
   border-bottom: 1px solid var(--border-color);
 
-  &:last-child {
-    border-bottom: none;
-  }
+  &:last-child { border-bottom: none; }
 }
 
 .reviewKey {
@@ -294,6 +312,7 @@
   font-weight: $font-weight-semibold;
   color: var(--text-secondary);
   flex-shrink: 0;
+  letter-spacing: -0.01em;
 }
 
 .reviewValue {
@@ -301,17 +320,16 @@
   color: var(--text-primary);
   text-align: right;
   word-break: break-all;
+  font-weight: $font-weight-medium;
 }
 
-.reviewLink {
-  font-size: $font-size-sm;
-  color: var(--primary);
-}
+.reviewLink { font-size: $font-size-sm; color: var(--primary); }
 
 .reviewNote {
   font-size: $font-size-sm;
   color: var(--text-muted);
-  background-color: var(--warning-light);
+  background-color: color-mix(in srgb, var(--warning) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warning) 25%, transparent);
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
   margin: 0;
@@ -323,39 +341,42 @@
   gap: $space-2;
   font-size: $font-size-sm;
   color: var(--danger);
-  background-color: var(--danger-light);
+  background-color: color-mix(in srgb, var(--danger) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 25%, transparent);
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
 }
 
-// ─── Success state ────────────────────────────────────────────────────────────
+// ─── Success State ────────────────────────────────────────────────────────────
 .successState {
-  @include flex-column-center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: $space-5;
   min-height: 50vh;
   text-align: center;
-}
-
-.successImg {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
 }
 
 .successIcon {
   width: 80px;
   height: 80px;
   border-radius: $radius-full;
-  background-color: var(--accent-light);
-  @include flex-center;
+  background: linear-gradient(135deg, var(--accent-light), color-mix(in srgb, var(--accent) 12%, transparent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--accent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .successTitle {
+  font-family: $font-family-heading;
   font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.03em;
 }
 
 .successMessage {
@@ -363,47 +384,57 @@
   color: var(--text-secondary);
   max-width: 440px;
   margin: 0;
+  line-height: $line-height-relaxed;
 }
 
-// ─── Guidelines ───────────────────────────────────────────────────────────────
+// ─── Guidelines Sidebar ───────────────────────────────────────────────────────
 .guidelines {
-  @include card-base;
-  @include flex-column;
-  gap: $space-4;
+  background-color: color-mix(in srgb, var(--bg-card) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: $radius-2xl;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
   height: fit-content;
 }
 
 .guidelinesTitle {
-  font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  font-family: $font-family-heading;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .guidelinesList {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-3;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .guidelinesItem {
   display: flex;
   align-items: flex-start;
   gap: $space-2;
-  font-size: $font-size-sm;
+  font-size: $font-size-xs;
   color: var(--text-secondary);
   line-height: $line-height-relaxed;
 }
 
-.guidelinesIcon {
-  color: var(--accent);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
+.guidelinesIcon { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
 
-// ─── Naming convention guide ──────────────────────────────────────────────────
+// ─── Naming Guide ─────────────────────────────────────────────────────────────
 .namingGuide {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-3;
   padding-top: $space-4;
   border-top: 1px solid var(--border-color);
@@ -414,6 +445,7 @@
   font-weight: $font-weight-semibold;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .namingGuideSubtitle {
@@ -424,7 +456,8 @@
 }
 
 .namingItem {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-1;
   padding: $space-3;
   background-color: var(--bg-secondary);
@@ -433,11 +466,11 @@
 }
 
 .namingLabel {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
+  font-size: 10px;
+  font-weight: $font-weight-extrabold;
   color: var(--primary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
 }
 
 .namingFormat {
@@ -445,7 +478,7 @@
   font-family: $font-family-mono;
   color: var(--text-primary);
   background-color: var(--bg-card);
-  padding: $space-1 $space-2;
+  padding: 0.1875rem $space-2;
   border-radius: $radius-sm;
   word-break: break-all;
 }
@@ -463,7 +496,7 @@
   font-weight: $font-weight-medium;
 }
 
-// ─── Google Drive Guide ───────────────────────────────────────────────────────
+// ─── Drive Guide ──────────────────────────────────────────────────────────────
 .driveGuide {
   background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
   border: 1px solid var(--primary-light);
@@ -472,31 +505,25 @@
   margin-bottom: $space-4;
   display: flex;
   flex-direction: column;
-  gap: $space-2;
+  gap: $space-3;
 }
 
-.driveGuideHeader {
-  display: flex;
-  align-items: center;
-  gap: $space-2;
-}
-
-.driveGuideIcon {
-  color: var(--primary);
-  flex-shrink: 0;
-}
+.driveGuideHeader { display: flex; align-items: center; gap: $space-2; }
+.driveGuideIcon { color: var(--primary); flex-shrink: 0; }
 
 .driveGuideTitle {
   font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .driveGuideIntro {
   font-size: $font-size-xs;
   color: var(--text-secondary);
   margin: 0;
+  line-height: $line-height-relaxed;
 }
 
 .driveSteps {
@@ -516,26 +543,19 @@
   color: var(--text-secondary);
   line-height: $line-height-relaxed;
 
-  strong {
-    color: var(--text-primary);
-    font-weight: $font-weight-semibold;
-  }
-
-  em {
-    font-style: italic;
-    color: var(--text-muted);
-  }
+  strong { color: var(--text-primary); font-weight: $font-weight-semibold; }
+  em { font-style: italic; color: var(--text-muted); }
 }
 
 .driveStepNum {
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: $radius-full;
   background-color: var(--primary);
   color: #fff;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  font-size: 10px;
+  font-weight: $font-weight-extrabold;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -544,15 +564,14 @@
 
 .driveLink {
   color: var(--primary);
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   text-decoration: underline;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
+  text-underline-offset: 2px;
 
-  &:hover {
-    color: var(--primary-dark);
-  }
+  &:hover { color: var(--primary-dark); }
 }
 
 .driveGuideNote {

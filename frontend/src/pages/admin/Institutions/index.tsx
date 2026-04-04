@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { PlusCircle, RefreshCw } from 'lucide-react'
+import { PlusCircle, RefreshCw, Search } from 'lucide-react'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import type { Institution, InstitutionType } from '@/types'
-import styles from './Institutions.module.scss'
+import styles from './Institutions.module.css'
 
 export default function AdminInstitutions(): React.ReactElement {
   const [institutions, setInstitutions] = useState<Institution[]>([])
@@ -15,6 +15,17 @@ export default function AdminInstitutions(): React.ReactElement {
   const [form, setForm] = useState<{ name: string; type: InstitutionType; logoUrl: string }>({ name: '', type: 'UNIVERSITY', logoUrl: '' })
   const [creating, setCreating] = useState(false)
   const [toast, setToast] = useState('')
+  const [search, setSearch] = useState('')
+  const [typeFilter, setTypeFilter] = useState<'' | InstitutionType>('')
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    return institutions.filter((inst) => {
+      if (q && !inst.name.toLowerCase().includes(q)) return false
+      if (typeFilter && inst.type !== typeFilter) return false
+      return true
+    })
+  }, [institutions, search, typeFilter])
 
   useHead({ title: 'Institutions - Admin', description: 'Manage institutions' })
 
@@ -65,14 +76,29 @@ export default function AdminInstitutions(): React.ReactElement {
         </div>
       </div>
 
+      {/* Filters */}
+      <div className={styles.filters}>
+        <div className={styles.searchWrap}>
+          <Search size={14} className={styles.searchIcon} aria-hidden="true" />
+          <input className={styles.searchInput} type="text" placeholder="Search institutions…" value={search} onChange={(e) => setSearch(e.target.value)} />
+        </div>
+        <select className={styles.filterSelect} value={typeFilter} onChange={(e) => setTypeFilter(e.target.value as '' | InstitutionType)} aria-label="Filter by type">
+          <option value="">All Types</option>
+          <option value="UNIVERSITY">University</option>
+          <option value="COLLEGE">College</option>
+          <option value="SCHOOL">School</option>
+        </select>
+        {!loading && <span className={styles.filterCount}>{filtered.length} of {institutions.length}</span>}
+      </div>
+
       {loading ? (
         <div className={styles.skeletonTable}>{Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className={styles.skeletonRow} />
         ))}</div>
-      ) : institutions.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className={styles.emptyState}>
-          <p className={styles.emptyTitle}>No institutions yet</p>
-          <p className={styles.emptySubtitle}>Add an institution to get started.</p>
+          <p className={styles.emptyTitle}>{institutions.length === 0 ? 'No institutions yet' : 'No institutions match your filters.'}</p>
+          <p className={styles.emptySubtitle}>{institutions.length === 0 ? 'Add an institution to get started.' : 'Try clearing the search or type filter.'}</p>
         </div>
       ) : (
         <div className={styles.tableWrap}>
@@ -85,7 +111,7 @@ export default function AdminInstitutions(): React.ReactElement {
               </tr>
             </thead>
             <tbody>
-              {institutions.map((inst) => (
+              {filtered.map((inst) => (
                 <motion.tr key={inst.id} className={styles.tr} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <td className={styles.td}>{inst.name}</td>
                   <td className={styles.td}>{inst.type}</td>

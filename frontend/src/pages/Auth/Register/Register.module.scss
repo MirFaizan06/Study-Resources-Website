@@ -1,80 +1,49 @@
 
+// ══════════════════════════════════════════════════════════════════════════════
+// Register Page — Premium Redesign
+// Spacious card, premium warning treatment, refined form fields and grid.
+// ══════════════════════════════════════════════════════════════════════════════
+
 .page {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $space-6;
-  background-color: var(--bg-primary);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -10%;
-    left: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(var(--primary), 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: 0;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -10%;
-    right: -10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(var(--secondary), 0.05) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: 0;
-  }
+  min-height: 100vh;
+  padding: $space-10 $space-4;
+  background-color: var(--bg-secondary);
 }
 
 .card {
+  width: 100%;
+  max-width: 520px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: $radius-3xl;
-  width: 100%;
-  max-width: 500px;
-  padding: $space-10;
-  display: flex;
-  flex-direction: column;
-  gap: $space-8;
-  box-shadow: var(--shadow-2xl);
-  z-index: 1;
-  backdrop-filter: blur(20px);
-
-  @include respond-below(sm) {
-    padding: $space-6;
-  }
-}
-
-.logoRow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: $space-4;
-}
-
-.logoMark {
-  @include flex-center;
-  width: 54px;
-  height: 54px;
   border-radius: $radius-2xl;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: #fff;
-  box-shadow: 0 10px 20px rgba(var(--primary), 0.2);
+  padding: $space-10;
+  box-shadow:
+    0 4px 6px -2px color-mix(in srgb, var(--shadow-color) 10%, transparent),
+    0 24px 64px -12px color-mix(in srgb, var(--shadow-color) 28%, transparent);
+
+  @include respond-below(sm) { padding: $space-7 $space-5; }
 }
 
+// ─── Header ───────────────────────────────────────────────────────────────────
 .header {
-  @include flex-column;
-  gap: $space-2;
   text-align: center;
+  margin-bottom: $space-7;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  color: var(--primary);
+  font-weight: $font-weight-extrabold;
+  font-size: $font-size-base;
+  font-family: $font-family-heading;
+  margin-bottom: $space-4;
+  letter-spacing: -0.03em;
 }
 
 .title {
@@ -82,157 +51,207 @@
   font-size: $font-size-2xl;
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  margin: 0;
-  letter-spacing: -0.02em;
+  margin: 0 0 $space-1;
+  letter-spacing: -0.03em;
 }
 
 .subtitle {
   font-size: $font-size-sm;
-  color: var(--text-secondary);
-  font-weight: $font-weight-medium;
+  color: var(--text-muted);
   margin: 0;
+  font-weight: $font-weight-normal;
 }
 
-.errorMsg {
-  background-color: var(--danger-light);
-  border: 1px solid var(--danger-light);
-  color: var(--danger);
-  padding: $space-4;
+// ─── Warning Box ──────────────────────────────────────────────────────────────
+.warningBox {
+  padding: $space-5;
   border-radius: $radius-xl;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
-  text-align: center;
+  border: 1px solid var(--warning);
+  border-left: 4px solid var(--warning);
+  background-color: color-mix(in srgb, var(--warning) 6%, transparent);
+  margin-bottom: $space-7;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
 }
 
+.warningTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  color: var(--warning);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-extrabold;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.warningText {
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+  margin: 0;
+  strong { color: var(--text-primary); font-weight: $font-weight-semibold; }
+}
+
+// ─── Error Banner ─────────────────────────────────────────────────────────────
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  background-color: color-mix(in srgb, var(--danger) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 25%, transparent);
+  color: var(--danger);
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $space-5;
+}
+
+// ─── Form ─────────────────────────────────────────────────────────────────────
 .form {
   display: flex;
   flex-direction: column;
   gap: $space-5;
 }
 
-.row {
+.grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: $space-5;
+  gap: $space-4;
 
-  @include respond-to(sm) {
-    grid-template-columns: 1fr 1fr;
-  }
+  @include respond-to(sm) { grid-template-columns: 1fr 1fr; }
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: $space-2;
-}
 
-.label {
-  font-size: 11px;
-  font-weight: $font-weight-extrabold;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding-left: 4px;
-}
-
-.input {
-  width: 100%;
-  padding: $space-4 $space-5;
-  background-color: var(--bg-surface);
-  border: 1.5px solid var(--border-color);
-  border-radius: $radius-xl;
-  color: var(--text-primary);
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  transition: all $transition-base;
-
-  &:focus {
-    outline: none;
-    border-color: var(--primary);
-    background-color: var(--bg-card);
-    box-shadow: 0 0 0 4px rgba(var(--primary), 0.1);
-  }
-
-  &::placeholder {
+  label {
+    font-size: 11px;
+    font-weight: $font-weight-extrabold;
     color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-left: 2px;
   }
-}
 
-.passwordWrap {
-  position: relative;
-}
-
-.eyeBtn {
-  position: absolute;
-  right: $space-4;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  @include flex-center;
-  padding: $space-1;
-
-  &:hover {
+  input, select {
+    width: 100%;
+    padding: $space-3 $space-4;
+    background-color: var(--bg-surface);
+    border: 1.5px solid var(--border-color);
+    border-radius: $radius-lg;
     color: var(--text-primary);
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    font-family: $font-family-body;
+    transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+    outline: none;
+
+    &:focus {
+      border-color: var(--primary);
+      background-color: var(--bg-card);
+      box-shadow: 0 0 0 4px var(--primary-lighter);
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+      opacity: 0.45;
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $space-4 center;
+    padding-right: $space-10;
+    cursor: pointer;
   }
 }
 
+.pwWrap {
+  position: relative;
+
+  button {
+    position: absolute;
+    right: $space-3;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: $space-1;
+    border-radius: 6px;
+    transition: color 150ms ease, background-color 150ms ease;
+
+    &:hover {
+      color: var(--text-primary);
+      background-color: color-mix(in srgb, var(--text-primary) 6%, transparent);
+    }
+  }
+}
+
+// ─── Submit ───────────────────────────────────────────────────────────────────
 .submitBtn {
-  @include flex-center;
+  margin-top: $space-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: $space-2;
+  padding: $space-3 $space-4;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
   border: none;
-  border-radius: $radius-xl;
-  padding: $space-4;
-  font-size: $font-size-base;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
   font-weight: $font-weight-bold;
+  font-family: $font-family-body;
   cursor: pointer;
-  transition: all $transition-base;
-  box-shadow: 0 8px 25px rgba(var(--primary), 0.25);
-  margin-top: $space-2;
+  letter-spacing: -0.01em;
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 28%, transparent);
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(var(--primary), 0.4);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 38%, transparent);
   }
 
-  &:disabled {
-    opacity: 0.7;
-    cursor: wait;
-  }
+  &:active { transform: translateY(0); }
+
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
-.spinner {
+.loader {
   width: 18px;
   height: 18px;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.75s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.switchText {
+// ─── Footer Link ──────────────────────────────────────────────────────────────
+.footer {
   text-align: center;
+  margin-top: $space-6;
   font-size: $font-size-sm;
-  color: var(--text-secondary);
-  font-weight: $font-weight-medium;
-  margin-top: $space-2;
-}
+  color: var(--text-muted);
+  font-weight: $font-weight-normal;
 
-.switchLink {
-  color: var(--primary);
-  font-weight: $font-weight-bold;
-  text-decoration: none;
-  margin-left: 4px;
-
-  &:hover {
-    text-decoration: underline;
+  a {
+    color: var(--primary);
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
   }
 }

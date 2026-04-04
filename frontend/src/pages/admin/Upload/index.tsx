@@ -6,7 +6,7 @@ import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
 import type { Institution, Program, Subject, ResourceType, CreateResourcePayload } from '@/types'
-import styles from './Upload.module.scss'
+import styles from './Upload.module.css'
 
 const RESOURCE_TYPES: Array<{ value: ResourceType; label: string }> = [
   { value: 'NOTE', label: 'Notes' },

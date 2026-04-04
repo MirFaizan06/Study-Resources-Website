@@ -8,7 +8,7 @@ import {
   Plus,
   ChevronUp,
   MessageSquare,
-  Filter,
+  Info,
 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
@@ -20,7 +20,7 @@ import BoardTutorial from './BoardTutorial'
 import styles from './Board.module.scss'
 
 const CATEGORIES: Array<{ value: PostCategory | 'ALL'; label: string }> = [
-  { value: 'ALL', label: 'All' },
+  { value: 'ALL', label: 'All Discussions' },
   { value: 'ACADEMICS', label: 'Academics' },
   { value: 'INFRASTRUCTURE', label: 'Infrastructure' },
   { value: 'ADMINISTRATION', label: 'Administration' },
@@ -60,7 +60,6 @@ function PostCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Vote column */}
       <div className={styles.voteCol}>
         <button
           className={[styles.voteBtn, post.hasVoted ? styles.voted : ''].join(' ')}
@@ -73,8 +72,7 @@ function PostCard({
         <span className={styles.voteCount}>{post.upvotesCount}</span>
       </div>
 
-      {/* Image */}
-      <Link to={`/${locale}/board/${post.id}`} className={styles.imgWrap}>
+      <Link to={`/${locale}/node/${post.id}`} className={styles.imgWrap}>
         <img
           src={post.imageUrl}
           alt={post.title}
@@ -83,7 +81,6 @@ function PostCard({
         />
       </Link>
 
-      {/* Content */}
       <div className={styles.postBody}>
         <div className={styles.postMeta}>
           <span className={[styles.catBadge, styles[`cat_${post.category.toLowerCase()}`]].join(' ')}>
@@ -101,14 +98,14 @@ function PostCard({
           <time className={styles.metaText}>{timeAgo(post.createdAt)}</time>
         </div>
 
-        <Link to={`/${locale}/board/${post.id}`} className={styles.postTitle}>
+        <Link to={`/${locale}/node/${post.id}`} className={styles.postTitle}>
           {post.title}
         </Link>
 
         <div className={styles.postFooter}>
-          <Link to={`/${locale}/board/${post.id}`} className={styles.commentLink}>
+          <Link to={`/${locale}/node/${post.id}`} className={styles.commentLink}>
             <MessageSquare size={14} />
-            <span>{post._count.comments}</span>
+            <span>{post._count.comments} Comments</span>
           </Link>
         </div>
       </div>
@@ -117,13 +114,13 @@ function PostCard({
 }
 
 export default function BoardPage(): React.ReactElement {
-  const { t, locale } = useLocale()
+  const { locale } = useLocale()
   const { user } = useAuth()
   const navigate = useNavigate()
 
   useHead({
-    title: t.board.title + ' — U.N.I.T.',
-    description: t.board.subtitle,
+    title: 'The Node — Network for Open Discussions & Education',
+    description: 'A platform for students in Kashmir to discuss academics, infrastructure, and more.',
   })
 
   const [sort, setSort] = useState<PostSort>('hot')
@@ -156,7 +153,7 @@ export default function BoardPage(): React.ReactElement {
         setNextCursor(result.nextCursor)
         setError('')
       } catch {
-        if (isMounted.current) setError(t.common.error)
+        if (isMounted.current) setError('Something went wrong. Please try again.')
       } finally {
         if (isMounted.current) {
           setLoading(false)
@@ -164,17 +161,16 @@ export default function BoardPage(): React.ReactElement {
         }
       }
     },
-    [sort, category, nextCursor, t.common.error]
+    [sort, category, nextCursor]
   )
 
   useEffect(() => {
     loadPosts(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort, category])
 
   const handleVote = async (postId: string) => {
     if (!user) {
-      navigate(`/${locale}/login`, { state: { from: `/${locale}/board` } })
+      navigate(`/${locale}/login`, { state: { from: `/${locale}/node` } })
       return
     }
     try {
@@ -192,64 +188,46 @@ export default function BoardPage(): React.ReactElement {
   }
 
   const SORT_TABS: Array<{ value: PostSort; icon: React.ReactNode; label: string }> = [
-    { value: 'hot', icon: <TrendingUp size={15} />, label: t.board.sortHot },
-    { value: 'new', icon: <Clock size={15} />, label: t.board.sortNew },
-    { value: 'top', icon: <Star size={15} />, label: t.board.sortTop },
+    { value: 'hot', icon: <TrendingUp size={15} />, label: 'Hot' },
+    { value: 'new', icon: <Clock size={15} />, label: 'New' },
+    { value: 'top', icon: <Star size={15} />, label: 'Top' },
   ]
-  const DEPLOYED = false
 
   return (
-    <main className={styles.page} style={{ position: 'relative' }}>
-      {!DEPLOYED && (
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundColor: 'var(--bg-overlay, rgba(0,0,0,0.8))',
-          backdropFilter: 'blur(4px)',
-          zIndex: 50,
-          display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20vh',
-          color: 'var(--text-primary)',
-          textAlign: 'center'
-        }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontWeight: 600 }}>Coming soon</h2>
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)' }}>This component is still under development.</p>
-        </div>
-      )}
-
+    <main className={styles.page}>
       <BoardTutorial locale={locale} />
 
-      {/* ─── Hero banner ─────────────────────────────────────────────────────── */}
+      {/* ─── Hero banner (The Node Rebrand) ─────────────────────────────────── */}
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
-            <h1 className={styles.heroTitle}>{t.board.title}</h1>
-            <p className={styles.heroSubtitle}>{t.board.subtitle}</p>
+            <div className={styles.heroBadge}>Network for Open Discussions & Education</div>
+            <h1 className={styles.heroTitle}>The Node</h1>
+            <p className={styles.heroSubtitle}>
+              A community platform built to bridge the gap between passive learning and active intellectual exchange. 
+              Discuss academics, share infrastructure concerns, and grow with peers.
+            </p>
           </div>
           {user ? (
-            <Link to={`/${locale}/board/create`} className={styles.createBtn}>
-              <Plus size={16} />
-              {t.board.newPost}
+            <Link to={`/${locale}/node/create`} className={styles.createBtn}>
+              <Plus size={16} /> New Discussion
             </Link>
           ) : (
-            <Link to={`/${locale}/login`} className={styles.createBtn}>
-              {t.board.signInToPost}
-            </Link>
+            <Link to={`/${locale}/login`} className={styles.createBtn}>Sign in to Post</Link>
           )}
         </div>
       </section>
 
       <div className={styles.layout}>
-        {/* ─── Sidebar (desktop) ───────────────────────────────────────────── */}
+        {/* Sidebar */}
         <aside className={styles.sidebar}>
           <div className={styles.sideCard}>
-            <h3 className={styles.sideTitle}>{t.board.categories}</h3>
+            <h3 className={styles.sideTitle}>Categories</h3>
             <ul className={styles.catList}>
               {CATEGORIES.map((c) => (
                 <li key={c.value}>
                   <button
-                    className={[
-                      styles.catItem,
-                      category === c.value ? styles.catItemActive : '',
-                    ].join(' ')}
+                    className={[styles.catItem, category === c.value ? styles.catItemActive : ''].join(' ')}
                     onClick={() => setCategory(c.value)}
                   >
                     {c.label}
@@ -259,25 +237,22 @@ export default function BoardPage(): React.ReactElement {
             </ul>
           </div>
 
-          {!user && (
-            <div className={styles.sideCard}>
-              <h3 className={styles.sideTitle}>{t.board.joinTitle}</h3>
-              <p className={styles.sideDesc}>{t.board.joinDesc}</p>
-              <Link to={`/${locale}/register`} className={styles.joinBtn}>
-                {t.board.auth.registerBtn}
-              </Link>
-              <Link to={`/${locale}/login`} className={styles.joinBtnGhost}>
-                {t.board.auth.loginBtn}
-              </Link>
+          <div className={styles.sideCard}>
+            <div className={styles.infoRow}>
+              <Info size={16} className={styles.infoIcon} />
+              <h3 className={styles.sideTitle}>About The Node</h3>
             </div>
-          )}
+            <p className={styles.sideDesc}>
+              This isn't just a board; it's a <strong>collective intelligence</strong> ecosystem. 
+              We believe education is more than just notes—it's the discussion that follows.
+            </p>
+          </div>
 
           <AdBanner slot="1122334455" format="vertical" className={styles.sideAd} />
         </aside>
 
-        {/* ─── Main feed ───────────────────────────────────────────────────── */}
+        {/* Main feed */}
         <div className={styles.feed}>
-          {/* Sort tabs + mobile category filter */}
           <div className={styles.feedControls}>
             <div className={styles.sortTabs}>
               {SORT_TABS.map((s) => (
@@ -291,64 +266,29 @@ export default function BoardPage(): React.ReactElement {
                 </button>
               ))}
             </div>
-            <button
-              className={styles.mobileFilterBtn}
-              onClick={() => setCategory(category === 'ALL' ? 'ACADEMICS' : 'ALL')}
-              aria-label="Filter"
-            >
-              <Filter size={16} />
-            </button>
-          </div>
-
-          {/* Mobile category pills */}
-          <div className={styles.mobileCats}>
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.value}
-                className={[
-                  styles.mobileCatPill,
-                  category === c.value ? styles.mobileCatActive : '',
-                ].join(' ')}
-                onClick={() => setCategory(c.value)}
-              >
-                {c.label}
-              </button>
-            ))}
           </div>
 
           {/* Posts */}
           {loading ? (
             <div className={styles.skeletonList}>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className={styles.skeletonCard} />
-              ))}
+              {Array.from({ length: 4 }).map((_, i) => <div key={i} className={styles.skeletonCard} />)}
             </div>
           ) : error ? (
             <div className={styles.emptyState}>
               <p>{error}</p>
-              <button className={styles.retryBtn} onClick={() => loadPosts(true)}>
-                {t.common.tryAgain}
-              </button>
+              <button className={styles.retryBtn} onClick={() => loadPosts(true)}>Try Again</button>
             </div>
           ) : posts.length === 0 ? (
             <div className={styles.emptyState}>
-              <p>{t.board.noPosts}</p>
-              {user && (
-                <Link to={`/${locale}/board/create`} className={styles.retryBtn}>
-                  {t.board.beFirst}
-                </Link>
-              )}
+              <p>No discussions here yet.</p>
+              {user && <Link to={`/${locale}/node/create`} className={styles.retryBtn}>Be the first</Link>}
             </div>
           ) : (
             <>
               {posts.map((post, idx) => (
                 <React.Fragment key={post.id}>
                   <PostCard post={post} locale={locale} onVote={handleVote} />
-                  {(idx + 1) % 5 === 0 && (
-                    <div className={styles.feedAd}>
-                      <AdBanner slot="5566778899" format="auto" />
-                    </div>
-                  )}
+                  {(idx + 1) % 5 === 0 && <div className={styles.feedAd}><AdBanner slot="5566778899" format="auto" /></div>}
                 </React.Fragment>
               ))}
               {nextCursor && (
@@ -357,7 +297,7 @@ export default function BoardPage(): React.ReactElement {
                   onClick={() => loadPosts(false)}
                   disabled={loadingMore}
                 >
-                  {loadingMore ? t.common.loading : t.resource.loadMore}
+                  {loadingMore ? 'Loading...' : 'Load more discussions'}
                 </button>
               )}
             </>

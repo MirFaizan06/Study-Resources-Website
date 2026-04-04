@@ -14,6 +14,8 @@ import {
   LayoutGrid,
   Upload,
   Heart,
+  Brain,
+  MessagesSquare,
 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
@@ -27,41 +29,48 @@ import styles from './Home.module.css'
 const HERO_BG_SLOTS = [1, 2, 3, 4, 5, 6, 7]
 const CAROUSEL_INTERVAL = 5000
 
-// In-memory image cache
-const imageCache: Record<string, boolean> = {};
+// Module-level image cache persists across SPA navigations
+const imageCache: Record<string, boolean> = {}
 
 function HeroCarousel(): React.ReactElement {
+  // Start with index 0 visible immediately (preloaded via <link rel="preload">)
   const [active, setActive] = useState(0)
-  const [loaded, setLoaded] = useState<Record<number, boolean>>({})
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({ 0: true })
   const failed = useRef<Set<number>>(new Set())
 
-  // Prefetch images on mount
   useEffect(() => {
     HERO_BG_SLOTS.forEach((n, i) => {
-      const src = `/images/hero/${n}.png`;
+      const src = `/images/hero/${n}.png`
+      // Check if already cached in module memory
       if (imageCache[src]) {
-        setLoaded(prev => ({ ...prev, [i]: true }));
-        return;
+        setLoaded(prev => ({ ...prev, [i]: true }))
+        return
       }
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        imageCache[src] = true;
-        setLoaded(prev => ({ ...prev, [i]: true }));
-      };
-      img.onerror = () => failed.current.add(i);
-    });
-  }, []);
+      // Check if browser already has it (preloaded or cached)
+      const probe = new Image()
+      probe.src = src
+      if (probe.complete && probe.naturalWidth > 0) {
+        imageCache[src] = true
+        setLoaded(prev => ({ ...prev, [i]: true }))
+        return
+      }
+      probe.onload = () => {
+        imageCache[src] = true
+        setLoaded(prev => ({ ...prev, [i]: true }))
+      }
+      probe.onerror = () => failed.current.add(i)
+    })
+  }, [])
 
   const advance = useCallback(() => {
     setActive((prev) => {
       for (let i = 1; i <= HERO_BG_SLOTS.length; i++) {
         const next = (prev + i) % HERO_BG_SLOTS.length
-        if (!failed.current.has(next)) return next
+        if (!failed.current.has(next) && loaded[next]) return next
       }
       return prev
     })
-  }, [])
+  }, [loaded])
 
   useEffect(() => {
     const id = setInterval(advance, CAROUSEL_INTERVAL)
@@ -77,9 +86,12 @@ function HeroCarousel(): React.ReactElement {
           alt=""
           className={[
             styles.heroBgImg,
-            i === active && loaded[i] ? styles.heroBgImgActive : '',
-          ].join(' ')}
-          loading="eager"
+            i === 0 ? styles.heroBgImgFirst : '',
+            i === active && i !== 0 && loaded[i] ? styles.heroBgImgActive : '',
+            i === active && i === 0 ? styles.heroBgImgActive : '',
+          ].filter(Boolean).join(' ')}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchPriority={i === 0 ? 'high' : 'low'}
         />
       ))}
     </div>
@@ -137,6 +149,30 @@ const FEATURES = [
   { icon: <BookOpen size={13} />,   label: 'Past Papers' },
   { icon: <LayoutGrid size={13} />, label: 'Syllabi'     },
   { icon: <Lightbulb size={13} />,  label: 'Guess Papers'},
+]
+
+// ─── Feature Cards ────────────────────────────────────────────────────────────
+const FEATURE_CARDS = [
+  {
+    icon: <FileText size={22} />,
+    title: 'Notes & PYQs',
+    desc: 'Curated notes and verified previous year papers from top Kashmir institutions.',
+  },
+  {
+    icon: <LayoutGrid size={22} />,
+    title: 'Syllabi',
+    desc: 'Official syllabi for every program — always up to date, always accurate.',
+  },
+  {
+    icon: <Brain size={22} />,
+    title: 'AI Guess Papers',
+    desc: 'AI-powered guess papers to help you focus your preparation where it matters most.',
+  },
+  {
+    icon: <MessagesSquare size={22} />,
+    title: 'The Node',
+    desc: 'A community space for academic discussions, queries, and peer-to-peer support.',
+  },
 ]
 
 // ─── Institution type badge colours ──────────────────────────────────────────
@@ -206,23 +242,33 @@ export default function Home(): React.ReactElement {
 
         <div className={styles.heroContent}>
           <div className={styles.heroInner}>
+            <motion.p
+              className={styles.heroUnit}
+              aria-label="U.N.I.T."
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.05 }}
+            >
+              U<span className={styles.heroUnitDot}>.</span>N<span className={styles.heroUnitDot}>.</span>I<span className={styles.heroUnitDot}>.</span>T<span className={styles.heroUnitDot}>.</span>
+            </motion.p>
+
             <motion.div
               className={styles.heroBadge}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.05 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
               <span className={styles.heroBadgeDot} aria-hidden="true" />
-              U.N.I.T. — University Notes &amp; Issue Tracker
+              University Notes &amp; Issue Tracker
             </motion.div>
 
             <motion.h1
               className={styles.heroTitle}
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Academic Excellence Starts Here
+              Kashmir's Premier Academic Hub
               <Typewriter />
             </motion.h1>
 
@@ -230,10 +276,9 @@ export default function Home(): React.ReactElement {
               className={styles.heroSubtitle}
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.25 }}
+              transition={{ duration: 0.55, delay: 0.38 }}
             >
-              Access premium notes, verified past papers, and expert-crafted syllabi. 
-              Built by students, for students in Kashmir.
+              Free notes, past papers, syllabi and AI guess papers — built by students, for students.
             </motion.p>
 
             {/* Feature pills */}
@@ -304,6 +349,35 @@ export default function Home(): React.ReactElement {
           </div>
         </div>
 
+      </section>
+
+      {/* ══════════════════════════════════════════════ FEATURES ══ */}
+      <section className={[styles.section, styles.sectionAlt].join(' ')}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <div className={styles.sectionEyebrow}><Sparkles size={11} /> Platform</div>
+              <h2 className={styles.sectionTitle}>Everything You Need to Excel</h2>
+              <p className={styles.sectionSubtitle}>One platform. All your academic resources.</p>
+            </div>
+          </div>
+          <div className={styles.featuresGrid}>
+            {FEATURE_CARDS.map((card, i) => (
+              <motion.div
+                key={card.title}
+                className={styles.featureCard}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ delay: i * 0.08, duration: 0.4 }}
+              >
+                <div className={styles.featureIcon} aria-hidden="true">{card.icon}</div>
+                <h3 className={styles.featureTitle}>{card.title}</h3>
+                <p className={styles.featureDesc}>{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ══════════════════════════════════════════════ BROWSE BY UNIVERSITY ══ */}

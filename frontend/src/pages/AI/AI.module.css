@@ -1,0 +1,319 @@
+/* AI Page — Premium Redesign */
+
+.page { display: flex; flex-direction: column; }
+
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+.hero { position: relative; overflow: hidden; padding-block: 5rem 6rem; background: var(--bg-primary); }
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 70% at 10% 20%, color-mix(in srgb, var(--primary-dark) 30%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, color-mix(in srgb, var(--secondary-dark) 25%, transparent) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.heroInner {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) { .heroInner { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .heroInner { padding-inline: 2rem; grid-template-columns: 1fr auto; } }
+
+.heroContent { display: flex; flex-direction: column; gap: 1.5rem; max-width: 580px; }
+
+/* ─── Badge ──────────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: color-mix(in srgb, var(--secondary) 12%, transparent);
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 30%, transparent);
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.heroTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1.875rem, 5vw, 4.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.06;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.heroAccent {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroSubtitle { font-size: 1rem; color: var(--text-secondary); line-height: 1.625; max-width: 480px; margin: 0; }
+
+.heroCta { display: flex; flex-direction: column; gap: 0.5rem; max-width: 300px; }
+
+.progressBar {
+  height: 5px;
+  background-color: var(--border-color);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 9999px;
+  animation: pulsefill 2.8s ease-in-out infinite;
+}
+
+@keyframes pulsefill {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.progressLabel { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+
+/* ─── Hero Icon ──────────────────────────────────────────────────────────────── */
+.heroIcon {
+  position: relative;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) { .heroIcon { display: flex; } }
+
+.brainIcon { color: var(--primary); opacity: 0.9; position: relative; z-index: 1; }
+
+.orbit,
+.orbit2 {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1.5px dashed var(--primary-light);
+  pointer-events: none;
+}
+
+.orbit { width: 155px; height: 155px; animation: spinSlow 16s linear infinite; }
+.orbit2 { width: 195px; height: 195px; opacity: 0.4; animation: spinSlow 26s linear infinite reverse; }
+
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+
+/* ─── Features ───────────────────────────────────────────────────────────────── */
+.features { padding-block: 3.5rem; background-color: var(--bg-secondary); }
+
+.featuresInner {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) { .featuresInner { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .featuresInner { padding-inline: 2rem; } }
+
+.featuresTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  margin: 0 0 0.5rem;
+}
+
+.featuresSubtitle { font-size: 0.875rem; color: var(--text-secondary); margin: 0 0 2rem; font-weight: 400; }
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) { .featureGrid { grid-template-columns: repeat(2, 1fr); } }
+
+.featureCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 1.5rem;
+  transition: border-color 200ms ease, transform 220ms ease, box-shadow 200ms ease;
+}
+
+.featureCard:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -8px color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+.featureIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
+  color: var(--primary);
+}
+
+.featureTitle { font-size: 1rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+
+.featureDesc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.625; margin: 0; }
+
+/* ─── Fundraiser ─────────────────────────────────────────────────────────────── */
+.fundraiser { padding-block: 3rem; background: var(--bg-primary); }
+
+.fundraiserInner {
+  width: 100%;
+  max-width: 660px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) { .fundraiserInner { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .fundraiserInner { padding-inline: 2rem; } }
+
+.fundraiserCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px -8px color-mix(in srgb, var(--shadow-color) 18%, transparent);
+}
+
+.fundraiserTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.04em;
+}
+
+.fundraiserSubtitle { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.625; margin: 0 0 1.5rem; }
+
+.fundraiserStats { display: flex; gap: 2rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+
+.fundraiserStat { display: flex; flex-direction: column; gap: 2px; }
+
+.fundraiserStatValue {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.fundraiserStatLabel { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.fundraiserBar { height: 8px; background: var(--bg-secondary); border-radius: 9999px; overflow: hidden; margin-bottom: 0.5rem; }
+
+.fundraiserFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 9999px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 4px;
+}
+
+.fundraiserPercent { font-size: 0.75rem; color: var(--text-muted); margin: 0 0 1.5rem; font-weight: 500; }
+
+.fundraiserBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 16px;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+.fundraiserBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 40%, transparent);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ─── Notice ─────────────────────────────────────────────────────────────────── */
+.notice { padding-block: 2.5rem; }
+
+.noticeInner {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-card));
+  border: 1px solid var(--primary-light);
+  border-radius: 24px;
+  padding: 1.5rem 2rem;
+}
+
+@media (min-width: 768px) { .noticeInner { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .noticeInner { padding-inline: 2rem; } }
+
+.noticeIcon { color: var(--primary); flex-shrink: 0; }
+
+.noticeText {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.625;
+  min-width: 200px;
+}
+
+.noticeText strong { color: var(--text-primary); font-weight: 600; }
+
+.noticeBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.noticeBtn:hover { background-color: var(--primary-dark); transform: translateY(-1px); }

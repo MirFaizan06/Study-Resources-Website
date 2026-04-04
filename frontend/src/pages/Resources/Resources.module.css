@@ -1,0 +1,210 @@
+/* Resources Page — Premium Redesign */
+
+.page { padding-block: 2.5rem 5rem; background-color: var(--bg-primary); }
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) { .container { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .container { padding-inline: 2rem; } }
+
+/* ─── Header ─────────────────────────────────────────────────────────────────── */
+.pageHeader { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.pageTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1.875rem, 5vw, 2.25rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.05em;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.pageSubtitle { font-size: 1rem; color: var(--text-secondary); font-weight: 400; max-width: 520px; margin: 0; }
+
+/* ─── Filter Bar ─────────────────────────────────────────────────────────────── */
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+}
+
+.searchWrap { flex: 1; min-width: 220px; }
+
+.typeTabs {
+  display: flex;
+  gap: 0.25rem;
+  background-color: var(--bg-surface);
+  padding: 0.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+}
+
+.typeTab {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+  white-space: nowrap;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.typeTab:hover { color: var(--text-primary); }
+
+.typeTabActive {
+  background-color: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--shadow-color) 15%, transparent);
+}
+
+.sortWrap { display: flex; align-items: center; gap: 0.5rem; position: relative; }
+
+.sortSelect {
+  appearance: none;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  outline: none;
+}
+
+.sortSelect:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-lighter);
+}
+
+.selectChevron { position: absolute; right: 0.75rem; pointer-events: none; color: var(--text-muted); }
+
+/* ─── Resources Grid ─────────────────────────────────────────────────────────── */
+.resourcesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ─── Semester / Subject View ────────────────────────────────────────────────── */
+.semesterSection { display: flex; flex-direction: column; gap: 1.25rem; padding-top: 1rem; }
+
+.semesterHeader { display: flex; align-items: center; gap: 1rem; }
+
+.semesterTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.semesterDivider { flex: 1; height: 1px; background: linear-gradient(to right, var(--border-strong), transparent); }
+
+.subjectsGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; }
+
+.subjectCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  transition: border-color 180ms ease, transform 200ms ease, box-shadow 180ms ease;
+}
+
+.subjectCard:hover {
+  border-color: var(--primary);
+  transform: translateX(5px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 10%, transparent);
+  text-decoration: none;
+}
+
+.subjectCard:hover .subjectIcon { color: var(--primary); }
+
+.subjectIcon { color: var(--text-muted); transition: color 180ms ease; flex-shrink: 0; }
+
+.subjectName {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.subjectBadges { display: flex; gap: 0.25rem; flex-shrink: 0; }
+
+/* ─── Empty State ────────────────────────────────────────────────────────────── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.emptyIcon { color: var(--primary); opacity: 0.3; }
+
+.emptyTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.emptySubtitle { font-size: 1rem; color: var(--text-secondary); max-width: 360px; margin: 0; line-height: 1.625; }
+
+/* ─── Load More ──────────────────────────────────────────────────────────────── */
+.loadMoreWrap { display: flex; align-items: center; justify-content: center; padding-top: 2.5rem; }
+
+/* ─── Skeleton ───────────────────────────────────────────────────────────────── */
+.skeletonCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  height: 240px;
+  background: linear-gradient(90deg, var(--bg-secondary) 0%, var(--border-color) 50%, var(--bg-secondary) 100%);
+  background-size: 300% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

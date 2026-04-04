@@ -12,8 +12,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // Inject abstracts into every SCSS file so modules can use $variables and mixins
-        // without manually importing them.
+        // Inject abstracts for any remaining .module.scss files (e.g. Board, Admin pages)
         additionalData: (source: string) => {
           const abs = path.resolve(__dirname, 'src/styles/abstracts').replace(/\\/g, '/')
           return `@import "${abs}/functions";@import "${abs}/variables";@import "${abs}/mixins";\n${source}`

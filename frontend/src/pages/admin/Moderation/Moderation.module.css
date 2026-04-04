@@ -1,0 +1,213 @@
+/* Admin Moderation Page */
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.page { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.header { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0; letter-spacing: -0.02em; }
+
+.subtitle { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 3px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  transition: background 150ms ease, color 150ms ease;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+
+.tab:hover { color: var(--text-primary); }
+
+.tabActive {
+  background: var(--bg-primary);
+  color: var(--primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.statusFilter {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  outline: none;
+}
+
+.statusFilter:focus { border-color: var(--primary); }
+
+.searchWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  min-width: 180px;
+  transition: border-color 150ms ease;
+}
+.searchWrap:focus-within { border-color: var(--primary); }
+.searchInput {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+.searchInput::placeholder { color: var(--text-muted); }
+
+.loader { display: flex; align-items: center; justify-content: center; padding: 3rem; }
+
+/* ─── Table ──────────────────────────────────────────────────────────────────── */
+.tableWrap {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background-color: var(--bg-card);
+}
+
+.table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+
+.table thead tr { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); }
+
+.table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background 150ms ease;
+}
+
+.table tbody tr:last-child { border-bottom: none; }
+.table tbody tr:hover { background: var(--bg-secondary); }
+
+.table td { padding: 0.75rem 1rem; color: var(--text-primary); vertical-align: middle; }
+
+/* ─── Cell types ─────────────────────────────────────────────────────────────── */
+.contentCell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-width: 300px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.postType {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--primary-lighter);
+  color: var(--primary);
+}
+
+.authorCell { display: flex; flex-direction: column; gap: 2px; }
+.authorCell small { font-size: 0.75rem; color: var(--text-muted); }
+
+.dateCell { white-space: nowrap; color: var(--text-muted) !important; }
+
+.statusBadge { display: inline-block; padding: 2px 10px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+
+.active  { background: rgba(34, 197, 94, 0.12); color: #15803d; }
+.removed { background: rgba(239, 68, 68, 0.12);  color: #dc2626; }
+
+.actionsCell { white-space: nowrap; }
+
+.removeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  border-radius: 0.75rem;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  color: #dc2626;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.removeBtn:hover { background: rgba(239, 68, 68, 0.08); border-color: #dc2626; }
+
+.restoreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1.5px solid rgba(34, 197, 94, 0.4);
+  border-radius: 0.75rem;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  color: #15803d;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.restoreBtn:hover { background: rgba(34, 197, 94, 0.08); border-color: #15803d; }
+
+/* ─── Skeleton ───────────────────────────────────────────────────────────────── */
+.skeletonTable { border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+
+.skeletonRow {
+  height: 56px;
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border-color) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.skeletonRow:last-child { border-bottom: none; }
+
+/* ─── Empty ──────────────────────────────────────────────────────────────────── */
+.emptyState { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; gap: 0.75rem; }
+.emptyTitle { font-size: 1.25rem; color: var(--text-primary); margin: 0; }
+.emptySubtitle { color: var(--text-muted); margin: 0; font-size: 0.875rem; }

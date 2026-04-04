@@ -7,7 +7,7 @@ import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
 import ContributeTutorial from './ContributeTutorial'
 import type { Institution, Program, Subject, ResourceType, ContributePayload } from '@/types'
-import styles from './Contribute.module.scss'
+import styles from './Contribute.module.css'
 
 const RESOURCE_TYPES: Array<{ value: ResourceType; label: string }> = [
   { value: 'NOTE', label: 'Notes' },

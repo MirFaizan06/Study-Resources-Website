@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { ShieldCheck, ShieldX, Eye, MessageSquare } from 'lucide-react'
+import { ShieldCheck, ShieldX, Eye, MessageSquare, Search } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { api } from '@/services/api'
 import type { BoardModerationPost, BoardModerationComment } from '@/types'
-import styles from './Moderation.module.scss'
+import styles from './Moderation.module.css'
 
 type Tab = 'posts' | 'comments'
 
@@ -23,6 +23,25 @@ export default function ModerationPage(): React.ReactElement {
   const [comments, setComments] = useState<BoardModerationComment[]>([])
   const [loading, setLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<string>('')
+  const [categoryFilter, setCategoryFilter] = useState<string>('')
+  const [search, setSearch] = useState('')
+
+  const filteredPosts = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    return posts.filter((p) => {
+      if (categoryFilter && p.category !== categoryFilter) return false
+      if (q && !p.title.toLowerCase().includes(q) && !p.author.name.toLowerCase().includes(q)) return false
+      return true
+    })
+  }, [posts, categoryFilter, search])
+
+  const filteredComments = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    return comments.filter((c) => {
+      if (q && !c.content.toLowerCase().includes(q) && !c.author.name.toLowerCase().includes(q)) return false
+      return true
+    })
+  }, [comments, search])
 
   useEffect(() => {
     setLoading(true)
@@ -86,6 +105,31 @@ export default function ModerationPage(): React.ReactElement {
           <option value="ACTIVE">{t.admin.moderation.active}</option>
           <option value="REMOVED">{t.admin.moderation.removed}</option>
         </select>
+
+        {tab === 'posts' && (
+          <select
+            className={styles.statusFilter}
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            aria-label="Filter by category"
+          >
+            <option value="">All Categories</option>
+            {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
+              <option key={k} value={k}>{v}</option>
+            ))}
+          </select>
+        )}
+
+        <div className={styles.searchWrap}>
+          <Search size={13} aria-hidden="true" style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder={tab === 'posts' ? 'Search posts…' : 'Search comments…'}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {loading ? (
@@ -98,8 +142,8 @@ export default function ModerationPage(): React.ReactElement {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          {posts.length === 0 ? (
-            <p className={styles.empty}>{t.admin.moderation.noPosts}</p>
+          {filteredPosts.length === 0 ? (
+            <p className={styles.empty}>{posts.length === 0 ? t.admin.moderation.noPosts : 'No posts match the current filters.'}</p>
           ) : (
             <table className={styles.table}>
               <thead>
@@ -114,7 +158,7 @@ export default function ModerationPage(): React.ReactElement {
                 </tr>
               </thead>
               <tbody>
-                {posts.map((post) => (
+                {filteredPosts.map((post) => (
                   <tr key={post.id}>
                     <td className={styles.titleCell}>{post.title}</td>
                     <td><span className={styles.catTag}>{CATEGORY_LABELS[post.category] ?? post.category}</span></td>
@@ -162,8 +206,8 @@ export default function ModerationPage(): React.ReactElement {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          {comments.length === 0 ? (
-            <p className={styles.empty}>{t.admin.moderation.noComments}</p>
+          {filteredComments.length === 0 ? (
+            <p className={styles.empty}>{comments.length === 0 ? t.admin.moderation.noComments : 'No comments match the current filters.'}</p>
           ) : (
             <table className={styles.table}>
               <thead>
@@ -177,7 +221,7 @@ export default function ModerationPage(): React.ReactElement {
                 </tr>
               </thead>
               <tbody>
-                {comments.map((comment) => (
+                {filteredComments.map((comment) => (
                   <tr key={comment.id}>
                     <td className={styles.contentCell}>{comment.content}</td>
                     <td className={styles.titleCell}>{comment.post.title}</td>

@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { UserX, UserCheck, ChevronLeft, ChevronRight } from 'lucide-react'
+import { UserX, UserCheck, ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { api } from '@/services/api'
 import type { AdminUserEntry, AdminUsersPage } from '@/types'
-import styles from './Users.module.scss'
+import styles from './Users.module.css'
+
+type StatusFilter = 'ALL' | 'ACTIVE' | 'BANNED'
+type RoleFilter   = 'ALL' | 'STUDENT' | 'CONTRIBUTOR' | 'ADMIN'
 
 export default function AdminUsersPage(): React.ReactElement {
   const { t } = useLocale()
@@ -15,6 +18,9 @@ export default function AdminUsersPage(): React.ReactElement {
   const [banReason, setBanReason] = useState<Record<string, string>>({})
   const [confirmBanId, setConfirmBanId] = useState<string | null>(null)
   const [toast, setToast] = useState('')
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>('ALL')
 
   const showToast = (msg: string) => {
     setToast(msg)
@@ -30,6 +36,18 @@ export default function AdminUsersPage(): React.ReactElement {
   }, [])
 
   useEffect(() => { load(1) }, [load])
+
+  const filteredUsers = useMemo(() => {
+    if (!data) return []
+    const q = search.toLowerCase().trim()
+    return data.users.filter((u) => {
+      if (q && !u.name.toLowerCase().includes(q) && !u.email.toLowerCase().includes(q)) return false
+      if (statusFilter === 'ACTIVE' && u.isBanned) return false
+      if (statusFilter === 'BANNED' && !u.isBanned) return false
+      if (roleFilter !== 'ALL' && u.role !== roleFilter) return false
+      return true
+    })
+  }, [data, search, statusFilter, roleFilter])
 
   const handleBan = async (user: AdminUserEntry) => {
     if (confirmBanId !== user.id) {
@@ -82,6 +100,34 @@ export default function AdminUsersPage(): React.ReactElement {
         <p className={styles.subtitle}>{t.admin.users.subtitle}</p>
       </div>
 
+      {/* ─── Filters ─────────────────────────────────────────────────────────── */}
+      <div className={styles.filters}>
+        <div className={styles.searchWrap}>
+          <Search size={14} className={styles.searchIcon} aria-hidden="true" />
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder="Search by name or email…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <select className={styles.filterSelect} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)} aria-label="Filter by status">
+          <option value="ALL">All Statuses</option>
+          <option value="ACTIVE">Active</option>
+          <option value="BANNED">Banned</option>
+        </select>
+        <select className={styles.filterSelect} value={roleFilter} onChange={(e) => setRoleFilter(e.target.value as RoleFilter)} aria-label="Filter by role">
+          <option value="ALL">All Roles</option>
+          <option value="STUDENT">Student</option>
+          <option value="CONTRIBUTOR">Contributor</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+        {!loading && data && (
+          <span className={styles.filterCount}>{filteredUsers.length} of {data.users.length} users</span>
+        )}
+      </div>
+
       {toast && (
         <motion.p
           className={styles.toast}
@@ -98,8 +144,10 @@ export default function AdminUsersPage(): React.ReactElement {
           <div className={styles.loaderRow}>
             <div className={styles.spinner} />
           </div>
-        ) : !data || data.users.length === 0 ? (
-          <p className={styles.empty}>{t.admin.users.noUsers}</p>
+        ) : !data || filteredUsers.length === 0 ? (
+          <p className={styles.empty}>
+            {!data || data.users.length === 0 ? t.admin.users.noUsers : 'No users match the current filters.'}
+          </p>
         ) : (
           <table className={styles.table}>
             <thead>
@@ -113,7 +161,7 @@ export default function AdminUsersPage(): React.ReactElement {
               </tr>
             </thead>
             <tbody>
-              {data.users.map((user) => (
+              {filteredUsers.map((user) => (
                 <React.Fragment key={user.id}>
                   <tr className={user.isBanned ? styles.rowBanned : ''}>
                     <td>

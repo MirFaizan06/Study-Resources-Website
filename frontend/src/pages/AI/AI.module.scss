@@ -1,27 +1,26 @@
-.page {
-  @include flex-column;
-}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// AI Page — Premium Redesign
+// Deep gradient hero with orbital animation, polished feature cards,
+// refined fundraiser card with progress bar, clean notice strip.
+// ══════════════════════════════════════════════════════════════════════════════
+
+.page { display: flex; flex-direction: column; }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: $space-16 $space-20;
-  background: linear-gradient(
-    135deg,
-    var(--bg-primary) 0%,
-    var(--secondary-light) 40%,
-    var(--primary-lighter) 100%
-  );
+  padding-block: $space-20 $space-24;
+  background: var(--bg-primary);
 }
 
 .heroBg {
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle at 10% 30%, var(--primary-light) 0%, transparent 50%),
-    radial-gradient(circle at 90% 70%, var(--secondary-light) 0%, transparent 45%);
-  opacity: 0.5;
+  background:
+    radial-gradient(ellipse 50% 70% at 10% 20%, color-mix(in srgb, var(--primary-dark) 30%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, color-mix(in srgb, var(--secondary-dark) 25%, transparent) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -34,58 +33,67 @@
   position: relative;
   z-index: 1;
 
-  @include respond-to(lg) {
-    grid-template-columns: 1fr auto;
-  }
+  @include respond-to(lg) { grid-template-columns: 1fr auto; }
 }
 
 .heroContent {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-6;
-  max-width: 600px;
+  max-width: 580px;
 }
 
+// ─── Badge ────────────────────────────────────────────────────────────────────
 .badge {
   display: inline-flex;
   align-items: center;
   gap: $space-2;
-  background-color: var(--secondary-light);
+  background-color: color-mix(in srgb, var(--secondary) 12%, transparent);
   color: var(--secondary);
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  padding: $space-2 $space-4;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-extrabold;
+  padding: $space-1 $space-3;
   border-radius: $radius-full;
-  border: 1px solid var(--secondary);
+  border: 1px solid color-mix(in srgb, var(--secondary) 30%, transparent);
   width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .heroTitle {
+  font-family: $font-family-heading;
   font-size: clamp($font-size-3xl, 5vw, $font-size-5xl);
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  line-height: $line-height-tight;
-  letter-spacing: -0.03em;
+  line-height: 1.06;
+  letter-spacing: -0.05em;
+  margin: 0;
 }
 
 .heroAccent {
-  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .heroSubtitle {
-  font-size: $font-size-lg;
+  font-size: $font-size-base;
   color: var(--text-secondary);
   line-height: $line-height-relaxed;
-  max-width: 520px;
+  max-width: 480px;
+  margin: 0;
 }
 
 .heroCta {
-  @include flex-column;
+  display: flex;
+  flex-direction: column;
   gap: $space-2;
-  max-width: 320px;
+  max-width: 300px;
 }
 
 .progressBar {
-  height: 6px;
+  height: 5px;
   background-color: var(--border-color);
   border-radius: $radius-full;
   overflow: hidden;
@@ -96,12 +104,12 @@
   width: 35%;
   background: linear-gradient(90deg, var(--primary), var(--secondary));
   border-radius: $radius-full;
-  animation: pulse-fill 2.5s ease-in-out infinite;
+  animation: pulsefill 2.8s ease-in-out infinite;
 }
 
-@keyframes pulse-fill {
+@keyframes pulsefill {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.65; }
+  50% { opacity: 0.6; }
 }
 
 .progressLabel {
@@ -110,23 +118,22 @@
   font-weight: $font-weight-medium;
 }
 
-// ─── Hero icon ────────────────────────────────────────────────────────────────
+// ─── Hero Icon ────────────────────────────────────────────────────────────────
 .heroIcon {
   position: relative;
   display: none;
   align-items: center;
   justify-content: center;
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
 
-  @include respond-to(lg) {
-    display: flex;
-  }
+  @include respond-to(lg) { display: flex; }
 }
 
 .brainIcon {
   color: var(--primary);
-  opacity: 0.85;
+  opacity: 0.9;
   position: relative;
   z-index: 1;
 }
@@ -140,44 +147,42 @@
 }
 
 .orbit {
-  width: 170px;
-  height: 170px;
-  animation: spin-slow 14s linear infinite;
+  width: 155px;
+  height: 155px;
+  animation: spinSlow 16s linear infinite;
 }
 
 .orbit2 {
-  width: 210px;
-  height: 210px;
-  opacity: 0.5;
-  animation: spin-slow 22s linear infinite reverse;
+  width: 195px;
+  height: 195px;
+  opacity: 0.4;
+  animation: spinSlow 26s linear infinite reverse;
 }
 
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
 
 // ─── Features ─────────────────────────────────────────────────────────────────
 .features {
-  padding-block: $space-16;
+  padding-block: $space-14;
   background-color: var(--bg-secondary);
 }
 
-.featuresInner {
-  @include container;
-}
+.featuresInner { @include container; }
 
 .featuresTitle {
+  font-family: $font-family-heading;
   font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
-  margin-bottom: $space-2;
+  letter-spacing: -0.04em;
+  margin: 0 0 $space-2;
 }
 
 .featuresSubtitle {
-  font-size: $font-size-base;
+  font-size: $font-size-sm;
   color: var(--text-secondary);
-  margin-bottom: $space-10;
+  margin: 0 0 $space-8;
+  font-weight: $font-weight-normal;
 }
 
 .featureGrid {
@@ -185,9 +190,7 @@
   grid-template-columns: 1fr;
   gap: $space-4;
 
-  @include respond-to(md) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  @include respond-to(md) { grid-template-columns: repeat(2, 1fr); }
 }
 
 .featureCard {
@@ -198,46 +201,51 @@
   border: 1px solid var(--border-color);
   border-radius: $radius-2xl;
   padding: $space-6;
-  transition: box-shadow $transition-base, transform $transition-base;
+  transition: border-color 200ms ease, transform 220ms ease, box-shadow 200ms ease;
 
   &:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -8px color-mix(in srgb, var(--primary) 14%, transparent);
   }
 }
 
 .featureIconWrap {
-  @include flex-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 44px;
   height: 44px;
   flex-shrink: 0;
-  border-radius: $radius-xl;
-  background-color: var(--primary-light);
+  border-radius: $radius-lg;
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
   color: var(--primary);
 }
 
 .featureTitle {
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  margin-bottom: $space-2;
+  margin: 0 0 $space-2;
+  letter-spacing: -0.02em;
 }
 
 .featureDesc {
   font-size: $font-size-sm;
   color: var(--text-secondary);
   line-height: $line-height-relaxed;
+  margin: 0;
 }
 
 // ─── Fundraiser ───────────────────────────────────────────────────────────────
 .fundraiser {
   padding-block: $space-12;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
 }
 
 .fundraiserInner {
   @include container;
-  max-width: 680px;
+  max-width: 660px;
 }
 
 .fundraiserCard {
@@ -245,14 +253,16 @@
   border: 1px solid var(--border-color);
   border-radius: $radius-2xl;
   padding: $space-8;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 24px -8px color-mix(in srgb, var(--shadow-color) 18%, transparent);
 }
 
 .fundraiserTitle {
+  font-family: $font-family-heading;
   font-size: $font-size-2xl;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   color: var(--text-primary);
   margin: 0 0 $space-2;
+  letter-spacing: -0.04em;
 }
 
 .fundraiserSubtitle {
@@ -264,32 +274,37 @@
 
 .fundraiserStats {
   display: flex;
-  gap: $space-6;
+  gap: $space-8;
   margin-bottom: $space-5;
   flex-wrap: wrap;
 }
 
 .fundraiserStat {
-  @include flex-column;
-  gap: $space-1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .fundraiserStatValue {
+  font-family: $font-family-heading;
   font-size: $font-size-2xl;
   font-weight: $font-weight-extrabold;
   color: var(--primary);
   line-height: 1;
+  letter-spacing: -0.03em;
 }
 
 .fundraiserStatLabel {
-  font-size: $font-size-xs;
+  font-size: 10px;
   color: var(--text-muted);
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .fundraiserBar {
-  height: 10px;
-  background: var(--border-color);
+  height: 8px;
+  background: var(--bg-secondary);
   border-radius: $radius-full;
   overflow: hidden;
   margin-bottom: $space-2;
@@ -299,33 +314,35 @@
   height: 100%;
   background: linear-gradient(90deg, var(--primary), var(--secondary));
   border-radius: $radius-full;
-  transition: width 0.8s ease;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 4px;
 }
 
 .fundraiserPercent {
   font-size: $font-size-xs;
-  color: var(--text-secondary);
-  margin-bottom: $space-6;
+  color: var(--text-muted);
+  margin: 0 0 $space-6;
+  font-weight: $font-weight-medium;
 }
 
 .fundraiserBtn {
   display: inline-flex;
   align-items: center;
   gap: $space-2;
-  background-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   padding: $space-3 $space-6;
-  border-radius: $radius-lg;
+  border-radius: $radius-xl;
   text-decoration: none;
-  transition: background-color $transition-fast, transform $transition-fast;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 40%, transparent);
+  letter-spacing: -0.01em;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 30%, transparent);
 
   &:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 40%, transparent);
     color: #fff;
     text-decoration: none;
   }
@@ -333,7 +350,7 @@
 
 // ─── Notice ───────────────────────────────────────────────────────────────────
 .notice {
-  padding-block: $space-12;
+  padding-block: $space-10;
 }
 
 .noticeInner {
@@ -348,10 +365,7 @@
   padding: $space-6 $space-8;
 }
 
-.noticeIcon {
-  color: var(--primary);
-  flex-shrink: 0;
-}
+.noticeIcon { color: var(--primary); flex-shrink: 0; }
 
 .noticeText {
   flex: 1;
@@ -360,10 +374,7 @@
   line-height: $line-height-relaxed;
   min-width: 200px;
 
-  strong {
-    color: var(--text-primary);
-    font-weight: $font-weight-semibold;
-  }
+  strong { color: var(--text-primary); font-weight: $font-weight-semibold; }
 }
 
 .noticeBtn {
@@ -374,13 +385,15 @@
   background-color: var(--primary);
   color: #fff;
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   padding: $space-3 $space-5;
   border-radius: $radius-lg;
   text-decoration: none;
-  transition: background-color $transition-fast;
+  letter-spacing: -0.01em;
+  transition: background-color 150ms ease, transform 150ms ease;
 
   &:hover {
     background-color: var(--primary-dark);
+    transform: translateY(-1px);
   }
 }

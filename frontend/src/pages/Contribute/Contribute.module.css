@@ -1,0 +1,425 @@
+/* Contribute Page — Premium Redesign */
+
+.page { padding-block: 2.5rem 4rem; }
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) { .container { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: 2rem;
+    grid-template-columns: 1fr 300px;
+    align-items: start;
+  }
+}
+
+.container > .pageHeader,
+.container > .stepper {
+  grid-column: 1 / -1;
+}
+
+/* ─── Page Header ────────────────────────────────────────────────────────────── */
+.pageHeader { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.pageTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 1.875rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+.pageSubtitle { font-size: 1rem; color: var(--text-secondary); margin: 0; font-weight: 400; }
+
+/* ─── Stepper ────────────────────────────────────────────────────────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+}
+
+.stepperItem { display: flex; align-items: center; gap: 0.75rem; opacity: 0.35; transition: opacity 200ms ease; }
+
+.stepperActive,
+.stepperDone { opacity: 1; }
+
+.stepperNumber {
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.stepperActive .stepperNumber {
+  background-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 0 3px var(--primary-lighter);
+}
+
+.stepperDone .stepperNumber { background-color: var(--accent); color: #fff; }
+
+.stepperText { display: flex; flex-direction: column; gap: 1px; }
+
+.stepperLabel { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
+
+.stepperDesc { font-size: 0.75rem; color: var(--text-muted); display: none; }
+
+@media (min-width: 768px) { .stepperDesc { display: block; } }
+
+.stepperArrow { color: var(--text-muted); flex-shrink: 0; }
+
+/* ─── Form Area ──────────────────────────────────────────────────────────────── */
+.formArea {
+  background-color: color-mix(in srgb, var(--bg-card) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+  padding: 2rem;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.formStep { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.stepTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  letter-spacing: -0.02em;
+}
+
+/* ─── Form Fields ────────────────────────────────────────────────────────────── */
+.fieldGroup { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.row { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+@media (min-width: 768px) { .row { grid-template-columns: repeat(2, 1fr); } }
+
+.label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-left: 2px;
+}
+
+.required { color: var(--danger); }
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  outline: none;
+}
+
+.input::placeholder,
+.textarea::placeholder { color: var(--text-muted); opacity: 0.45; font-weight: 400; }
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--primary);
+  background-color: var(--bg-card);
+  box-shadow: 0 0 0 4px var(--primary-lighter);
+}
+
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--bg-tertiary);
+}
+
+.textarea { resize: vertical; min-height: 100px; line-height: 1.625; }
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.inputError,
+.selectError { border-color: var(--danger); }
+
+.inputError:focus,
+.selectError:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 12%, transparent); }
+
+.fieldError { font-size: 0.75rem; color: var(--danger); font-weight: 500; padding-left: 2px; }
+
+.fieldHelp {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.625;
+}
+
+.fieldHelp svg { flex-shrink: 0; margin-top: 2px; }
+
+/* ─── Checkbox ───────────────────────────────────────────────────────────────── */
+.checkboxGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkboxLabel { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); cursor: pointer; letter-spacing: -0.01em; }
+
+.checkboxHelp { font-size: 0.75rem; color: var(--text-muted); margin: 0.25rem 0 0; }
+
+/* ─── Step Actions ───────────────────────────────────────────────────────────── */
+.stepActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+/* ─── Review Card ────────────────────────────────────────────────────────────── */
+.reviewCard {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.reviewRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.reviewRow:last-child { border-bottom: none; }
+
+.reviewKey { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); flex-shrink: 0; letter-spacing: -0.01em; }
+
+.reviewValue { font-size: 0.875rem; color: var(--text-primary); text-align: right; word-break: break-all; font-weight: 500; }
+
+.reviewLink { font-size: 0.875rem; color: var(--primary); }
+
+.reviewNote {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  background-color: color-mix(in srgb, var(--warning) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warning) 25%, transparent);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  margin: 0;
+}
+
+.submitError {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--danger);
+  background-color: color-mix(in srgb, var(--danger) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 25%, transparent);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+}
+
+/* ─── Success State ──────────────────────────────────────────────────────────── */
+.successState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--accent-light), color-mix(in srgb, var(--accent) 12%, transparent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.successTitle {
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.successMessage { font-size: 1rem; color: var(--text-secondary); max-width: 440px; margin: 0; line-height: 1.625; }
+
+/* ─── Guidelines Sidebar ─────────────────────────────────────────────────────── */
+.guidelines {
+  background-color: color-mix(in srgb, var(--bg-card) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: fit-content;
+}
+
+.guidelinesTitle { font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em; }
+
+.guidelinesList { display: flex; flex-direction: column; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
+
+.guidelinesItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.625;
+}
+
+.guidelinesIcon { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+
+/* ─── Naming Guide ───────────────────────────────────────────────────────────── */
+.namingGuide { display: flex; flex-direction: column; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+
+.namingGuideTitle { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin: 0; letter-spacing: -0.01em; }
+
+.namingGuideSubtitle { font-size: 0.75rem; color: var(--text-muted); margin: 0; line-height: 1.625; }
+
+.namingItem { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem; background-color: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color); }
+
+.namingLabel { font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.07em; }
+
+.namingFormat {
+  font-size: 0.75rem;
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  color: var(--text-primary);
+  background-color: var(--bg-card);
+  padding: 0.1875rem 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.namingExample { font-size: 0.75rem; color: var(--text-muted); font-style: italic; }
+
+.namingCategories { font-size: 0.75rem; color: var(--text-secondary); margin: 0; font-weight: 500; }
+
+/* ─── Drive Guide ────────────────────────────────────────────────────────────── */
+.driveGuide {
+  background: linear-gradient(135deg, var(--primary-lighter), var(--bg-secondary));
+  border: 1px solid var(--primary-light);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.driveGuideHeader { display: flex; align-items: center; gap: 0.5rem; }
+.driveGuideIcon { color: var(--primary); flex-shrink: 0; }
+
+.driveGuideTitle { font-size: 0.875rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em; }
+
+.driveGuideIntro { font-size: 0.75rem; color: var(--text-secondary); margin: 0; line-height: 1.625; }
+
+.driveSteps { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 0; padding: 0; }
+
+.driveStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.625;
+}
+
+.driveStep strong { color: var(--text-primary); font-weight: 600; }
+.driveStep em { font-style: italic; color: var(--text-muted); }
+
+.driveStepNum {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.driveLink { color: var(--primary); font-weight: 600; text-decoration: underline; display: inline-flex; align-items: center; gap: 2px; text-underline-offset: 2px; }
+.driveLink:hover { color: var(--primary-dark); }
+
+.driveGuideNote { font-size: 0.75rem; color: var(--text-muted); font-style: italic; margin: 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color); }

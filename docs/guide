@@ -1,0 +1,21 @@
+Railway one-time seed command:
+
+Your start script already runs prisma db push on every deploy. To seed once and not repeat it, use the Railway CLI to run it as a one-off command — it won't touch your start command:
+
+
+# Install Railway CLI if you haven't
+npm i -g @railway/cli
+
+# Login
+railway login
+
+# Link to your project (run from repo root)
+railway link
+
+# Run the seed once in the Railway environment
+railway run npm run db:seed
+This runs node dist/prisma/seed.js directly in Railway's environment (with your DB env vars) without changing the service's start command. No cleanup needed — it's a one-shot command, not a persistent config change.
+
+Note: npm run db:seed runs the compiled dist/prisma/seed.js, so make sure you've pushed a build that includes the compiled seed file, or run railway run npm run build && npm run db:seed if the dist isn't up to date.
+
+Stale background task — nothing to act on, the work is already done.

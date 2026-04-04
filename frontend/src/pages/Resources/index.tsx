@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/Button'
 import { SearchBar } from '@/components/common/SearchBar'
 import { AdBanner } from '@/components/common/AdBanner'
 import type { Resource, Subject, Program, Institution, ResourceType, SubjectCategory } from '@/types'
-import styles from './Resources.module.scss'
+import styles from './Resources.module.css'
 
 type SortOption = 'newest' | 'popular'
 

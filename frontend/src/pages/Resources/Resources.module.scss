@@ -1,6 +1,11 @@
 
+// ══════════════════════════════════════════════════════════════════════════════
+// Resources Page — Premium Redesign
+// Refined filter bar with glass treatment, polished type tabs, elevated cards.
+// ══════════════════════════════════════════════════════════════════════════════
+
 .page {
-  padding-block: $space-12 $space-24;
+  padding-block: $space-10 $space-20;
   background-color: var(--bg-primary);
 }
 
@@ -8,7 +13,7 @@
   @include container;
   display: flex;
   flex-direction: column;
-  gap: $space-10;
+  gap: $space-8;
 }
 
 // ─── Header ───────────────────────────────────────────────────────────────────
@@ -20,47 +25,47 @@
 
 .pageTitle {
   font-family: $font-family-heading;
-  font-size: clamp(2rem, 5vw, $font-size-4xl);
+  font-size: clamp($font-size-3xl, 5vw, $font-size-4xl);
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
   margin: 0;
+  line-height: 1.05;
 }
 
 .pageSubtitle {
-  font-size: $font-size-lg;
+  font-size: $font-size-base;
   color: var(--text-secondary);
-  font-weight: $font-weight-medium;
-  max-width: 600px;
+  font-weight: $font-weight-normal;
+  max-width: 520px;
+  margin: 0;
 }
 
-// ─── Filter bar ───────────────────────────────────────────────────────────────
+// ─── Filter Bar ───────────────────────────────────────────────────────────────
 .filterBar {
   display: flex;
   align-items: center;
-  gap: $space-6;
+  gap: $space-4;
   flex-wrap: wrap;
-  padding: $space-5 $space-6;
+  padding: $space-4 $space-5;
   background: var(--glass-bg);
-  backdrop-filter: blur($glass-blur);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
   border: 1px solid var(--glass-border);
   border-radius: $radius-2xl;
-  box-shadow: var(--shadow-lg);
-  position: sticky;
-  top: calc($navbar-height + $space-4);
-  z-index: $z-sticky;
+  box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
 }
 
 .searchWrap {
   flex: 1;
-  min-width: 250px;
+  min-width: 220px;
 }
 
 .typeTabs {
   display: flex;
-  gap: $space-2;
+  gap: $space-1;
   background-color: var(--bg-surface);
-  padding: $space-1;
+  padding: 0.25rem;
   border-radius: $radius-full;
   border: 1px solid var(--border-color);
 }
@@ -69,31 +74,30 @@
   font-size: 11px;
   font-weight: $font-weight-extrabold;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: $space-2 $space-5;
+  letter-spacing: 0.08em;
+  padding: $space-2 $space-4;
   border-radius: $radius-full;
   border: none;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all $transition-fast;
+  transition: color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
   white-space: nowrap;
+  font-family: $font-family-body;
 
-  &:hover {
-    color: var(--text-primary);
-  }
+  &:hover { color: var(--text-primary); }
 }
 
 .typeTabActive {
   background-color: var(--bg-card);
   color: var(--primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--shadow-color) 15%, transparent);
 }
 
 .sortWrap {
   display: flex;
   align-items: center;
-  gap: $space-3;
+  gap: $space-2;
   position: relative;
 }
 
@@ -104,21 +108,22 @@
   border-radius: $radius-xl;
   color: var(--text-primary);
   font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
-  padding: $space-2 $space-10 $space-2 $space-4;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 2.5rem $space-2 $space-4;
   cursor: pointer;
-  transition: all $transition-fast;
+  font-family: $font-family-body;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  outline: none;
 
   &:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(var(--primary), 0.1);
-    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-lighter);
   }
 }
 
 .selectChevron {
   position: absolute;
-  right: $space-4;
+  right: $space-3;
   pointer-events: none;
   color: var(--text-muted);
 }
@@ -126,16 +131,16 @@
 // ─── Resources Grid ───────────────────────────────────────────────────────────
 .resourcesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: $space-8;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $space-5;
 }
 
-// ─── Subjects / Semester View ─────────────────────────────────────────────────
+// ─── Semester / Subject View ──────────────────────────────────────────────────
 .semesterSection {
   display: flex;
   flex-direction: column;
-  gap: $space-6;
-  padding-top: $space-6;
+  gap: $space-5;
+  padding-top: $space-4;
 }
 
 .semesterHeader {
@@ -146,10 +151,10 @@
 
 .semesterTitle {
   font-family: $font-family-heading;
-  font-size: $font-size-2xl;
+  font-size: $font-size-xl;
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin: 0;
   white-space: nowrap;
 }
@@ -162,82 +167,90 @@
 
 .subjectsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: $space-4;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: $space-3;
 }
 
 .subjectCard {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: $radius-xl;
-  padding: $space-5 $space-6;
+  padding: $space-4 $space-5;
   display: flex;
   align-items: center;
   gap: $space-4;
   text-decoration: none;
-  transition: all $transition-base;
+  transition: border-color 180ms ease, transform 200ms ease, box-shadow 180ms ease;
 
   &:hover {
-    border-color: var(--primary-light);
-    transform: translateX(6px);
-    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 10%, transparent);
     text-decoration: none;
 
-    .subjectIcon {
-      color: var(--primary);
-    }
+    .subjectIcon { color: var(--primary); }
   }
 }
 
 .subjectIcon {
   color: var(--text-muted);
-  transition: color $transition-fast;
+  transition: color 180ms ease;
   flex-shrink: 0;
 }
 
 .subjectName {
   flex: 1;
   font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-semibold;
   color: var(--text-primary);
-  @include truncate;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .subjectBadges {
   display: flex;
   gap: $space-1;
+  flex-shrink: 0;
 }
 
 // ─── Empty State ──────────────────────────────────────────────────────────────
 .emptyState {
-  @include flex-column-center;
-  gap: $space-6;
-  padding: $space-24 $space-8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-5;
+  padding: $space-20 $space-8;
   text-align: center;
 }
 
-.emptyIcon {
-  color: var(--primary-light);
-  opacity: 0.5;
-}
+.emptyIcon { color: var(--primary); opacity: 0.3; }
 
 .emptyTitle {
   font-family: $font-family-heading;
   font-size: $font-size-2xl;
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
+  letter-spacing: -0.03em;
+  margin: 0;
 }
 
 .emptySubtitle {
   font-size: $font-size-base;
   color: var(--text-secondary);
-  max-width: 400px;
+  max-width: 360px;
+  margin: 0;
+  line-height: $line-height-relaxed;
 }
 
-// ─── Load more ────────────────────────────────────────────────────────────────
+// ─── Load More ────────────────────────────────────────────────────────────────
 .loadMoreWrap {
-  @include flex-center;
-  padding-top: $space-12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: $space-10;
 }
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
@@ -246,5 +259,17 @@
   border: 1px solid var(--border-color);
   border-radius: $radius-2xl;
   height: 240px;
-  @include skeleton;
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 0%,
+    var(--border-color) 50%,
+    var(--bg-secondary) 100%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

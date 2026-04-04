@@ -6,7 +6,7 @@ import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
-import styles from './Login.module.scss'
+import styles from './Login.module.css'
 
 export default function AdminLogin(): React.ReactElement {
   const navigate = useNavigate()

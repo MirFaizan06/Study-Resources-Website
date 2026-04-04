@@ -1,37 +1,143 @@
 
+// ══════════════════════════════════════════════════════════════════════════════
+// Footer — Premium Redesign
+// Architectural three-zone layout: donate callout → link columns → bottom bar.
+// Refined donate section with left-accent treatment, clean social buttons.
+// ══════════════════════════════════════════════════════════════════════════════
+
 .footer {
   background-color: var(--bg-surface);
   border-top: 1px solid var(--border-color);
-  padding-top: $space-20;
+  padding-block: $space-16 $space-10;
   margin-top: auto;
 }
 
 .inner {
   @include container;
-  padding-bottom: $space-12;
-}
-
-.top {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: $space-12;
-  margin-bottom: $space-16;
-
-  @include respond-to(md) {
-    grid-template-columns: 2fr 1fr 1fr;
-  }
-
-  @include respond-to(lg) {
-    grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr;
-  }
-}
-
-// ─── Brand ────────────────────────────────────────────────────────────────────
-.brand {
   display: flex;
   flex-direction: column;
-  gap: $space-6;
+  gap: $space-12;
 }
+
+// ─── Donate Callout ───────────────────────────────────────────────────────────
+.donateSection {
+  display: flex;
+  justify-content: center;
+}
+
+.donateBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-8;
+  width: 100%;
+  max-width: 860px;
+  padding: $space-6 $space-8;
+  background-color: var(--bg-card);
+  border-radius: $radius-2xl;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--danger);
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+
+  &:hover {
+    box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--shadow-color) 40%, transparent);
+  }
+
+  @include respond-below(md) {
+    flex-direction: column;
+    text-align: center;
+    padding: $space-6;
+    gap: $space-5;
+    border-left-width: 1px;
+    border-top: 4px solid var(--danger);
+  }
+}
+
+.donateContent {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+
+  @include respond-below(sm) {
+    flex-direction: column;
+    gap: $space-3;
+  }
+}
+
+.heartIcon {
+  color: var(--danger);
+  flex-shrink: 0;
+  animation: heartbeat 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.1); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.06); }
+  70% { transform: scale(1); }
+}
+
+.donateText { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.donateTitle {
+  font-family: $font-family-heading;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-extrabold;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.donateDesc {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-normal;
+  margin: 0;
+}
+
+.donateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+  color: #fff !important;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  padding: $space-3 $space-6;
+  border-radius: $radius-xl;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--danger) 28%, transparent);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--danger) 36%, transparent);
+    opacity: 1;
+  }
+  &:active { transform: translateY(0); }
+}
+
+// ─── Link Columns ─────────────────────────────────────────────────────────────
+.linksSection {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-10;
+  padding-bottom: $space-10;
+  border-bottom: 1px solid var(--border-color);
+
+  @include respond-below(lg) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: $space-8;
+  }
+}
+
+.brandCol { flex-shrink: 0; }
 
 .logo {
   display: flex;
@@ -42,121 +148,63 @@
   font-size: $font-size-xl;
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  transition: opacity 150ms ease;
 
-  &:hover {
-    text-decoration: none;
-  }
+  &:hover { opacity: 0.75; }
 }
 
 .logoIcon {
   color: var(--primary);
-  filter: drop-shadow(0 2px 8px rgba(var(--primary), 0.3));
+  flex-shrink: 0;
 }
 
 .logoText {
-  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.tagline {
-  font-size: $font-size-sm;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 320px;
-  font-weight: $font-weight-medium;
-}
-
-// ─── Support Callout ──────────────────────────────────────────────────────────
-.donateBox {
+.linksRow {
   display: flex;
-  flex-direction: column;
-  gap: $space-4;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: $radius-2xl;
-  padding: $space-6;
-  transition: all $transition-base;
+  flex: 1;
+  justify-content: flex-end;
+  gap: $space-12;
 
-  &:hover {
-    border-color: var(--danger-light);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+  @include respond-below(lg) {
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: $space-8;
+  }
+
+  @include respond-below(sm) {
+    gap: $space-6;
   }
 }
 
-.donateContent {
-  display: flex;
-  gap: $space-3;
-}
-
-.heartIcon {
-  color: var(--danger);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.donateText {
-  display: flex;
-  flex-direction: column;
-  gap: $space-1;
-}
-
-.donateTitle {
-  font-size: $font-size-base;
-  font-weight: $font-weight-bold;
-  color: var(--text-primary);
-}
-
-.donateDesc {
-  font-size: $font-size-xs;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.donateBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: $space-2;
-  background-color: var(--danger);
-  color: #fff;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
-  padding: $space-3 $space-5;
-  border-radius: $radius-xl;
-  text-decoration: none;
-  transition: all $transition-fast;
-
-  &:hover {
-    background-color: var(--danger-dark);
-    text-decoration: none;
-    color: #fff;
-    transform: scale(1.02);
-  }
-}
-
-// ─── Links ────────────────────────────────────────────────────────────────────
 .linksCol {
   display: flex;
   flex-direction: column;
-  gap: $space-6;
+  gap: $space-4;
+  min-width: 100px;
 }
 
 .colTitle {
-  font-size: 11px;
+  font-family: $font-family-heading;
+  font-size: 10px;
   font-weight: $font-weight-extrabold;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.15em;
+  margin: 0;
 }
 
 .linkList {
   display: flex;
   flex-direction: column;
-  gap: $space-3;
+  gap: $space-2;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -166,59 +214,125 @@
   font-size: $font-size-sm;
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: $font-weight-semibold;
-  transition: all $transition-fast;
+  font-weight: $font-weight-medium;
+  transition: color 140ms ease;
+
+  &:hover { color: var(--primary); }
+}
+
+.socialRow {
+  display: flex;
+  gap: $space-2;
+
+  @include respond-below(lg) { justify-content: center; }
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
 
   &:hover {
     color: var(--primary);
-    transform: translateX(4px);
-    text-decoration: none;
+    border-color: var(--primary);
+    background-color: var(--primary-lighter);
+    transform: translateY(-2px);
   }
 }
 
 // ─── Bottom Bar ───────────────────────────────────────────────────────────────
 .bottom {
   display: flex;
-  flex-direction: column;
-  gap: $space-6;
-  padding-top: $space-8;
-  border-top: 1px solid var(--border-color);
   align-items: center;
-  text-align: center;
+  justify-content: space-between;
+  gap: $space-6;
 
-  @include respond-to(md) {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
+  @include respond-below(md) {
+    flex-direction: column;
+    text-align: center;
+    gap: $space-4;
+  }
+}
+
+.bottomLeft {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  flex-wrap: wrap;
+
+  @include respond-below(md) {
+    flex-direction: column;
+    gap: $space-3;
+    align-items: center;
   }
 }
 
 .copyright {
-  font-size: $font-size-sm;
+  font-size: $font-size-xs;
   color: var(--text-muted);
   font-weight: $font-weight-medium;
+  margin: 0;
 }
 
-.credit {
+.legalLinks {
   display: flex;
-  align-items: center;
   gap: $space-4;
 }
 
+.legalLink {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  transition: color 140ms ease;
+
+  &:hover { color: var(--text-secondary); }
+}
+
+.bottomRight {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+
+  @include respond-below(md) {
+    flex-direction: column;
+    gap: $space-3;
+  }
+}
+
 .versionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
   font-family: $font-family-mono;
   font-size: 10px;
   font-weight: $font-weight-bold;
   color: var(--primary);
   background-color: var(--primary-lighter);
-  padding: 2px $space-3;
+  padding: 0.1875rem $space-2;
   border-radius: $radius-full;
   border: 1px solid var(--primary-light);
   text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: background-color 150ms ease, color 150ms ease;
 
   &:hover {
     background-color: var(--primary);
     color: #fff;
-    text-decoration: none;
   }
+}
+
+.credit {
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  font-weight: $font-weight-medium;
+  margin: 0;
 }

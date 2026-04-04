@@ -1,0 +1,87 @@
+/* Theme: Orange — Warm Premium Minimalist */
+[data-theme='orange'] {
+  --bg-primary:   #ffffff;
+  --bg-secondary: #fdfaf7;
+  --bg-tertiary:  #f9f4ef;
+  --bg-surface:   #f5ede5;
+  --bg-card:      #ffffff;
+  --bg-overlay:   rgba(40, 18, 0, 0.45);
+
+  --text-primary:   #1c0f06;
+  --text-secondary: #4a3020;
+  --text-muted:     #8a6f5c;
+  --text-inverse:   #ffffff;
+
+  --border-color:  #ede0d6;
+  --border-strong: #ddd0c4;
+  --border-light:  #f5eee8;
+
+  --shadow-color: rgba(40, 18, 0, 0.1);
+  --shadow-sm:    0 1px 3px rgba(40, 18, 0, 0.06);
+  --shadow-md:    0 4px 12px rgba(40, 18, 0, 0.08);
+  --shadow-lg:    0 8px 24px rgba(40, 18, 0, 0.1);
+  --shadow-xl:    0 16px 48px rgba(40, 18, 0, 0.12);
+  --shadow-2xl:   0 24px 64px rgba(40, 18, 0, 0.14);
+  --shadow-glow:  0 0 20px rgba(234, 88, 12, 0.18);
+
+  --primary:         #ea580c;
+  --primary-dark:    #c2410c;
+  --primary-light:   #fed7aa;
+  --primary-lighter: rgba(234, 88, 12, 0.07);
+
+  --secondary:         #d97706;
+  --secondary-dark:    #b45309;
+  --secondary-light:   #fde68a;
+  --secondary-lighter: rgba(217, 119, 6, 0.08);
+
+  --accent:       #0d9488;
+  --accent-dark:  #0f766e;
+  --accent-light: rgba(13, 148, 136, 0.1);
+
+  --danger:       #dc2626;
+  --danger-dark:  #b91c1c;
+  --danger-light: rgba(220, 38, 38, 0.08);
+  --danger-glow:  0 0 16px rgba(220, 38, 38, 0.18);
+
+  --warning:       #d97706;
+  --warning-light: rgba(217, 119, 6, 0.08);
+  --warning-glow:  0 0 16px rgba(217, 119, 6, 0.18);
+
+  --success:       #0d9488;
+  --success-light: rgba(13, 148, 136, 0.08);
+  --success-glow:  0 0 16px rgba(13, 148, 136, 0.18);
+
+  --navbar-bg:     rgba(255, 255, 255, 0.82);
+  --navbar-border: rgba(237, 224, 214, 0.6);
+  --navbar-shadow: 0 1px 0 rgba(40, 18, 0, 0.06);
+
+  --sidebar-bg:     #fdfaf7;
+  --sidebar-border: #ede0d6;
+
+  --input-bg:           #fdfaf7;
+  --input-border:       #ddd0c4;
+  --input-focus-border: #ea580c;
+  --input-focus-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+  --input-placeholder:  rgba(138, 111, 92, 0.4);
+
+  --card-bg:     #ffffff;
+  --card-border: #ede0d6;
+  --card-shadow: 0 8px 32px -8px rgba(40, 18, 0, 0.1);
+
+  --glass-bg:     rgba(255, 252, 249, 0.82);
+  --glass-border: rgba(237, 224, 214, 0.5);
+  --glass-blur:   16px;
+
+  --badge-blue-bg:    rgba(37, 99, 235, 0.07);
+  --badge-blue-text:  #1d4ed8;
+  --badge-orange-bg:  rgba(234, 88, 12, 0.08);
+  --badge-orange-text:#c2410c;
+  --badge-green-bg:   rgba(13, 148, 136, 0.08);
+  --badge-green-text: #0f766e;
+  --badge-red-bg:     rgba(220, 38, 38, 0.08);
+  --badge-red-text:   #b91c1c;
+  --badge-yellow-bg:  rgba(217, 119, 6, 0.08);
+  --badge-yellow-text:#92400e;
+  --badge-gray-bg:    rgba(107, 114, 128, 0.08);
+  --badge-gray-text:  #374151;
+}

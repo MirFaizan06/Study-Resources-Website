@@ -1,619 +1,467 @@
 
-// ─── Header Shell ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Navbar — Premium Redesign
+// Sticky frosted glass header with refined typography, elevated dropdowns,
+// and precise micro-interactions. All state/logic in TSX is untouched.
+// ══════════════════════════════════════════════════════════════════════════════
+
 .header {
   position: sticky;
   top: 0;
-  left: 0;
+  z-index: 200;
   width: 100%;
-  height: $navbar-height;
-  z-index: $z-sticky;
-  transition: all $transition-base;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 $space-4;
-
-  &.scrolled {
-    background-color: transparent;
-    height: calc($navbar-height - 10px);
-    
-    .inner {
-      background-color: var(--navbar-bg);
-      backdrop-filter: blur($glass-blur);
-      -webkit-backdrop-filter: blur($glass-blur);
-      border: 1px solid var(--navbar-border);
-      box-shadow: var(--navbar-shadow);
-      border-radius: $radius-2xl;
-      height: 100%;
-      padding: 0 $space-6;
-      margin-top: $space-2;
-    }
-  }
+  background: var(--navbar-bg);
+  border-bottom: 1px solid var(--navbar-border);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
 }
 
 .nav {
-  width: 100%;
-  max-width: $container-max;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  @include container;
+  height: 60px;
+  position: relative;
 }
 
 .inner {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: space-between;
   height: 100%;
-  transition: all $transition-base;
-  gap: $space-4;
-  padding: 0 $space-2;
+  gap: $space-6;
 }
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 .logo {
   display: flex;
   align-items: center;
-  gap: $space-2;
+  gap: 0.625rem;
   text-decoration: none;
-  transition: transform $transition-fast;
-
-  &:hover {
-    transform: translateY(-1px);
-    text-decoration: none;
-  }
+  flex-shrink: 0;
+  transition: opacity 150ms ease;
+  &:hover { opacity: 0.72; }
 }
 
 .logoMark {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-md;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(var(--primary), 0.3);
   flex-shrink: 0;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.logoTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .logoText {
   font-family: $font-family-heading;
-  font-size: 1.25rem;
+  font-size: $font-size-base;
   font-weight: $font-weight-extrabold;
   color: var(--text-primary);
+  line-height: 1;
   letter-spacing: -0.03em;
-  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .logoSub {
-  font-size: 10px;
-  font-weight: $font-weight-semibold;
+  font-size: 9px;
+  font-weight: $font-weight-bold;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.7;
+  letter-spacing: 0.07em;
+  line-height: 1;
 }
 
-// ─── Desktop Links ────────────────────────────────────────────────────────────
-.links {
+// ─── Desktop Navigation ───────────────────────────────────────────────────────
+.mainNav {
   display: none;
-  align-items: center;
-  gap: $space-1;
-  list-style: none;
-  margin-left: $space-4;
+  height: 100%;
+  flex: 1;
 
   @include respond-to(lg) {
     display: flex;
+    align-items: center;
   }
 }
 
+.links {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 0.125rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .link {
-  position: relative;
-  font-size: $font-size-sm;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 0.6875rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
   font-weight: $font-weight-semibold;
-  color: var(--text-secondary);
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  transition: all $transition-fast;
+  color: var(--text-muted);
   text-decoration: none;
+  transition: color 130ms ease, background-color 130ms ease;
   white-space: nowrap;
+  letter-spacing: -0.01em;
 
   &:hover {
     color: var(--text-primary);
-    background-color: var(--bg-surface);
-    text-decoration: none;
+    background-color: color-mix(in srgb, var(--text-primary) 6%, transparent);
   }
 }
 
 .linkActive {
-  color: var(--primary);
-  background-color: var(--primary-lighter);
-
-  &:hover {
-    background-color: var(--primary-lighter);
-    color: var(--primary-dark);
-  }
+  color: var(--primary) !important;
+  background-color: var(--primary-lighter) !important;
 }
 
-// ─── Actions Row ──────────────────────────────────────────────────────────────
+.studyHubBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 0.25rem;
+  font-family: $font-family-body;
+}
+
+.chevron {
+  transition: transform 150ms ease;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.chevronOpen { transform: rotate(180deg); }
+
+// ─── Action Buttons ───────────────────────────────────────────────────────────
 .actions {
   display: flex;
   align-items: center;
-  gap: $space-2;
-  margin-left: auto;
+  gap: 0.125rem;
 }
 
-.iconBtn {
-  @include flex-center;
-  width: 40px;
-  height: 40px;
-  border-radius: $radius-full;
-  color: var(--text-secondary);
-  background: transparent;
-  border: 1px solid transparent;
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
   cursor: pointer;
-  transition: all $transition-fast;
-  flex-shrink: 0;
+  transition: color 130ms ease, background-color 130ms ease;
 
   &:hover {
     color: var(--text-primary);
-    background-color: var(--bg-surface);
-    border-color: var(--border-color);
-  }
-
-  &.iconBtnActive {
-    color: var(--primary);
-    background-color: var(--primary-lighter);
-    border-color: var(--primary-light);
-  }
-
-  &:focus-visible {
-    @include focus-ring;
+    background-color: color-mix(in srgb, var(--text-primary) 7%, transparent);
   }
 }
 
-// ─── Chip Button ──────────────────────────────────────────────────────────────
-.chipBtn {
-  display: none;
+.actionBtnActive {
+  color: var(--primary) !important;
+  background-color: var(--primary-lighter) !important;
+}
+
+.divider {
+  width: 1px;
+  height: 18px;
+  background-color: var(--border-color);
+  margin: 0 0.375rem;
+
+  @include respond-below(md) { display: none; }
+}
+
+// ─── User ─────────────────────────────────────────────────────────────────────
+.userSection {
+  position: relative;
+  @include respond-below(md) { display: none; }
+}
+
+.userButton {
+  display: flex;
   align-items: center;
   gap: $space-2;
-  height: 38px;
-  padding: 0 $space-4;
+  padding: 0.1875rem 0.625rem 0.1875rem 0.1875rem;
   border-radius: $radius-full;
   border: 1px solid var(--border-color);
-  background: var(--bg-primary);
-  color: var(--text-secondary);
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  background-color: var(--bg-card);
   cursor: pointer;
-  transition: all $transition-fast;
-  white-space: nowrap;
-
-  @include respond-to(md) {
-    display: flex;
-  }
+  transition: border-color 150ms ease, box-shadow 150ms ease;
 
   &:hover {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-strong);
-    color: var(--text-primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-lighter);
+  }
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--primary-lighter);
+  color: var(--primary);
+  overflow: hidden;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.userName {
+  font-size: 0.8125rem;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.loginBtn {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8125rem;
+  font-weight: $font-weight-bold;
+  color: #fff !important;
+  background-color: var(--primary);
+  padding: 0.4375rem 1.0625rem;
+  border-radius: $radius-full;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: background-color 150ms ease, transform 150ms ease;
+
+  &:hover {
+    background-color: var(--primary-dark);
     transform: translateY(-1px);
   }
 
-  &.chipBtnActive {
-    background-color: var(--primary-lighter);
-    border-color: var(--primary);
-    color: var(--primary);
+  @include respond-below(md) { display: none; }
+}
+
+.hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--text-primary) 6%, transparent);
   }
+
+  @include respond-to(lg) { display: none; }
 }
 
-.themeSwatchInline {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 1px var(--border-color);
-}
-
-// ─── Dropdowns ───────────────────────────────────────────────────────────────
-.dropdownWrap {
-  position: relative;
-}
+// ─── Dropdown ─────────────────────────────────────────────────────────────────
+.dropdownWrap { position: relative; }
 
 .dropdown {
   position: absolute;
-  top: calc(100% + $space-3);
+  top: calc(100% + $space-2);
   right: 0;
+  min-width: 210px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: $radius-lg;
-  box-shadow: var(--shadow-xl);
-  min-width: 220px;
-  z-index: $z-dropdown;
-  padding: $space-2;
-  backdrop-filter: blur($glass-blur);
-  transform-origin: top right;
-}
-
-.dropdownTheme {
-  min-width: 280px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $space-1;
+  border-radius: 16px;
+  padding: $space-1;
+  box-shadow:
+    0 4px 6px -2px color-mix(in srgb, var(--shadow-color) 20%, transparent),
+    0 20px 48px -8px color-mix(in srgb, var(--shadow-color) 50%, transparent);
+  z-index: 100;
 }
 
 .dropdownItem {
   display: flex;
   align-items: center;
   gap: $space-3;
-  width: 100%;
-  padding: $space-2 $space-3;
-  border-radius: $radius-md;
+  padding: 0.5625rem $space-3;
+  border-radius: 10px;
   font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   color: var(--text-secondary);
-  background: transparent;
+  text-decoration: none;
+  transition: color 120ms ease, background-color 120ms ease;
+  width: 100%;
   border: none;
-  cursor: pointer;
-  transition: all $transition-fast;
+  background: none;
   text-align: left;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+
+  svg { flex-shrink: 0; color: var(--text-muted); transition: color 120ms ease; }
 
   &:hover {
-    background-color: var(--bg-secondary);
     color: var(--text-primary);
-    transform: translateX(2px);
-  }
-
-  &.dropdownItemActive {
-    background-color: var(--primary-lighter);
-    color: var(--primary);
+    background-color: color-mix(in srgb, var(--text-primary) 5%, transparent);
+    svg { color: var(--text-secondary); }
   }
 }
 
-.itemNative {
-  flex: 1;
+.dropdownItemActive {
+  background-color: var(--primary-lighter) !important;
+  color: var(--primary) !important;
+  svg { color: var(--primary) !important; }
 }
 
-.itemEn {
-  font-size: 10px;
-  color: var(--text-muted);
-  opacity: 0.8;
+.themeDropdown { min-width: 160px; }
+
+.themeSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.15);
 }
 
-// ─── Theme Item ──────────────────────────────────────────────────────────────
-.themeItem {
+.dropdownLogout {
   display: flex;
   align-items: center;
   gap: $space-3;
-  padding: $space-3;
-  border-radius: $radius-md;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
-  color: var(--text-secondary);
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all $transition-fast;
+  padding: 0.5625rem $space-3;
+  border-radius: 10px;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--danger);
+  text-decoration: none;
+  transition: background-color 120ms ease;
   width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+
+  svg { flex-shrink: 0; color: var(--danger); }
 
   &:hover {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border-color: var(--border-color);
-  }
-
-  &.themeItemActive {
-    background-color: var(--primary-lighter);
-    border-color: var(--primary-light);
-    color: var(--primary);
+    background-color: color-mix(in srgb, var(--danger) 8%, transparent);
   }
 }
 
-.themeSwatch {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 1px var(--border-color);
-}
-
-// ─── User Menu ────────────────────────────────────────────────────────────────
-.userBtn {
-  @include flex-center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2px solid var(--border-color);
-  cursor: pointer;
-  background: var(--bg-primary);
-  overflow: hidden;
-  transition: all $transition-base;
-  padding: 0;
-
-  &:hover, &.userBtnActive {
-    border-color: var(--primary);
-    transform: scale(1.05);
-    box-shadow: var(--shadow-md);
-  }
-}
-
-.userAvatar {
+// ─── Search Overlay ───────────────────────────────────────────────────────────
+.searchOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.userAvatarFallback {
-  color: var(--text-muted);
-}
-
-.userDropdown {
-  min-width: 240px;
-  padding: $space-2;
-}
-
-.userMenuHeader {
-  padding: $space-3 $space-3;
-}
-
-.userMenuName {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.userMenuEmail {
-  font-size: 11px;
-  color: var(--text-muted);
-  word-break: break-all;
-}
-
-.userMenuDivider {
-  height: 1px;
-  background: var(--border-color);
-  margin: $space-1 $space-3;
-  opacity: 0.5;
-}
-
-.userMenuItem {
-  @extend .dropdownItem;
-  padding: $space-3 $space-3;
-}
-
-.userMenuLogout {
-  color: var(--danger);
-  
-  &:hover {
-    background-color: var(--danger-light);
-    color: var(--danger-dark);
-  }
-}
-
-// ─── Sign In Button ───────────────────────────────────────────────────────────
-.signInBtn {
-  display: none;
-  align-items: center;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: #fff;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
-  padding: $space-2 $space-6;
-  border-radius: $radius-full;
-  text-decoration: none;
-  transition: all $transition-base;
-  box-shadow: 0 4px 12px rgba(var(--primary), 0.2);
-
-  @include respond-to(md) {
-    display: inline-flex;
-  }
-
-  &:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(var(--primary), 0.3);
-    color: #fff;
-    text-decoration: none;
-  }
-}
-
-// ─── Study Hub ───────────────────────────────────────────────────────────────
-.studyHubBtn {
-  display: flex !important;
-  align-items: center;
-  gap: $space-1;
-}
-
-.studyHubDropdown {
-  min-width: 260px;
-  padding: $space-2;
-}
-
-.studyHubItem {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
-  gap: $space-4;
-  padding: $space-3;
-  border-radius: $radius-md;
-  text-decoration: none;
-  transition: all $transition-fast;
+  align-items: center;
+  z-index: 10;
+  padding-inline: $space-6;
+}
 
-  &:hover {
-    background-color: var(--bg-surface);
-    text-decoration: none;
-    transform: translateX(4px);
-    
-    .studyHubItemIcon {
-      background-color: var(--primary);
-      color: #fff;
-      transform: scale(1.1);
+.searchBar {
+  @include container;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  max-width: 880px;
+
+  input {
+    flex: 1;
+    border: none;
+    background: none;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: var(--text-primary);
+    padding: $space-2 0;
+    font-family: $font-family-body;
+
+    &:focus { outline: none; }
+    &::placeholder { color: var(--text-muted); font-weight: $font-weight-normal; }
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    padding: $space-1;
+    border-radius: 6px;
+    transition: color 150ms ease, background-color 150ms ease;
+
+    &:hover {
+      color: var(--text-primary);
+      background-color: color-mix(in srgb, var(--text-primary) 6%, transparent);
     }
   }
 }
 
-.studyHubItemIcon {
-  @include flex-center;
-  width: 36px;
-  height: 36px;
-  border-radius: $radius-md;
-  background-color: var(--primary-lighter);
-  color: var(--primary);
-  flex-shrink: 0;
-  transition: all $transition-fast;
-}
-
-.studyHubItemTitle {
-  display: block;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
-  color: var(--text-primary);
-}
-
-.studyHubItemDesc {
-  display: block;
-  font-size: 11px;
-  color: var(--text-secondary);
-  line-height: 1.4;
-  margin-top: 2px;
-}
-
-// ─── Search Bar ───────────────────────────────────────────────────────────────
-.searchBar {
-  width: 100%;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-color);
-  padding: $space-2 0;
-  margin-top: $space-2;
-  border-radius: 0 0 $radius-lg $radius-lg;
-}
-
-.searchInner {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  padding: 0 $space-4;
-  height: 48px;
-  background: var(--bg-secondary);
-  border-radius: $radius-full;
-  margin: 0 $space-2;
-  border: 1px solid var(--border-color);
-  transition: all $transition-fast;
-
-  &:focus-within {
-    background: var(--bg-primary);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-lighter);
-  }
-}
-
-.searchInput {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  outline: none;
-
-  &::placeholder {
-    color: var(--text-muted);
-  }
-}
+.searchIcon { color: var(--primary); flex-shrink: 0; }
 
 // ─── Mobile Menu ──────────────────────────────────────────────────────────────
 .mobileMenu {
-  position: absolute;
-  top: 100%;
-  left: $space-4;
-  right: $space-4;
   background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: $radius-xl;
-  box-shadow: var(--shadow-2xl);
-  padding: $space-4;
-  margin-top: $space-2;
-  max-height: calc(100vh - $navbar-height - $space-8);
-  overflow-y: auto;
-  z-index: $z-modal;
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
 
-  @include respond-to(lg) {
-    display: none;
-  }
+  @include respond-to(lg) { display: none; }
+}
+
+.mobileInner {
+  @include container;
+  padding-block: $space-2 $space-6;
+  display: flex;
+  flex-direction: column;
 }
 
 .mobileLink {
-  padding: $space-3 $space-4;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-bold;
+  padding: 0.8125rem $space-1;
+  font-size: 0.9375rem;
+  font-weight: $font-weight-semibold;
   color: var(--text-secondary);
   text-decoration: none;
-  display: flex;
-  transition: all $transition-fast;
+  border-bottom: 1px solid var(--border-light);
+  transition: color 130ms ease, padding-left 130ms ease;
+  letter-spacing: -0.01em;
 
   &:hover {
-    background-color: var(--bg-surface);
-    color: var(--text-primary);
-  }
-
-  &.mobileLinkActive {
-    background-color: var(--primary-lighter);
     color: var(--primary);
+    padding-left: $space-3;
   }
 }
 
-.mobilePrefSection {
-  margin-top: $space-6;
-  border-top: 1px solid var(--border-color);
-  padding-top: $space-4;
+.mobileDivider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: $space-1 0;
 }
 
-.mobilePrefLabel {
+.mobileLogin {
+  margin-top: $space-3;
   display: flex;
   align-items: center;
-  gap: $space-2;
-  font-size: 10px;
-  font-weight: $font-weight-extrabold;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: $space-3;
-}
-
-.mobileThemeGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: $space-2;
-}
-
-.mobileThemeBtn {
-  @include flex-center;
-  flex-direction: column;
-  gap: $space-2;
+  justify-content: center;
   padding: $space-3;
-  border-radius: $radius-md;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  font-size: 10px;
+  font-size: $font-size-base;
   font-weight: $font-weight-bold;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all $transition-fast;
+  color: var(--primary) !important;
+  text-decoration: none;
+  border-radius: $radius-xl;
+  background-color: var(--primary-lighter);
+  transition: background-color 150ms ease;
+  letter-spacing: -0.01em;
 
-  &.mobileThemeBtnActive {
-    background-color: var(--primary-lighter);
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-}
-
-// ─── Hamburger ───────────────────────────────────────────────────────────────
-.hamburger {
-  @include respond-to(lg) {
-    display: none;
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
   }
 }

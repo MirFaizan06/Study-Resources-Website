@@ -6,7 +6,7 @@ import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Button } from '@/components/ui/Button'
 import type { CreateRequestPayload } from '@/types'
-import styles from './Request.module.scss'
+import styles from './Request.module.css'
 
 interface FormState {
   studentName: string

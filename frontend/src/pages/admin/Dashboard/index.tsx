@@ -15,7 +15,7 @@ import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import type { AdminStats } from '@/types'
-import styles from './Dashboard.module.scss'
+import styles from './Dashboard.module.css'
 
 interface StatCard {
   key: keyof AdminStats
