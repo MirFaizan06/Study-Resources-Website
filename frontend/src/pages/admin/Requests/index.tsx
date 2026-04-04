@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { CheckCircle, RefreshCw, Filter } from 'lucide-react'
+import { CheckCircle, RefreshCw, Filter, Search } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
 import { useHead } from '@/hooks/useHead'
 import { api } from '@/services/api'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import type { MaterialRequest, RequestStatus } from '@/types'
-import styles from './Requests.module.scss'
+import styles from './Requests.module.css'
 
 type FilterStatus = 'ALL' | RequestStatus
 
@@ -18,6 +18,7 @@ export default function AdminRequests(): React.ReactElement {
   const [filter, setFilter] = useState<FilterStatus>('ALL')
   const [fulfilling, setFulfilling] = useState<string | null>(null)
   const [toast, setToast] = useState('')
+  const [search, setSearch] = useState('')
 
   useHead({
     title: 'Student Requests - Admin',
@@ -55,7 +56,14 @@ export default function AdminRequests(): React.ReactElement {
     }
   }
 
-  const filtered = filter === 'ALL' ? requests : requests.filter((r) => r.status === filter)
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    return requests.filter((r) => {
+      if (filter !== 'ALL' && r.status !== filter) return false
+      if (q && !r.studentName.toLowerCase().includes(q) && !r.requestedMaterial.toLowerCase().includes(q)) return false
+      return true
+    })
+  }, [requests, filter, search])
 
   const formatDate = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString('en-IN', {
@@ -81,7 +89,7 @@ export default function AdminRequests(): React.ReactElement {
         </Button>
       </div>
 
-      {/* Filter tabs */}
+      {/* Filter row */}
       <div className={styles.filterRow}>
         <Filter size={16} className={styles.filterIcon} aria-hidden="true" />
         {(['ALL', 'PENDING', 'FULFILLED'] as FilterStatus[]).map((status) => (
@@ -102,6 +110,16 @@ export default function AdminRequests(): React.ReactElement {
             </span>
           </button>
         ))}
+        <div className={styles.searchWrap}>
+          <Search size={13} style={{ color: 'var(--text-muted)', flexShrink: 0 }} aria-hidden="true" />
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder="Search by name or material…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {loading ? (
