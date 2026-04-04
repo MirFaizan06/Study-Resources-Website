@@ -33,6 +33,11 @@ import type {
   FundraiserContribution,
   UploadUrlResponse,
   AdminLoginResponse,
+  AdminProfilePublic,
+  AdminProfileFull,
+  CreateAdminPayload,
+  GenerateAdminPayload,
+  GenerateAdminResult,
 } from '@/types'
 
 
@@ -54,6 +59,24 @@ function getAdminToken(): string | null {
 
 function getStudentToken(): string | null {
   return localStorage.getItem('student_token')
+}
+
+/** Decode admin JWT payload without verification (frontend only — server always re-validates). */
+export function getAdminTokenPayload(): { id: string; email: string; role: string } | null {
+  const token = getAdminToken()
+  if (!token) return null
+  try {
+    const parts = token.split('.')
+    if (parts.length !== 3) return null
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))
+    return { id: payload.id, email: payload.email, role: payload.role }
+  } catch {
+    return null
+  }
+}
+
+export function isSuperAdmin(): boolean {
+  return getAdminTokenPayload()?.role === 'SUPER_ADMIN'
 }
 
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -452,6 +475,46 @@ export const api = {
 
     unbanUser(id: string): Promise<void> {
       return apiFetch<void>(`/api/admin/users/${id}/unban`, { method: 'PATCH' });
+    },
+
+    // ─── Admin Management (Super Admin) ──────────────────────────────────────
+    getAdminsPublic(): Promise<AdminProfilePublic[]> {
+      return cachedFetch<AdminProfilePublic[]>('/api/admin/admins/public', 5 * 60_000);
+    },
+
+    getAdminsFull(): Promise<AdminProfileFull[]> {
+      return apiFetch<AdminProfileFull[]>('/api/admin/admins');
+    },
+
+    createAdmin(data: CreateAdminPayload): Promise<{ user: { id: string; email: string; name: string; role: string } }> {
+      invalidateCache('/api/admin/admins');
+      return apiFetch('/api/admin/admins/create', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    generateAdmin(data: GenerateAdminPayload): Promise<GenerateAdminResult> {
+      invalidateCache('/api/admin/admins');
+      return apiFetch<GenerateAdminResult>('/api/admin/admins/generate', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+
+    revokeAdmin(id: string): Promise<void> {
+      invalidateCache('/api/admin/admins');
+      return apiFetch<void>(`/api/admin/admins/${id}/revoke`, { method: 'PATCH' });
+    },
+
+    reinstateAdmin(id: string): Promise<void> {
+      invalidateCache('/api/admin/admins');
+      return apiFetch<void>(`/api/admin/admins/${id}/reinstate`, { method: 'PATCH' });
+    },
+
+    deleteAdmin(id: string): Promise<void> {
+      invalidateCache('/api/admin/admins');
+      return apiFetch<void>(`/api/admin/admins/${id}`, { method: 'DELETE' });
     },
   },
 };

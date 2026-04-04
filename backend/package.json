@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "prisma generate --schema=src/prisma/schema.prisma && tsc",
-    "start": "node dist/server.js",
+    "start": "prisma db push --schema=src/prisma/schema.prisma --accept-data-loss && node dist/server.js",
     "db:push": "prisma db push --schema=src/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema=src/prisma/schema.prisma",
     "db:studio": "prisma studio --schema=src/prisma/schema.prisma",

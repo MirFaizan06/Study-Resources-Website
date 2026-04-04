@@ -19,6 +19,13 @@ import {
   listUsers,
   banUser,
   unbanUser,
+  listAdminProfilesPublic,
+  listAdminProfilesFull,
+  createAdmin,
+  generateAdmin,
+  revokeAdmin,
+  reinstateAdmin,
+  deleteAdmin,
 } from './admin.service';
 import { CreateResourceSchema, RequestUploadUrlSchema } from '../resources/resources.schema';
 import crypto from 'crypto';
@@ -47,8 +54,17 @@ export async function adminLogin(
       ? await bcrypt.compare(password, user.passwordHash)
       : await bcrypt.compare(password, dummyHash).then(() => false);
 
-    if (!user || !isValid || user.role !== 'ADMIN') {
+    if (!user || !isValid || (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN')) {
       throw new AppError('Invalid email or password.', 401, 'INVALID_CREDENTIALS');
+    }
+
+    // Check if admin's profile has been revoked
+    const profile = await prisma.adminProfile.findUnique({
+      where: { userId: user.id },
+      select: { isRevoked: true },
+    });
+    if (profile?.isRevoked) {
+      throw new AppError('Your admin access has been revoked. Contact a super admin.', 403, 'ACCESS_REVOKED');
     }
 
     const token = generateToken({
@@ -298,6 +314,126 @@ export async function adminCreateResource(
     const data = CreateResourceSchema.parse(body);
     const resource = await adminUploadResource(data, req.user.id, body.fileUrl);
     res.status(201).json({ success: true, data: resource });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ─── Public Admin Profiles Listing ───────────────────────────────────────────
+export async function listAdminProfilesPublicHandler(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const profiles = await listAdminProfilesPublic();
+    res.status(200).json({ success: true, data: profiles });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ─── Super Admin: Admin Management ───────────────────────────────────────────
+export async function listAdminProfilesFullHandler(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const profiles = await listAdminProfilesFull();
+    res.status(200).json({ success: true, data: profiles });
+  } catch (err) {
+    next(err);
+  }
+}
+
+const CreateAdminSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(2).max(100),
+  password: z.string().min(8).max(128),
+  university: z.string().min(2).max(200),
+  program: z.string().min(2).max(200),
+  contactNo: z.string().max(30).optional(),
+  pfpUrl: z.string().url().optional(),
+});
+
+export async function createAdminHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const data = CreateAdminSchema.parse(req.body);
+    const result = await createAdmin(data);
+    res.status(201).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
+const GenerateAdminSchema = z.object({
+  university: z.string().min(2).max(200),
+  program: z.string().min(2).max(200),
+  contactNo: z.string().max(30).optional(),
+});
+
+export async function generateAdminHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const data = GenerateAdminSchema.parse(req.body);
+    const result = await generateAdmin(data);
+    res.status(201).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function revokeAdminHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    if (!id) throw new AppError('Admin user id required.', 400, 'VALIDATION_ERROR');
+    // Prevent super admin from revoking themselves
+    if (req.user?.id === id) throw new AppError('You cannot revoke your own admin access.', 400, 'SELF_REVOKE');
+    const profile = await revokeAdmin(id);
+    res.status(200).json({ success: true, data: profile });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function reinstateAdminHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    if (!id) throw new AppError('Admin user id required.', 400, 'VALIDATION_ERROR');
+    const profile = await reinstateAdmin(id);
+    res.status(200).json({ success: true, data: profile });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function deleteAdminHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const id = req.params['id'];
+    if (!id) throw new AppError('Admin user id required.', 400, 'VALIDATION_ERROR');
+    if (req.user?.id === id) throw new AppError('You cannot delete your own account.', 400, 'SELF_DELETE');
+    await deleteAdmin(id);
+    res.status(200).json({ success: true, message: 'Admin account permanently deleted.' });
   } catch (err) {
     next(err);
   }

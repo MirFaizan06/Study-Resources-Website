@@ -12,17 +12,31 @@ import {
   BookOpen,
   ShieldAlert,
   Users,
+  AlertTriangle,
+  UserCog,
 } from 'lucide-react'
 import { useLocale } from '@/hooks/useLocale'
-import styles from './AdminLayout.module.scss'
+import { isSuperAdmin } from '@/services/api'
+import styles from './AdminLayout.module.css'
+
+const POLICY_KEY = 'admin_policy_dismissed'
 
 export function AdminLayout(): React.ReactElement {
   const navigate = useNavigate()
   const location = useLocation()
   const { t, locale } = useLocale()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [policyVisible, setPolicyVisible] = useState(
+    () => sessionStorage.getItem(POLICY_KEY) !== '1'
+  )
+
+  const dismissPolicy = () => {
+    sessionStorage.setItem(POLICY_KEY, '1')
+    setPolicyVisible(false)
+  }
 
   const token = localStorage.getItem('admin_token')
+  const superAdmin = isSuperAdmin()
 
   if (!token) {
     return <Navigate to={`/${locale}/admin/login`} replace />
@@ -80,6 +94,11 @@ export function AdminLayout(): React.ReactElement {
       label: t.admin.sidebar.users,
       icon: <Users size={18} />,
     },
+    ...(superAdmin ? [{
+      href: `/${locale}/admin/admins`,
+      label: 'Admin Management',
+      icon: <UserCog size={18} />,
+    }] : []),
   ]
 
   const isActive = (href: string, exact?: boolean) => {
@@ -170,6 +189,21 @@ export function AdminLayout(): React.ReactElement {
 
         {/* Page content */}
         <div className={styles.content}>
+          {/* ─── Admin Policy Notice ────────────────────────────────────────── */}
+          {policyVisible && (
+            <div className={styles.policyBanner} role="alert">
+              <AlertTriangle size={16} className={styles.policyIcon} aria-hidden="true" />
+              <div className={styles.policyBody}>
+                <p className={styles.policyTitle}>Admin Responsibility Notice</p>
+                <p className={styles.policyText}>
+                  You have been granted admin access in trust. You are expected to act strictly within your assigned role and scope. Any unauthorized action — including accessing, modifying, or deleting data outside your permitted area — constitutes a breach of policy. Violations will result in <strong>immediate account ban</strong> and may be subject to further legal or institutional action. Act responsibly.
+                </p>
+              </div>
+              <button className={styles.policyDismiss} onClick={dismissPolicy} aria-label="Dismiss notice">
+                <X size={14} />
+              </button>
+            </div>
+          )}
           <Outlet />
         </div>
       </div>

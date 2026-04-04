@@ -28,6 +28,8 @@ const AdminUsers = lazy(() => import('@/pages/admin/Users'))
 const AdminInstitutions = lazy(() => import('@/pages/admin/Institutions'))
 const AdminPrograms = lazy(() => import('@/pages/admin/Programs'))
 const AdminSubjects = lazy(() => import('@/pages/admin/Subjects'))
+const AdminManagement = lazy(() => import('@/pages/admin/AdminManagement'))
+const AdminsPage = lazy(() => import('@/pages/Admins'))
 
 const BoardPage = lazy(() => import('@/pages/Board'))
 const PostDetailPage = lazy(() => import('@/pages/Board/PostDetail'))
@@ -226,6 +228,14 @@ export const router = createBrowserRouter([
               </Suspense>
             ),
           },
+          {
+            path: 'admins',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminManagement />
+              </Suspense>
+            ),
+          },
         ],
       },
 
@@ -298,6 +308,14 @@ export const router = createBrowserRouter([
             ),
           },
           {
+            path: 'admins',
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <AdminsPage />
+              </Suspense>
+            ),
+          },
+          {
             path: 'ai',
             element: (
               <Suspense fallback={<PageLoader />}>
@@ -306,7 +324,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'board',
+            path: 'node',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <BoardPage />
@@ -314,7 +332,7 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'board/create',
+            path: 'node/create',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <CreatePostPage />
@@ -322,13 +340,17 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: 'board/:postId',
+            path: 'node/:postId',
             element: (
               <Suspense fallback={<PageLoader />}>
                 <PostDetailPage />
               </Suspense>
             ),
           },
+          // Redirects for backward compatibility
+          { path: 'board', element: <Navigate to="../node" replace /> },
+          { path: 'board/create', element: <Navigate to="../node/create" replace /> },
+          { path: 'board/:postId', element: <Navigate to="../node/:postId" replace /> },
           {
             path: 'login',
             element: (

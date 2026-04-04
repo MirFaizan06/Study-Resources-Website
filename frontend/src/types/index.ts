@@ -1,4 +1,4 @@
-export type UserRole = 'STUDENT' | 'ADMIN' | 'CONTRIBUTOR'
+export type UserRole = 'STUDENT' | 'ADMIN' | 'SUPER_ADMIN' | 'CONTRIBUTOR'
 export type InstitutionType = 'UNIVERSITY' | 'COLLEGE' | 'SCHOOL'
 export type ResourceType = 'NOTE' | 'PYQ' | 'SYLLABUS' | 'GUESS_PAPER'
 export type RequestStatus = 'PENDING' | 'FULFILLED'
@@ -323,4 +323,47 @@ export interface AdminLoginResponse {
     name: string
     role: string
   }
+}
+
+// ─── Admin Profiles ───────────────────────────────────────────────────────────
+
+export interface AdminProfilePublic {
+  id: string
+  userId: string
+  name: string
+  role: string
+  university: string
+  program: string
+  pfpUrl: string | null
+  contactNo: string | null  // null when revoked
+  isRevoked: boolean
+  revokedAt: string | null
+  joinedAt: string
+}
+
+export interface AdminProfileFull extends AdminProfilePublic {
+  email: string
+  userCreatedAt: string
+}
+
+export interface CreateAdminPayload {
+  email: string
+  name: string
+  password: string
+  university: string
+  program: string
+  contactNo?: string
+}
+
+export interface GenerateAdminPayload {
+  university: string
+  program: string
+  contactNo?: string
+}
+
+export interface GenerateAdminResult {
+  user: { id: string; email: string; name: string; role: string }
+  profile: { id: string; userId: string }
+  generatedPassword: string
+  generatedEmail: string
 }

@@ -115,9 +115,9 @@ export function Navbar(): React.ReactElement {
   return (
     <header className={styles.header}>
       <nav className={styles.nav} aria-label="Main navigation">
-        <div className={styles.inner}>
 
-          {/* ─── Logo ───────────────────────────────────────────────────────── */}
+        {/* ─── Row 1: Logo + Actions ─────────────────────────────────────────── */}
+        <div className={styles.topRow}>
           <Link to={`/${locale}/`} className={styles.logo} aria-label="U.N.I.T. Home">
             <div className={styles.logoMark} aria-hidden="true">
               <BookOpen size={17} strokeWidth={2.2} />
@@ -128,69 +128,7 @@ export function Navbar(): React.ReactElement {
             </div>
           </Link>
 
-          {/* ─── Desktop Links ──────────────────────────────────────────────── */}
-          <div className={styles.mainNav}>
-            <ul className={styles.links} role="list">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className={[styles.link, isActive(link.href) ? styles.linkActive : ''].join(' ')}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-
-              {/* Resources dropdown */}
-              <li>
-                <div className={styles.dropdownWrap} ref={studyHubRef}>
-                  <button
-                    className={[
-                      styles.link,
-                      styles.studyHubBtn,
-                      studyHubActive ? styles.linkActive : '',
-                    ].join(' ')}
-                    onClick={() => setStudyHubOpen((p) => !p)}
-                    aria-expanded={studyHubOpen}
-                  >
-                    Resources
-                    <ChevronDown
-                      size={12}
-                      strokeWidth={2.5}
-                      className={[styles.chevron, studyHubOpen ? styles.chevronOpen : ''].join(' ')}
-                    />
-                  </button>
-                  <AnimatePresence>
-                    {studyHubOpen && (
-                      <motion.div
-                        className={styles.dropdown}
-                        variants={panelVariants}
-                        initial="hidden" animate="show" exit="hidden"
-                        transition={{ duration: 0.12, ease: 'easeOut' }}
-                      >
-                        <Link to={`/${locale}/blogs`} className={styles.dropdownItem}>
-                          <BookMarked size={15} />
-                          <span>Study Blogs</span>
-                        </Link>
-                        <Link to={`/${locale}/study-plans`} className={styles.dropdownItem}>
-                          <CalendarCheck size={15} />
-                          <span>Study Plans</span>
-                        </Link>
-                        <div className={styles.divider} style={{ margin: '0.25rem 0.375rem', width: 'auto', height: '1px' }} />
-                        <Link to={`/${locale}/changelog`} className={styles.dropdownItem}>
-                          <GitBranch size={15} />
-                          <span>What's new · {APP_VERSION}</span>
-                        </Link>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* ─── Desktop Actions ────────────────────────────────────────────── */}
+          {/* ─── Actions ────────────────────────────────────────────────────── */}
           <div className={styles.actions}>
             {/* Search */}
             <button
@@ -231,6 +169,9 @@ export function Navbar(): React.ReactElement {
                         {code === locale && <Check size={13} strokeWidth={2.5} />}
                       </button>
                     ))}
+                    <div className={styles.langNote}>
+                      Not all pages are localized yet — our team is working on it.
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -321,6 +262,66 @@ export function Navbar(): React.ReactElement {
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
+        </div>
+
+        {/* ─── Row 2: Desktop Nav Links ──────────────────────────────────────── */}
+        <div className={styles.navRow}>
+          <ul className={styles.links} role="list">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  to={link.href}
+                  className={[styles.link, isActive(link.href) ? styles.linkActive : ''].join(' ')}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <div className={styles.dropdownWrap} ref={studyHubRef}>
+                <button
+                  className={[
+                    styles.link,
+                    styles.studyHubBtn,
+                    studyHubActive ? styles.linkActive : '',
+                  ].join(' ')}
+                  onClick={() => setStudyHubOpen((p) => !p)}
+                  aria-expanded={studyHubOpen}
+                >
+                  Resources
+                  <ChevronDown
+                    size={12}
+                    strokeWidth={2.5}
+                    className={[styles.chevron, studyHubOpen ? styles.chevronOpen : ''].join(' ')}
+                  />
+                </button>
+                <AnimatePresence>
+                  {studyHubOpen && (
+                    <motion.div
+                      className={styles.dropdown}
+                      variants={panelVariants}
+                      initial="hidden" animate="show" exit="hidden"
+                      transition={{ duration: 0.12, ease: 'easeOut' }}
+                    >
+                      <Link to={`/${locale}/blogs`} className={styles.dropdownItem}>
+                        <BookMarked size={15} />
+                        <span>Study Blogs</span>
+                      </Link>
+                      <Link to={`/${locale}/study-plans`} className={styles.dropdownItem}>
+                        <CalendarCheck size={15} />
+                        <span>Study Plans</span>
+                      </Link>
+                      <div style={{ height: '1px', background: 'var(--border-color)', margin: '0.25rem 0.375rem' }} />
+                      <Link to={`/${locale}/changelog`} className={styles.dropdownItem}>
+                        <GitBranch size={15} />
+                        <span>What's new · {APP_VERSION}</span>
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </li>
+          </ul>
         </div>
 
         {/* ─── Search Overlay ─────────────────────────────────────────────────── */}
